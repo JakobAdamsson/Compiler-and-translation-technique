@@ -22,7 +22,7 @@ User subroutines
 ### Few things worth pointing out:
 All token types from the scanner myst be defined using **%token** in the definitions section.  
 
-For each rule, a colon is used in place of the arrow, a vertical bar(**|**) seperates the various productions, and a semocolon terminates the role. Bison pays no attention to line boinderies in the rules section, so you are free to use lots of space to make grammar look pretty :)
+For each rule, a colon(**:**) is used in place of the arrow, a vertical bar(**|**) seperates the various productions, and a semicolon(**;**) terminates the role. Bison pays no attention to line boinderies in the rules section, so you are free to use lots of space to make grammar look pretty :)
 
 Within the braces theres just simply ordinary C code
 
@@ -38,3 +38,69 @@ left_side: right_side1 { action1 }
 Left side is named typically like identifiers using a sequence of letters and/or digits, starting with a letter. The left side is non-terminal which means that they do not have to be defined before use, but eventually. 
 
 Each right side is a valid expansion for the left side non-terminal.
+
+#### TERMINAL SYMBOLS ARE CHARACTER CONSTATS E.G "A" OR TOKENS DEFINED BY USING %TOKEN
+
+### Symbol attributes
+The parser allows you to associate attributes withc each grammar symbol, both terminal and non-terminals. For terminals, the global variable **yylval** is used to communicate the particulars about the token just scanned from the scanner to the parser. For non-terminals you can explicity access and set their attributes using the attribute stack. If you want different information for various symbol types, a union is used, e.g:
+```c
+%union
+{
+    int intValue;
+    double doubleValue;
+    char *stringValue;
+}
+```
+The above union would be incolded in the **definitions** section. It is then translated by bison into C code as **YYSTYPE typedef** for at new union type with the above fields. The global variable **yyval** is of this type, and the parser stores variables of this type on the parser stack, on for each symbol currently on the stack.
+
+When defining each token you can assign each token to each individual row in the union as such(for terminals):
+```c
+%token <intValue>T_Int <doubleValue>T_Double T_While T_Return
+```
+
+For non-terminals you can use **%type** in the **definitions** section, such as:
+```c
+%type<intValue> Integer IntExpression
+```
+
+To access a grammar symbols attribute from the parse stack, you can use **\$n** where n is the n'th symbol of the current right, starting from 1. The attribute for the non­
+terminal on the left side is denoted by **\$$**. If no type type of the token is set, you can use the following notation:
+```c
+$<fieldname>n
+```
+
+A similar mechanism is used to obtain information about symbol locations, the parser maintains a variable of type **YYLTYPE** which is a structure containing four members:
+1. First line
+2. First column
+3. Last line
+4. Last column
+
+To use the four members above, you may use:
+```c
+@n in parrallel with $n
+```
+
+When working with precedence of operators for instance, the **last** rule **ALWAYS** has the highest precedence. For instance:
+```c
+%token T_Int
+%left '+'
+%left '*'
+%right '^'
+%%
+E
+    : E '+' E
+    | E '*' E
+    | E '^' E
+    | T_Int
+    ;
+```
+
+Where + has the lowest priority, then * and lastly ^(since its last). You may also use the **%prec** keyword to set a precence of a terminal symbol as its argument. Here are some guidelines when setting up the precedence:
+1. Identify what the token is that could be shifted and the alternate production that could be
+reduced
+2. What would be the effect of choosing the shift? 
+3. What is the effect of choosing to reduce? 
+4. Which is the one we want?
+
+#### Error handling
+When a bison-generated parser encounters an error, it calls the default **yyerror** routine to print a generic **"parse error"**. To recover from an error the **error** keyword may be places in the right side of a prodution to mark a context in which to attempt error recovery.
