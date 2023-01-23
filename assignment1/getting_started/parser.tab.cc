@@ -50,10 +50,9 @@
   
   Node* root;
   extern int yylineno;
-
   
 
-#line 57 "parser.tab.cc"
+#line 56 "parser.tab.cc"
 
 
 #ifndef YY_
@@ -126,7 +125,7 @@
 #define YYRECOVERING()  (!!yyerrstatus_)
 
 namespace yy {
-#line 130 "parser.tab.cc"
+#line 129 "parser.tab.cc"
 
   /// Build a parser object.
   parser::parser ()
@@ -193,7 +192,9 @@ namespace yy {
   {
     switch (that.kind ())
     {
-      case symbol_kind::S_test: // test
+      case symbol_kind::S_root: // root
+      case symbol_kind::S_expression: // expression
+      case symbol_kind::S_factor: // factor
         value.YY_MOVE_OR_COPY< Node * > (YY_MOVE (that.value));
         break;
 
@@ -203,8 +204,6 @@ namespace yy {
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LP: // LP
       case symbol_kind::S_RP: // RP
-      case symbol_kind::S_LBRACKET: // LBRACKET
-      case symbol_kind::S_RBRACKET: // RBRACKET
         value.YY_MOVE_OR_COPY< std::string > (YY_MOVE (that.value));
         break;
 
@@ -223,7 +222,9 @@ namespace yy {
   {
     switch (that.kind ())
     {
-      case symbol_kind::S_test: // test
+      case symbol_kind::S_root: // root
+      case symbol_kind::S_expression: // expression
+      case symbol_kind::S_factor: // factor
         value.move< Node * > (YY_MOVE (that.value));
         break;
 
@@ -233,8 +234,6 @@ namespace yy {
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LP: // LP
       case symbol_kind::S_RP: // RP
-      case symbol_kind::S_LBRACKET: // LBRACKET
-      case symbol_kind::S_RBRACKET: // RBRACKET
         value.move< std::string > (YY_MOVE (that.value));
         break;
 
@@ -253,7 +252,9 @@ namespace yy {
     state = that.state;
     switch (that.kind ())
     {
-      case symbol_kind::S_test: // test
+      case symbol_kind::S_root: // root
+      case symbol_kind::S_expression: // expression
+      case symbol_kind::S_factor: // factor
         value.copy< Node * > (that.value);
         break;
 
@@ -263,8 +264,6 @@ namespace yy {
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LP: // LP
       case symbol_kind::S_RP: // RP
-      case symbol_kind::S_LBRACKET: // LBRACKET
-      case symbol_kind::S_RBRACKET: // RBRACKET
         value.copy< std::string > (that.value);
         break;
 
@@ -281,7 +280,9 @@ namespace yy {
     state = that.state;
     switch (that.kind ())
     {
-      case symbol_kind::S_test: // test
+      case symbol_kind::S_root: // root
+      case symbol_kind::S_expression: // expression
+      case symbol_kind::S_factor: // factor
         value.move< Node * > (that.value);
         break;
 
@@ -291,8 +292,6 @@ namespace yy {
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LP: // LP
       case symbol_kind::S_RP: // RP
-      case symbol_kind::S_LBRACKET: // LBRACKET
-      case symbol_kind::S_RBRACKET: // RBRACKET
         value.move< std::string > (that.value);
         break;
 
@@ -550,7 +549,9 @@ namespace yy {
          when using variants.  */
       switch (yyr1_[yyn])
     {
-      case symbol_kind::S_test: // test
+      case symbol_kind::S_root: // root
+      case symbol_kind::S_expression: // expression
+      case symbol_kind::S_factor: // factor
         yylhs.value.emplace< Node * > ();
         break;
 
@@ -560,8 +561,6 @@ namespace yy {
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LP: // LP
       case symbol_kind::S_RP: // RP
-      case symbol_kind::S_LBRACKET: // LBRACKET
-      case symbol_kind::S_RBRACKET: // RBRACKET
         yylhs.value.emplace< std::string > ();
         break;
 
@@ -579,18 +578,69 @@ namespace yy {
         {
           switch (yyn)
             {
-  case 2: // test: INT
-#line 28 "parser.yy"
-                     { yylhs.value.as < Node * > () = new Node("Expression", "", yylineno); 
-                       yylhs.value.as < Node * > ()->children.push_back(new Node("int", yystack_[0].value.as < std::string > (), yylineno));
-                       root = yylhs.value.as < Node * > ();
-                       printf("Hello\n");
-                     }
-#line 590 "parser.tab.cc"
+  case 2: // root: expression
+#line 32 "parser.yy"
+                       {root = yystack_[0].value.as < Node * > ();}
+#line 585 "parser.tab.cc"
+    break;
+
+  case 3: // expression: expression PLUSOP expression
+#line 34 "parser.yy"
+                                         {      /*
+                                                  Create a subtree that corresponds to the AddExpression
+                                                  The root of the subtree is AddExpression
+                                                  The childs of the AddExpression subtree are the left hand side (expression accessed through $1) and right hand side of the expression (expression accessed through $3)
+                                                */
+                            yylhs.value.as < Node * > () = new Node("AddExpression", "", yylineno);
+                            yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
+                            yylhs.value.as < Node * > ()->children.push_back(yystack_[0].value.as < Node * > ());
+                            /* printf("r1 "); */
+                          }
+#line 600 "parser.tab.cc"
+    break;
+
+  case 4: // expression: expression MINUSOP expression
+#line 44 "parser.yy"
+                                            {
+                            yylhs.value.as < Node * > () = new Node("SubExpression", "", yylineno);
+                            yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
+                            yylhs.value.as < Node * > ()->children.push_back(yystack_[0].value.as < Node * > ());
+                            /* printf("r2 "); */
+                          }
+#line 611 "parser.tab.cc"
+    break;
+
+  case 5: // expression: expression MULTOP expression
+#line 50 "parser.yy"
+                                           {
+                            yylhs.value.as < Node * > () = new Node("MultExpression", "", yylineno);
+                            yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
+                            yylhs.value.as < Node * > ()->children.push_back(yystack_[0].value.as < Node * > ());
+                            /* printf("r3 "); */
+                          }
+#line 622 "parser.tab.cc"
+    break;
+
+  case 6: // expression: factor
+#line 56 "parser.yy"
+                          {yylhs.value.as < Node * > () = yystack_[0].value.as < Node * > (); /* printf("r4 ");*/}
+#line 628 "parser.tab.cc"
+    break;
+
+  case 7: // factor: INT
+#line 59 "parser.yy"
+                          {  yylhs.value.as < Node * > () = new Node("Int", yystack_[0].value.as < std::string > (), yylineno); /* printf("r5 ");  Here we create a leaf node Int. The value of the leaf node is $1 */}
+#line 634 "parser.tab.cc"
+    break;
+
+  case 8: // factor: LP expression RP
+#line 60 "parser.yy"
+                               { yylhs.value.as < Node * > () = yystack_[1].value.as < Node * > (); /* printf("r6 ");  simply return the expression */}
+#line 640 "parser.tab.cc"
     break;
 
 
-#line 594 "parser.tab.cc"
+#line 644 "parser.tab.cc"
 
             default:
               break;
@@ -938,62 +988,67 @@ namespace yy {
   }
 
 
-  const signed char parser::yypact_ninf_ = -7;
+  const signed char parser::yypact_ninf_ = -3;
 
   const signed char parser::yytable_ninf_ = -1;
 
   const signed char
   parser::yypact_[] =
   {
-      -6,    -7,     1,    -7
+       9,    -3,     9,     1,    -1,    -3,     6,    -3,     9,     9,
+       9,    -3,     0,     0,    -3
   };
 
   const signed char
   parser::yydefact_[] =
   {
-       0,     2,     0,     1
+       0,     7,     0,     0,     2,     6,     0,     1,     0,     0,
+       0,     8,     3,     4,     5
   };
 
   const signed char
   parser::yypgoto_[] =
   {
-      -7,    -7
+      -3,    -3,    -2,    -3
   };
 
   const signed char
   parser::yydefgoto_[] =
   {
-       0,     2
+       0,     3,     4,     5
   };
 
   const signed char
   parser::yytable_[] =
   {
-       1,     3
+       6,     7,     8,     9,    10,    10,    12,    13,    14,     8,
+       9,    10,     0,     0,    11,     1,     2
   };
 
   const signed char
   parser::yycheck_[] =
   {
-       6,     0
+       2,     0,     3,     4,     5,     5,     8,     9,    10,     3,
+       4,     5,    -1,    -1,     8,     6,     7
   };
 
   const signed char
   parser::yystos_[] =
   {
-       0,     6,    12,     0
+       0,     6,     7,    10,    11,    12,    11,     0,     3,     4,
+       5,     8,    11,    11,    11
   };
 
   const signed char
   parser::yyr1_[] =
   {
-       0,    11,    12
+       0,     9,    10,    11,    11,    11,    11,    12,    12
   };
 
   const signed char
   parser::yyr2_[] =
   {
-       0,     2,     1
+       0,     2,     1,     3,     3,     3,     1,     1,     3
   };
 
 
@@ -1004,7 +1059,7 @@ namespace yy {
   const parser::yytname_[] =
   {
   "\"end of file\"", "error", "\"invalid token\"", "PLUSOP", "MINUSOP",
-  "MULTOP", "INT", "LP", "RP", "LBRACKET", "RBRACKET", "$accept", "test", YY_NULLPTR
+  "MULTOP", "INT", "LP", "RP", "$accept", "root", "expression", "factor", YY_NULLPTR
   };
 #endif
 
@@ -1013,7 +1068,7 @@ namespace yy {
   const signed char
   parser::yyrline_[] =
   {
-       0,    28,    28
+       0,    32,    32,    34,    44,    50,    56,    59,    60
   };
 
   void
@@ -1045,5 +1100,5 @@ namespace yy {
 
 
 } // yy
-#line 1049 "parser.tab.cc"
+#line 1104 "parser.tab.cc"
 

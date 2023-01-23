@@ -381,7 +381,9 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
-      // test
+      // root
+      // expression
+      // factor
       char dummy1[sizeof (Node *)];
 
       // PLUSOP
@@ -390,8 +392,6 @@ namespace yy {
       // INT
       // LP
       // RP
-      // LBRACKET
-      // RBRACKET
       char dummy2[sizeof (std::string)];
     };
 
@@ -441,9 +441,7 @@ namespace yy {
     MULTOP = 260,                  // MULTOP
     INT = 261,                     // INT
     LP = 262,                      // LP
-    RP = 263,                      // RP
-    LBRACKET = 264,                // LBRACKET
-    RBRACKET = 265                 // RBRACKET
+    RP = 263                       // RP
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -460,7 +458,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 11, ///< Number of tokens.
+        YYNTOKENS = 9, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -471,10 +469,10 @@ namespace yy {
         S_INT = 6,                               // INT
         S_LP = 7,                                // LP
         S_RP = 8,                                // RP
-        S_LBRACKET = 9,                          // LBRACKET
-        S_RBRACKET = 10,                         // RBRACKET
-        S_YYACCEPT = 11,                         // $accept
-        S_test = 12                              // test
+        S_YYACCEPT = 9,                          // $accept
+        S_root = 10,                             // root
+        S_expression = 11,                       // expression
+        S_factor = 12                            // factor
       };
     };
 
@@ -509,7 +507,9 @@ namespace yy {
       {
         switch (this->kind ())
     {
-      case symbol_kind::S_test: // test
+      case symbol_kind::S_root: // root
+      case symbol_kind::S_expression: // expression
+      case symbol_kind::S_factor: // factor
         value.move< Node * > (std::move (that.value));
         break;
 
@@ -519,8 +519,6 @@ namespace yy {
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LP: // LP
       case symbol_kind::S_RP: // RP
-      case symbol_kind::S_LBRACKET: // LBRACKET
-      case symbol_kind::S_RBRACKET: // RBRACKET
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -593,7 +591,9 @@ namespace yy {
         // Value type destructor.
 switch (yykind)
     {
-      case symbol_kind::S_test: // test
+      case symbol_kind::S_root: // root
+      case symbol_kind::S_expression: // expression
+      case symbol_kind::S_factor: // factor
         value.template destroy< Node * > ();
         break;
 
@@ -603,8 +603,6 @@ switch (yykind)
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LP: // LP
       case symbol_kind::S_RP: // RP
-      case symbol_kind::S_LBRACKET: // LBRACKET
-      case symbol_kind::S_RBRACKET: // RBRACKET
         value.template destroy< std::string > ();
         break;
 
@@ -889,36 +887,6 @@ switch (yykind)
       make_RP (const std::string& v)
       {
         return symbol_type (token::RP, v);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_LBRACKET (std::string v)
-      {
-        return symbol_type (token::LBRACKET, std::move (v));
-      }
-#else
-      static
-      symbol_type
-      make_LBRACKET (const std::string& v)
-      {
-        return symbol_type (token::LBRACKET, v);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_RBRACKET (std::string v)
-      {
-        return symbol_type (token::RBRACKET, std::move (v));
-      }
-#else
-      static
-      symbol_type
-      make_RBRACKET (const std::string& v)
-      {
-        return symbol_type (token::RBRACKET, v);
       }
 #endif
 
@@ -1249,9 +1217,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 1,     ///< Last index in yytable_.
-      yynnts_ = 2,  ///< Number of nonterminal symbols.
-      yyfinal_ = 3 ///< Termination state number.
+      yylast_ = 16,     ///< Last index in yytable_.
+      yynnts_ = 4,  ///< Number of nonterminal symbols.
+      yyfinal_ = 7 ///< Termination state number.
     };
 
 
@@ -1294,10 +1262,10 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10
+       5,     6,     7,     8
     };
     // Last valid token kind.
-    const int code_max = 265;
+    const int code_max = 263;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1315,7 +1283,9 @@ switch (yykind)
   {
     switch (this->kind ())
     {
-      case symbol_kind::S_test: // test
+      case symbol_kind::S_root: // root
+      case symbol_kind::S_expression: // expression
+      case symbol_kind::S_factor: // factor
         value.copy< Node * > (YY_MOVE (that.value));
         break;
 
@@ -1325,8 +1295,6 @@ switch (yykind)
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LP: // LP
       case symbol_kind::S_RP: // RP
-      case symbol_kind::S_LBRACKET: // LBRACKET
-      case symbol_kind::S_RBRACKET: // RBRACKET
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -1361,7 +1329,9 @@ switch (yykind)
     super_type::move (s);
     switch (this->kind ())
     {
-      case symbol_kind::S_test: // test
+      case symbol_kind::S_root: // root
+      case symbol_kind::S_expression: // expression
+      case symbol_kind::S_factor: // factor
         value.move< Node * > (YY_MOVE (s.value));
         break;
 
@@ -1371,8 +1341,6 @@ switch (yykind)
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LP: // LP
       case symbol_kind::S_RP: // RP
-      case symbol_kind::S_LBRACKET: // LBRACKET
-      case symbol_kind::S_RBRACKET: // RBRACKET
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -1441,7 +1409,7 @@ switch (yykind)
 
 
 } // yy
-#line 1445 "parser.tab.hh"
+#line 1413 "parser.tab.hh"
 
 
 
