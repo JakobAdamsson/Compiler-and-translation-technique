@@ -158,4 +158,60 @@ Terminals are the basic building blocks of the language. They represent the indi
 Non-terminals, on the other hand, are used to group terminals together into larger, more complex structures. These structures are often called productions, and they represent the different parts of the source code, such as statements, expressions, and declarations. Examples of non-terminals in the C programming language include "statement", "expression", and "declaration". 
 
 
-41.38
+## Derivations
+- Used to show that a string is in the language of a given grammar
+- Begin with the start symbol and repeatedly rewrite any non-terminal with the body of one of the productions(Typ regler)
+
+Ex:
+```
+Productions:
+1. E -> id
+2. E -> (E)
+3. E -> E + E
+4. E -> E * E
+
+
+E -(4)> E*E -(1)> E * id -(3)> E + E * id -(1)> E + id * id -(1)> id + id * id
+```
+
+## Parse trees
+A parse tree is a graphical representation of a derivation constructed by connecting each symbol(terminal or nonterminal) to the one form which it is derived.
+ 
+
+
+## Lexical vs Syntatic analysis
+Lexical analysis identifies atomic lanugage constructs, uses regular expressions, uses operators such as concatenation and union and Lexical analysis is implemented sing DFA or NFA
+
+Syntatic analysis
+Defines the structure of the language and uses context free grammars. Uses operators like concationation, union and nesting and is implemented using push down automata
+ 
+
+A pushdown automata (PDA) is a type of automata that, in addition to a finite set of states and a finite set of input symbols, also has a stack, which is a data structure that can be thought of as a last-in, first-out (LIFO) buffer. The automaton can push symbols onto the stack as it reads the input, and it can also pop symbols off the stack in response to the input. PDAs are used in the theory of computation and in the design of compilers and other programming language processors. They are used to recognize context-free languages, which are a subset of all formal languages.
+
+## Problems
+**General case**
+```c
+A -> A$\alpha$ | $\beta$
+
+A -> $\beta$A'
+A' -> $\alpha$A'|$\epsilon$
+```
+#### Ambiguity
+Ambigous grammas can derive more than one different parse tree fromn the same string.  
+To solove ambiguty we need semantic information to resolve the ambiguity, basicall rewrite our productions
+
+#### Recursion
+A grammar is recursive if it has a production rule A that can deriva a sequence containing the same non terminal A
+
+**Left recursion**  
+A grammar is left recursive if it has a non terminal A such that there is a derivation A -> A$\alpha$ for some string $\alpha$. Topdown parsers cannot handle left recursion -> transformation is needed.
+
+
+
+## Left factorization
+Left factorization is a transformation technique suitable for predictive top down parsing. Very useful when the choice between two alternatives is not clear.
+
+The gerneral case:
+A -> $\alpha$$\beta_1$ | $\alpha$$\beta_2$
+A -> $\alpha$A'
+A' -> $\beta_1$ | $\beta_2$
