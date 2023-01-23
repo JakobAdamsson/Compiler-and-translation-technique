@@ -1,0 +1,37 @@
+digraph {
+n0 [label="MainClass:"];
+n1 [label="PUBLIC:public"];
+n0 -> n1
+n2 [label="CLASS:class"];
+n0 -> n2
+n3 [label="ID:hej"];
+n0 -> n3
+n4 [label="LBRACE:{"];
+n0 -> n4
+n5 [label="PUBLIC:public"];
+n0 -> n5
+n6 [label="STATIC:static"];
+n0 -> n6
+n7 [label="VOID:void"];
+n0 -> n7
+n8 [label="MAIN:main"];
+n0 -> n8
+n9 [label="LPAREN:("];
+n0 -> n9
+n10 [label="STRING:String"];
+n0 -> n10
+n11 [label="LBRACKET:["];
+n0 -> n11
+n12 [label="RBRACKET:]"];
+n0 -> n12
+n13 [label="ID:da"];
+n0 -> n13
+n14 [label="RPAREN:)"];
+n0 -> n14
+n15 [label="LBRACE:{"];
+n0 -> n15
+n16 [label="RBRACE:}"];
+n0 -> n16
+n17 [label="RBRACE:}"];
+n0 -> n17
+}
