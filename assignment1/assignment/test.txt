@@ -1,1 +1,1 @@
-public class hej { public static void main ( String[] da ) {}}
+int hej;

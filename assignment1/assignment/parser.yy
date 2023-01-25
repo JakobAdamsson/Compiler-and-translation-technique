@@ -19,36 +19,50 @@
 }
 
 // definition of set of tokens. All tokens are of type string
-%token <std::string> PUBLIC CLASS LBRACE RBRACE VOID MAIN LPAREN RPAREN STRING LBRACKET RBRACKET ID STATIC
+%token <std::string> INT LBRACKET RBRACKET BOOLEAN ID SEMICOLON
 %token END 0 "end of file"
 
 //defition of operator precedence. See https://www.gnu.org/software/bison/manual/bison.html#Precedence-Decl
-%left PLUSOP MINUSOP
-%left MULTOP
+
 
 // definition of the production rules. All production rules are of type Node
-%type <Node *> MainClass
+%type <Node *> Type VarDeclaration
 
 %%
-root: MainClass {root = $1;};
-MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LBRACE RBRACE RBRACE {
-                    $$ = new Node("MainClass", "", yylineno);
-                    $$->children.push_back(new Node("PUBLIC", $1, yylineno));
-                    $$->children.push_back(new Node("CLASS", $2, yylineno));
-                    $$->children.push_back(new Node("ID", $3, yylineno));
-                    $$->children.push_back(new Node("LBRACE", $4, yylineno));
-                    $$->children.push_back(new Node("PUBLIC", $5, yylineno));
-                    $$->children.push_back(new Node("STATIC", $6, yylineno));
-                    $$->children.push_back(new Node("VOID", $7, yylineno));
-                    $$->children.push_back(new Node("MAIN", $8, yylineno));
-                    $$->children.push_back(new Node("LPAREN", $9, yylineno));
-                    $$->children.push_back(new Node("STRING", $10, yylineno));
-                    $$->children.push_back(new Node("LBRACKET", $11, yylineno));
-                    $$->children.push_back(new Node("RBRACKET", $12, yylineno));
-                    $$->children.push_back(new Node("ID", $13, yylineno));
-                    $$->children.push_back(new Node("RPAREN", $14, yylineno));
-                    $$->children.push_back(new Node("LBRACE", $15, yylineno));
-                    $$->children.push_back(new Node("RBRACE", $16, yylineno));
-                    $$->children.push_back(new Node("RBRACE", $17, yylineno));
-                    root = $$;
-                    };
+root: VarDeclaration {root = $1;};
+Type: INT LBRACKET RBRACKET 
+      {
+        $$ = new Node("Type", "", yylineno);
+        $$->children.push_back(new Node("INTARR", $1, yylineno));
+        // $$->children.push_back(new Node("ID", $2, yylineno));
+        $$->children.push_back(new Node("LBRACKET", $2, yylineno));
+        $$->children.push_back(new Node("RBRACKET", $3, yylineno));
+
+      }
+                    
+                    
+      | INT 
+      {
+        $$ = new Node("Type", "", yylineno);
+        $$->children.push_back(new Node("INT", $1, yylineno));
+        // $$->children.push_back(new Node("ID", $2, yylineno));
+      }
+
+      | BOOLEAN{
+        $$ = new Node("Type", "", yylineno);
+        $$-> children.push_back(new Node("BOOLEAN", $1,yylineno));
+        // $$-> children.push_back(new Node("ID", $2,yylineno));
+
+      }
+      | ID
+      {
+        $$ = new Node("Type", "", yylineno);
+        $$-> children.push_back(new Node("ID", $1,yylineno));
+      };
+VarDeclaration: Type ID SEMICOLON
+      {
+        $$ = new Node("VarDeclaration", "", yylineno);
+        $$->children.push_back($1);
+        $$->children.push_back(new Node("ID", $2, yylineno));
+        $$->children.push_back(new Node("SEMICOLON", $3, yylineno));
+      };

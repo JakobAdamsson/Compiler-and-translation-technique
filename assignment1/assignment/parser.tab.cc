@@ -192,23 +192,17 @@ namespace yy {
   {
     switch (that.kind ())
     {
-      case symbol_kind::S_MainClass: // MainClass
+      case symbol_kind::S_Type: // Type
+      case symbol_kind::S_VarDeclaration: // VarDeclaration
         value.YY_MOVE_OR_COPY< Node * > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_PUBLIC: // PUBLIC
-      case symbol_kind::S_CLASS: // CLASS
-      case symbol_kind::S_LBRACE: // LBRACE
-      case symbol_kind::S_RBRACE: // RBRACE
-      case symbol_kind::S_VOID: // VOID
-      case symbol_kind::S_MAIN: // MAIN
-      case symbol_kind::S_LPAREN: // LPAREN
-      case symbol_kind::S_RPAREN: // RPAREN
-      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_BOOLEAN: // BOOLEAN
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_STATIC: // STATIC
+      case symbol_kind::S_SEMICOLON: // SEMICOLON
         value.YY_MOVE_OR_COPY< std::string > (YY_MOVE (that.value));
         break;
 
@@ -227,23 +221,17 @@ namespace yy {
   {
     switch (that.kind ())
     {
-      case symbol_kind::S_MainClass: // MainClass
+      case symbol_kind::S_Type: // Type
+      case symbol_kind::S_VarDeclaration: // VarDeclaration
         value.move< Node * > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_PUBLIC: // PUBLIC
-      case symbol_kind::S_CLASS: // CLASS
-      case symbol_kind::S_LBRACE: // LBRACE
-      case symbol_kind::S_RBRACE: // RBRACE
-      case symbol_kind::S_VOID: // VOID
-      case symbol_kind::S_MAIN: // MAIN
-      case symbol_kind::S_LPAREN: // LPAREN
-      case symbol_kind::S_RPAREN: // RPAREN
-      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_BOOLEAN: // BOOLEAN
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_STATIC: // STATIC
+      case symbol_kind::S_SEMICOLON: // SEMICOLON
         value.move< std::string > (YY_MOVE (that.value));
         break;
 
@@ -262,23 +250,17 @@ namespace yy {
     state = that.state;
     switch (that.kind ())
     {
-      case symbol_kind::S_MainClass: // MainClass
+      case symbol_kind::S_Type: // Type
+      case symbol_kind::S_VarDeclaration: // VarDeclaration
         value.copy< Node * > (that.value);
         break;
 
-      case symbol_kind::S_PUBLIC: // PUBLIC
-      case symbol_kind::S_CLASS: // CLASS
-      case symbol_kind::S_LBRACE: // LBRACE
-      case symbol_kind::S_RBRACE: // RBRACE
-      case symbol_kind::S_VOID: // VOID
-      case symbol_kind::S_MAIN: // MAIN
-      case symbol_kind::S_LPAREN: // LPAREN
-      case symbol_kind::S_RPAREN: // RPAREN
-      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_BOOLEAN: // BOOLEAN
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_STATIC: // STATIC
+      case symbol_kind::S_SEMICOLON: // SEMICOLON
         value.copy< std::string > (that.value);
         break;
 
@@ -295,23 +277,17 @@ namespace yy {
     state = that.state;
     switch (that.kind ())
     {
-      case symbol_kind::S_MainClass: // MainClass
+      case symbol_kind::S_Type: // Type
+      case symbol_kind::S_VarDeclaration: // VarDeclaration
         value.move< Node * > (that.value);
         break;
 
-      case symbol_kind::S_PUBLIC: // PUBLIC
-      case symbol_kind::S_CLASS: // CLASS
-      case symbol_kind::S_LBRACE: // LBRACE
-      case symbol_kind::S_RBRACE: // RBRACE
-      case symbol_kind::S_VOID: // VOID
-      case symbol_kind::S_MAIN: // MAIN
-      case symbol_kind::S_LPAREN: // LPAREN
-      case symbol_kind::S_RPAREN: // RPAREN
-      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_BOOLEAN: // BOOLEAN
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_STATIC: // STATIC
+      case symbol_kind::S_SEMICOLON: // SEMICOLON
         value.move< std::string > (that.value);
         break;
 
@@ -569,23 +545,17 @@ namespace yy {
          when using variants.  */
       switch (yyr1_[yyn])
     {
-      case symbol_kind::S_MainClass: // MainClass
+      case symbol_kind::S_Type: // Type
+      case symbol_kind::S_VarDeclaration: // VarDeclaration
         yylhs.value.emplace< Node * > ();
         break;
 
-      case symbol_kind::S_PUBLIC: // PUBLIC
-      case symbol_kind::S_CLASS: // CLASS
-      case symbol_kind::S_LBRACE: // LBRACE
-      case symbol_kind::S_RBRACE: // RBRACE
-      case symbol_kind::S_VOID: // VOID
-      case symbol_kind::S_MAIN: // MAIN
-      case symbol_kind::S_LPAREN: // LPAREN
-      case symbol_kind::S_RPAREN: // RPAREN
-      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_BOOLEAN: // BOOLEAN
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_STATIC: // STATIC
+      case symbol_kind::S_SEMICOLON: // SEMICOLON
         yylhs.value.emplace< std::string > ();
         break;
 
@@ -603,40 +573,68 @@ namespace yy {
         {
           switch (yyn)
             {
-  case 2: // root: MainClass
-#line 33 "parser.yy"
-                {root = yystack_[0].value.as < Node * > ();}
-#line 610 "parser.tab.cc"
+  case 2: // root: VarDeclaration
+#line 32 "parser.yy"
+                     {root = yystack_[0].value.as < Node * > ();}
+#line 580 "parser.tab.cc"
     break;
 
-  case 3: // MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LBRACE RBRACE RBRACE
+  case 3: // Type: INT LBRACKET RBRACKET
 #line 34 "parser.yy"
-                                                                                                                         {
-                    yylhs.value.as < Node * > () = new Node("MainClass", "", yylineno);
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("PUBLIC", yystack_[16].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("CLASS", yystack_[15].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("ID", yystack_[14].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("LBRACE", yystack_[13].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("PUBLIC", yystack_[12].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("STATIC", yystack_[11].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("VOID", yystack_[10].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("MAIN", yystack_[9].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("LPAREN", yystack_[8].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("STRING", yystack_[7].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("LBRACKET", yystack_[6].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("RBRACKET", yystack_[5].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("ID", yystack_[4].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("RPAREN", yystack_[3].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("LBRACE", yystack_[2].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("RBRACE", yystack_[1].value.as < std::string > (), yylineno));
-                    yylhs.value.as < Node * > ()->children.push_back(new Node("RBRACE", yystack_[0].value.as < std::string > (), yylineno));
-                    root = yylhs.value.as < Node * > ();
-                    }
-#line 636 "parser.tab.cc"
+      {
+        yylhs.value.as < Node * > () = new Node("Type", "", yylineno);
+        yylhs.value.as < Node * > ()->children.push_back(new Node("INTARR", yystack_[2].value.as < std::string > (), yylineno));
+        // $$->children.push_back(new Node("ID", $2, yylineno));
+        yylhs.value.as < Node * > ()->children.push_back(new Node("LBRACKET", yystack_[1].value.as < std::string > (), yylineno));
+        yylhs.value.as < Node * > ()->children.push_back(new Node("RBRACKET", yystack_[0].value.as < std::string > (), yylineno));
+
+      }
+#line 593 "parser.tab.cc"
+    break;
+
+  case 4: // Type: INT
+#line 45 "parser.yy"
+      {
+        yylhs.value.as < Node * > () = new Node("Type", "", yylineno);
+        yylhs.value.as < Node * > ()->children.push_back(new Node("INT", yystack_[0].value.as < std::string > (), yylineno));
+        // $$->children.push_back(new Node("ID", $2, yylineno));
+      }
+#line 603 "parser.tab.cc"
+    break;
+
+  case 5: // Type: BOOLEAN
+#line 51 "parser.yy"
+               {
+        yylhs.value.as < Node * > () = new Node("Type", "", yylineno);
+        yylhs.value.as < Node * > ()-> children.push_back(new Node("BOOLEAN", yystack_[0].value.as < std::string > (),yylineno));
+        // $$-> children.push_back(new Node("ID", $2,yylineno));
+
+      }
+#line 614 "parser.tab.cc"
+    break;
+
+  case 6: // Type: ID
+#line 58 "parser.yy"
+      {
+        yylhs.value.as < Node * > () = new Node("Type", "", yylineno);
+        yylhs.value.as < Node * > ()-> children.push_back(new Node("ID", yystack_[0].value.as < std::string > (),yylineno));
+      }
+#line 623 "parser.tab.cc"
+    break;
+
+  case 7: // VarDeclaration: Type ID SEMICOLON
+#line 63 "parser.yy"
+      {
+        yylhs.value.as < Node * > () = new Node("VarDeclaration", "", yylineno);
+        yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
+        yylhs.value.as < Node * > ()->children.push_back(new Node("ID", yystack_[1].value.as < std::string > (), yylineno));
+        yylhs.value.as < Node * > ()->children.push_back(new Node("SEMICOLON", yystack_[0].value.as < std::string > (), yylineno));
+      }
+#line 634 "parser.tab.cc"
     break;
 
 
-#line 640 "parser.tab.cc"
+#line 638 "parser.tab.cc"
 
             default:
               break;
@@ -984,72 +982,67 @@ namespace yy {
   }
 
 
-  const signed char parser::yypact_ninf_ = -12;
+  const signed char parser::yypact_ninf_ = -4;
 
   const signed char parser::yytable_ninf_ = -1;
 
   const signed char
   parser::yypact_[] =
   {
-      -3,    -2,     1,   -12,   -11,   -12,    -1,     2,    -9,     0,
-       3,     4,     5,    -4,     6,    -5,     7,     9,    12,    14,
-     -12
+      -3,    -2,    -4,    -4,     1,    -1,    -4,     0,    -4,     2,
+      -4,    -4
   };
 
   const signed char
   parser::yydefact_[] =
   {
-       0,     0,     0,     2,     0,     1,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       3
+       0,     4,     5,     6,     0,     0,     2,     0,     1,     0,
+       3,     7
   };
 
   const signed char
   parser::yypgoto_[] =
   {
-     -12,   -12,   -12
+      -4,    -4,    -4,    -4
   };
 
   const signed char
   parser::yydefgoto_[] =
   {
-       0,     2,     3
+       0,     4,     5,     6
   };
 
   const signed char
   parser::yytable_[] =
   {
-       1,     5,     4,     6,     7,     8,     9,    10,    14,    16,
-       0,    11,     0,    12,    18,     0,    13,    17,    19,    15,
-      20
+       1,     8,     7,     2,     3,    10,     9,     0,     0,     0,
+      11
   };
 
   const signed char
   parser::yycheck_[] =
   {
-       3,     0,     4,    14,     5,     3,    15,     7,    12,    14,
-      -1,     8,    -1,     9,     5,    -1,    11,    10,     6,    13,
-       6
+       3,     0,     4,     6,     7,     5,     7,    -1,    -1,    -1,
+       8
   };
 
   const signed char
   parser::yystos_[] =
   {
-       0,     3,    20,    21,     4,     0,    14,     5,     3,    15,
-       7,     8,     9,    11,    12,    13,    14,    10,     5,     6,
-       6
+       0,     3,     6,     7,    10,    11,    12,     4,     0,     7,
+       5,     8
   };
 
   const signed char
   parser::yyr1_[] =
   {
-       0,    19,    20,    21
+       0,     9,    10,    11,    11,    11,    11,    12
   };
 
   const signed char
   parser::yyr2_[] =
   {
-       0,     2,     1,    17
+       0,     2,     1,     3,     1,     1,     1,     3
   };
 
 
@@ -1059,10 +1052,9 @@ namespace yy {
   const char*
   const parser::yytname_[] =
   {
-  "\"end of file\"", "error", "\"invalid token\"", "PUBLIC", "CLASS",
-  "LBRACE", "RBRACE", "VOID", "MAIN", "LPAREN", "RPAREN", "STRING",
-  "LBRACKET", "RBRACKET", "ID", "STATIC", "PLUSOP", "MINUSOP", "MULTOP",
-  "$accept", "root", "MainClass", YY_NULLPTR
+  "\"end of file\"", "error", "\"invalid token\"", "INT", "LBRACKET",
+  "RBRACKET", "BOOLEAN", "ID", "SEMICOLON", "$accept", "root", "Type",
+  "VarDeclaration", YY_NULLPTR
   };
 #endif
 
@@ -1071,7 +1063,7 @@ namespace yy {
   const signed char
   parser::yyrline_[] =
   {
-       0,    33,    33,    34
+       0,    32,    32,    33,    44,    51,    57,    62
   };
 
   void
@@ -1103,5 +1095,5 @@ namespace yy {
 
 
 } // yy
-#line 1107 "parser.tab.cc"
+#line 1099 "parser.tab.cc"
 

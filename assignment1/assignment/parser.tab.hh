@@ -381,22 +381,16 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
-      // MainClass
+      // Type
+      // VarDeclaration
       char dummy1[sizeof (Node *)];
 
-      // PUBLIC
-      // CLASS
-      // LBRACE
-      // RBRACE
-      // VOID
-      // MAIN
-      // LPAREN
-      // RPAREN
-      // STRING
+      // INT
       // LBRACKET
       // RBRACKET
+      // BOOLEAN
       // ID
-      // STATIC
+      // SEMICOLON
       char dummy2[sizeof (std::string)];
     };
 
@@ -441,22 +435,12 @@ namespace yy {
     END = 0,                       // "end of file"
     YYerror = 256,                 // error
     YYUNDEF = 257,                 // "invalid token"
-    PUBLIC = 258,                  // PUBLIC
-    CLASS = 259,                   // CLASS
-    LBRACE = 260,                  // LBRACE
-    RBRACE = 261,                  // RBRACE
-    VOID = 262,                    // VOID
-    MAIN = 263,                    // MAIN
-    LPAREN = 264,                  // LPAREN
-    RPAREN = 265,                  // RPAREN
-    STRING = 266,                  // STRING
-    LBRACKET = 267,                // LBRACKET
-    RBRACKET = 268,                // RBRACKET
-    ID = 269,                      // ID
-    STATIC = 270,                  // STATIC
-    PLUSOP = 271,                  // PLUSOP
-    MINUSOP = 272,                 // MINUSOP
-    MULTOP = 273                   // MULTOP
+    INT = 258,                     // INT
+    LBRACKET = 259,                // LBRACKET
+    RBRACKET = 260,                // RBRACKET
+    BOOLEAN = 261,                 // BOOLEAN
+    ID = 262,                      // ID
+    SEMICOLON = 263                // SEMICOLON
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -473,30 +457,21 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 19, ///< Number of tokens.
+        YYNTOKENS = 9, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
         S_YYUNDEF = 2,                           // "invalid token"
-        S_PUBLIC = 3,                            // PUBLIC
-        S_CLASS = 4,                             // CLASS
-        S_LBRACE = 5,                            // LBRACE
-        S_RBRACE = 6,                            // RBRACE
-        S_VOID = 7,                              // VOID
-        S_MAIN = 8,                              // MAIN
-        S_LPAREN = 9,                            // LPAREN
-        S_RPAREN = 10,                           // RPAREN
-        S_STRING = 11,                           // STRING
-        S_LBRACKET = 12,                         // LBRACKET
-        S_RBRACKET = 13,                         // RBRACKET
-        S_ID = 14,                               // ID
-        S_STATIC = 15,                           // STATIC
-        S_PLUSOP = 16,                           // PLUSOP
-        S_MINUSOP = 17,                          // MINUSOP
-        S_MULTOP = 18,                           // MULTOP
-        S_YYACCEPT = 19,                         // $accept
-        S_root = 20,                             // root
-        S_MainClass = 21                         // MainClass
+        S_INT = 3,                               // INT
+        S_LBRACKET = 4,                          // LBRACKET
+        S_RBRACKET = 5,                          // RBRACKET
+        S_BOOLEAN = 6,                           // BOOLEAN
+        S_ID = 7,                                // ID
+        S_SEMICOLON = 8,                         // SEMICOLON
+        S_YYACCEPT = 9,                          // $accept
+        S_root = 10,                             // root
+        S_Type = 11,                             // Type
+        S_VarDeclaration = 12                    // VarDeclaration
       };
     };
 
@@ -531,23 +506,17 @@ namespace yy {
       {
         switch (this->kind ())
     {
-      case symbol_kind::S_MainClass: // MainClass
+      case symbol_kind::S_Type: // Type
+      case symbol_kind::S_VarDeclaration: // VarDeclaration
         value.move< Node * > (std::move (that.value));
         break;
 
-      case symbol_kind::S_PUBLIC: // PUBLIC
-      case symbol_kind::S_CLASS: // CLASS
-      case symbol_kind::S_LBRACE: // LBRACE
-      case symbol_kind::S_RBRACE: // RBRACE
-      case symbol_kind::S_VOID: // VOID
-      case symbol_kind::S_MAIN: // MAIN
-      case symbol_kind::S_LPAREN: // LPAREN
-      case symbol_kind::S_RPAREN: // RPAREN
-      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_BOOLEAN: // BOOLEAN
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_STATIC: // STATIC
+      case symbol_kind::S_SEMICOLON: // SEMICOLON
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -620,23 +589,17 @@ namespace yy {
         // Value type destructor.
 switch (yykind)
     {
-      case symbol_kind::S_MainClass: // MainClass
+      case symbol_kind::S_Type: // Type
+      case symbol_kind::S_VarDeclaration: // VarDeclaration
         value.template destroy< Node * > ();
         break;
 
-      case symbol_kind::S_PUBLIC: // PUBLIC
-      case symbol_kind::S_CLASS: // CLASS
-      case symbol_kind::S_LBRACE: // LBRACE
-      case symbol_kind::S_RBRACE: // RBRACE
-      case symbol_kind::S_VOID: // VOID
-      case symbol_kind::S_MAIN: // MAIN
-      case symbol_kind::S_LPAREN: // LPAREN
-      case symbol_kind::S_RPAREN: // RPAREN
-      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_BOOLEAN: // BOOLEAN
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_STATIC: // STATIC
+      case symbol_kind::S_SEMICOLON: // SEMICOLON
         value.template destroy< std::string > ();
         break;
 
@@ -836,136 +799,16 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_PUBLIC (std::string v)
+      make_INT (std::string v)
       {
-        return symbol_type (token::PUBLIC, std::move (v));
+        return symbol_type (token::INT, std::move (v));
       }
 #else
       static
       symbol_type
-      make_PUBLIC (const std::string& v)
+      make_INT (const std::string& v)
       {
-        return symbol_type (token::PUBLIC, v);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_CLASS (std::string v)
-      {
-        return symbol_type (token::CLASS, std::move (v));
-      }
-#else
-      static
-      symbol_type
-      make_CLASS (const std::string& v)
-      {
-        return symbol_type (token::CLASS, v);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_LBRACE (std::string v)
-      {
-        return symbol_type (token::LBRACE, std::move (v));
-      }
-#else
-      static
-      symbol_type
-      make_LBRACE (const std::string& v)
-      {
-        return symbol_type (token::LBRACE, v);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_RBRACE (std::string v)
-      {
-        return symbol_type (token::RBRACE, std::move (v));
-      }
-#else
-      static
-      symbol_type
-      make_RBRACE (const std::string& v)
-      {
-        return symbol_type (token::RBRACE, v);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_VOID (std::string v)
-      {
-        return symbol_type (token::VOID, std::move (v));
-      }
-#else
-      static
-      symbol_type
-      make_VOID (const std::string& v)
-      {
-        return symbol_type (token::VOID, v);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_MAIN (std::string v)
-      {
-        return symbol_type (token::MAIN, std::move (v));
-      }
-#else
-      static
-      symbol_type
-      make_MAIN (const std::string& v)
-      {
-        return symbol_type (token::MAIN, v);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_LPAREN (std::string v)
-      {
-        return symbol_type (token::LPAREN, std::move (v));
-      }
-#else
-      static
-      symbol_type
-      make_LPAREN (const std::string& v)
-      {
-        return symbol_type (token::LPAREN, v);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_RPAREN (std::string v)
-      {
-        return symbol_type (token::RPAREN, std::move (v));
-      }
-#else
-      static
-      symbol_type
-      make_RPAREN (const std::string& v)
-      {
-        return symbol_type (token::RPAREN, v);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_STRING (std::string v)
-      {
-        return symbol_type (token::STRING, std::move (v));
-      }
-#else
-      static
-      symbol_type
-      make_STRING (const std::string& v)
-      {
-        return symbol_type (token::STRING, v);
+        return symbol_type (token::INT, v);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1001,6 +844,21 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_BOOLEAN (std::string v)
+      {
+        return symbol_type (token::BOOLEAN, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_BOOLEAN (const std::string& v)
+      {
+        return symbol_type (token::BOOLEAN, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_ID (std::string v)
       {
         return symbol_type (token::ID, std::move (v));
@@ -1016,61 +874,16 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_STATIC (std::string v)
+      make_SEMICOLON (std::string v)
       {
-        return symbol_type (token::STATIC, std::move (v));
+        return symbol_type (token::SEMICOLON, std::move (v));
       }
 #else
       static
       symbol_type
-      make_STATIC (const std::string& v)
+      make_SEMICOLON (const std::string& v)
       {
-        return symbol_type (token::STATIC, v);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_PLUSOP ()
-      {
-        return symbol_type (token::PLUSOP);
-      }
-#else
-      static
-      symbol_type
-      make_PLUSOP ()
-      {
-        return symbol_type (token::PLUSOP);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_MINUSOP ()
-      {
-        return symbol_type (token::MINUSOP);
-      }
-#else
-      static
-      symbol_type
-      make_MINUSOP ()
-      {
-        return symbol_type (token::MINUSOP);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_MULTOP ()
-      {
-        return symbol_type (token::MULTOP);
-      }
-#else
-      static
-      symbol_type
-      make_MULTOP ()
-      {
-        return symbol_type (token::MULTOP);
+        return symbol_type (token::SEMICOLON, v);
       }
 #endif
 
@@ -1401,9 +1214,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 20,     ///< Last index in yytable_.
-      yynnts_ = 3,  ///< Number of nonterminal symbols.
-      yyfinal_ = 5 ///< Termination state number.
+      yylast_ = 10,     ///< Last index in yytable_.
+      yynnts_ = 4,  ///< Number of nonterminal symbols.
+      yyfinal_ = 8 ///< Termination state number.
     };
 
 
@@ -1446,11 +1259,10 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18
+       5,     6,     7,     8
     };
     // Last valid token kind.
-    const int code_max = 273;
+    const int code_max = 263;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1468,23 +1280,17 @@ switch (yykind)
   {
     switch (this->kind ())
     {
-      case symbol_kind::S_MainClass: // MainClass
+      case symbol_kind::S_Type: // Type
+      case symbol_kind::S_VarDeclaration: // VarDeclaration
         value.copy< Node * > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_PUBLIC: // PUBLIC
-      case symbol_kind::S_CLASS: // CLASS
-      case symbol_kind::S_LBRACE: // LBRACE
-      case symbol_kind::S_RBRACE: // RBRACE
-      case symbol_kind::S_VOID: // VOID
-      case symbol_kind::S_MAIN: // MAIN
-      case symbol_kind::S_LPAREN: // LPAREN
-      case symbol_kind::S_RPAREN: // RPAREN
-      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_BOOLEAN: // BOOLEAN
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_STATIC: // STATIC
+      case symbol_kind::S_SEMICOLON: // SEMICOLON
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -1519,23 +1325,17 @@ switch (yykind)
     super_type::move (s);
     switch (this->kind ())
     {
-      case symbol_kind::S_MainClass: // MainClass
+      case symbol_kind::S_Type: // Type
+      case symbol_kind::S_VarDeclaration: // VarDeclaration
         value.move< Node * > (YY_MOVE (s.value));
         break;
 
-      case symbol_kind::S_PUBLIC: // PUBLIC
-      case symbol_kind::S_CLASS: // CLASS
-      case symbol_kind::S_LBRACE: // LBRACE
-      case symbol_kind::S_RBRACE: // RBRACE
-      case symbol_kind::S_VOID: // VOID
-      case symbol_kind::S_MAIN: // MAIN
-      case symbol_kind::S_LPAREN: // LPAREN
-      case symbol_kind::S_RPAREN: // RPAREN
-      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_BOOLEAN: // BOOLEAN
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_STATIC: // STATIC
+      case symbol_kind::S_SEMICOLON: // SEMICOLON
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -1604,7 +1404,7 @@ switch (yykind)
 
 
 } // yy
-#line 1608 "parser.tab.hh"
+#line 1408 "parser.tab.hh"
 
 
 
