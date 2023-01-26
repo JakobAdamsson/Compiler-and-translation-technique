@@ -1,11 +1,53 @@
 digraph {
-n0 [label="VarDeclaration:"];
-n1 [label="Type:"];
-n2 [label="INT:int"];
+n0 [label="Expression:"];
+n1 [label="Expression:"];
+n2 [label="Expression:"];
+n3 [label="ID:abc"];
+n2 -> n3
 n1 -> n2
 n0 -> n1
-n3 [label="ID:hej"];
-n0 -> n3
-n4 [label="SEMICOLON:;"];
+n4 [label="DOT:."];
 n0 -> n4
+n5 [label="ID:ident"];
+n0 -> n5
+n6 [label="LPAREN:("];
+n0 -> n6
+n7 [label="lrecexp:"];
+n8 [label="lrecexp:"];
+n9 [label="lrecexp:"];
+n10 [label="Expression:"];
+n11 [label="Expression:"];
+n12 [label="ID:as"];
+n11 -> n12
+n10 -> n11
+n9 -> n10
+n13 [label="COMMA:,"];
+n9 -> n13
+n14 [label="Expression:"];
+n15 [label="Expression:"];
+n16 [label="ID:asd"];
+n15 -> n16
+n14 -> n15
+n9 -> n14
+n8 -> n9
+n17 [label="COMMA:,"];
+n8 -> n17
+n18 [label="Expression:"];
+n19 [label="Expression:"];
+n20 [label="ID:cs"];
+n19 -> n20
+n18 -> n19
+n8 -> n18
+n7 -> n8
+n21 [label="COMMA:,"];
+n7 -> n21
+n22 [label="Expression:"];
+n23 [label="Expression:"];
+n24 [label="ID:dc"];
+n23 -> n24
+n22 -> n23
+n7 -> n22
+n0 -> n7
+n25 [label="RPAREN:)"];
+n0 -> n25
 }

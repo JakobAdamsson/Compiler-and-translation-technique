@@ -1,1 +1,1 @@
-int hej;
+abc.ident(as,asd,cs,dc)
