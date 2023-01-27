@@ -1,19 +1,11 @@
 digraph {
 n0 [label="Program:"];
-n1 [label="PRINTSTATEMENT:"];
-n2 [label="PRINT:System.out.println"];
+n1 [label="LBRACE STATEMENT RBRACE:"];
+n2 [label="LBRACE:{"];
 n1 -> n2
-n3 [label="Expression:("];
+n3 [label="EMPTY:ɛ"];
 n1 -> n3
-n4 [label="ID:A"];
-n5 [label="LBRACKET:["];
-n4 -> n5
-n6 [label="NUM:5"];
-n4 -> n6
-n7 [label="RBRACKET:]"];
-n4 -> n7
+n4 [label="RBRACE:}"];
 n1 -> n4
-n8 [label="SEMICOLON:)"];
-n1 -> n8
 n0 -> n1
 }

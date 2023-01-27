@@ -388,6 +388,7 @@ namespace yy {
       // Term
       // Statement
       // lrecexp
+      // lrecstatement
       char dummy1[sizeof (Node *)];
 
       // INT
@@ -565,7 +566,8 @@ namespace yy {
         S_Expression = 42,                       // Expression
         S_Term = 43,                             // Term
         S_Statement = 44,                        // Statement
-        S_lrecexp = 45                           // lrecexp
+        S_lrecexp = 45,                          // lrecexp
+        S_lrecstatement = 46                     // lrecstatement
       };
     };
 
@@ -607,6 +609,7 @@ namespace yy {
       case symbol_kind::S_Term: // Term
       case symbol_kind::S_Statement: // Statement
       case symbol_kind::S_lrecexp: // lrecexp
+      case symbol_kind::S_lrecstatement: // lrecstatement
         value.move< Node * > (std::move (that.value));
         break;
 
@@ -723,6 +726,7 @@ switch (yykind)
       case symbol_kind::S_Term: // Term
       case symbol_kind::S_Statement: // Statement
       case symbol_kind::S_lrecexp: // lrecexp
+      case symbol_kind::S_lrecstatement: // lrecstatement
         value.template destroy< Node * > ();
         break;
 
@@ -1794,9 +1798,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 200,     ///< Last index in yytable_.
-      yynnts_ = 9,  ///< Number of nonterminal symbols.
-      yyfinal_ = 28 ///< Termination state number.
+      yylast_ = 241,     ///< Last index in yytable_.
+      yynnts_ = 10,  ///< Number of nonterminal symbols.
+      yyfinal_ = 34 ///< Termination state number.
     };
 
 
@@ -1870,6 +1874,7 @@ switch (yykind)
       case symbol_kind::S_Term: // Term
       case symbol_kind::S_Statement: // Statement
       case symbol_kind::S_lrecexp: // lrecexp
+      case symbol_kind::S_lrecstatement: // lrecstatement
         value.copy< Node * > (YY_MOVE (that.value));
         break;
 
@@ -1948,6 +1953,7 @@ switch (yykind)
       case symbol_kind::S_Term: // Term
       case symbol_kind::S_Statement: // Statement
       case symbol_kind::S_lrecexp: // lrecexp
+      case symbol_kind::S_lrecstatement: // lrecstatement
         value.move< Node * > (YY_MOVE (s.value));
         break;
 
@@ -2053,7 +2059,7 @@ switch (yykind)
 
 
 } // yy
-#line 2057 "parser.tab.hh"
+#line 2063 "parser.tab.hh"
 
 
 

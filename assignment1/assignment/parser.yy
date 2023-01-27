@@ -29,35 +29,35 @@
 
 
 // definition of the production rules. All production rules are of type Node
-%type <Node *> Type VarDeclaration Term Expression lrecexp Statement Program
+%type <Node *> Type VarDeclaration Term Expression lrecexp Statement Program lrecstatement
 
 %%
 root: Program {root = $1;};
 
 
 Program: Type
-        {
-          $$ = new Node("Program", "", yylineno);
-          $$->children.push_back($1);
-        }
-        
-        | VarDeclaration
-        {
-          $$ = new Node("Program", "", yylineno);
-          $$->children.push_back($1);  
-        } 
-        
-        | Expression
-        {
-          $$ = new Node("Program", "", yylineno);
-          $$->children.push_back($1);
-        }
-        
-        | Statement
-        {          
-          $$ = new Node("Program", "", yylineno);
-          $$->children.push_back($1);
-        };
+            {
+              $$ = new Node("Program", "", yylineno);
+              $$->children.push_back($1);
+            }
+            
+            | VarDeclaration
+            {
+              $$ = new Node("Program", "", yylineno);
+              $$->children.push_back($1);  
+            } 
+            
+            | Expression
+            {
+              $$ = new Node("Program", "", yylineno);
+              $$->children.push_back($1);
+            }
+            
+            | Statement
+            {          
+              $$ = new Node("Program", "", yylineno);
+              $$->children.push_back($1);
+            };
 
 Type: INT LBRACKET RBRACKET 
             {
@@ -66,23 +66,18 @@ Type: INT LBRACKET RBRACKET
               $$->children.push_back(new Node("LBRACKET", $2, yylineno));
               $$->children.push_back(new Node("RBRACKET", $3, yylineno));
             }
-
-
             | INT 
             {
-              $$ = new Node("Type", "", yylineno);
-              $$->children.push_back(new Node("INT", $1, yylineno));
+              $$ = new Node("INT", $1, yylineno);
             }
 
             | BOOLEAN{
-              $$ = new Node("Type", "", yylineno);
-              $$-> children.push_back(new Node("BOOLEAN", $1,yylineno));
+              $$ = new Node("BOOLEAN", $1, yylineno);
 
             }
             | ID
             {
-              $$ = new Node("Type", "", yylineno);
-              $$-> children.push_back(new Node("ID", $1,yylineno));
+              $$ = new Node("IDENTIFIER", $1, yylineno);
             };
 VarDeclaration: Type ID SEMICOLON
             {
@@ -96,30 +91,29 @@ VarDeclaration: Type ID SEMICOLON
 Expression: Term 
             {
               $$ = $1;
-              //$$->children.push_back($1);
             }
 
             | Expression AND Expression
             {
-              $$ = new Node("AND", "", yylineno);
+              $$ = new Node("AND", "&&", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression OR Expression
             {
-              $$ = new Node("OR", "", yylineno);
+              $$ = new Node("OR", "||", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression LT Expression
             {
-              $$ = new Node("LT", "", yylineno);
+              $$ = new Node("LT", "<", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression GT Expression
             {
-              $$ = new Node("GT", "", yylineno);
+              $$ = new Node("GT", ">", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
@@ -256,11 +250,27 @@ Statement: ID LBRACKET Expression RBRACKET EQUALSIGN Expression SEMICOLON
             }
             | PRINT LPAREN Expression RPAREN SEMICOLON
             {
-              $$ = new Node("PRINTSTATEMENT", "", yylineno);
-              $$->children.push_back(new Node("PRINT", $1, yylineno));
-              $$->children.push_back(new Node("Expression", $2, yylineno));
+              $$ = new Node("PRINTSTATEMENT", $1, yylineno);
+              $$->children.push_back(new Node("LPAREN", $2, yylineno));
               $$->children.push_back($3);
-              $$->children.push_back(new Node("SEMICOLON", $4, yylineno));
+              $$->children.push_back(new Node("RPAREN", $4, yylineno));
+              $$->children.push_back(new Node("SEMICOLON", $5, yylineno));
+
+            }
+            | WHILE LPAREN Expression RPAREN Statement
+            {
+              $$ = new Node("WHILE STATEMENT", $1, yylineno);
+              $$->children.push_back(new Node("LPAREN", $2, yylineno));
+              $$->children.push_back($3);
+              $$->children.push_back(new Node("RPAREN", $4, yylineno));
+              $$->children.push_back($5);
+            }
+            | LBRACE lrecstatement RBRACE
+            {
+              $$ = new Node("LBRACE STATEMENT RBRACE", "", yylineno);
+              $$->children.push_back(new Node("LBRACE", $1, yylineno));
+              $$->children.push_back($2);
+              $$->children.push_back(new Node("RBRACE", $3, yylineno));
             };
 lrecexp: %empty
             {
@@ -272,8 +282,23 @@ lrecexp: %empty
             }
             | lrecexp COMMA Expression   
             {
-              $$ = new Node("lrecexp", "", yylineno);
+              $$ = new Node("lrecexp", "ɛ", yylineno);
               $$->children.push_back($1);
               $$->children.push_back(new Node("COMMA", $2, yylineno));
               $$->children.push_back($3);
             };
+
+lrecstatement: %empty
+              {
+                $$ = new Node("EMPTY", "ɛ", yylineno);
+              }
+              | Statement
+              {
+                $$ = $1;
+              }
+              | lrecstatement Statement
+              {
+                $$ = new Node("lrecstatement", "", yylineno);
+                $$->children.push_back($1);
+                $$->children.push_back($2);
+              };
