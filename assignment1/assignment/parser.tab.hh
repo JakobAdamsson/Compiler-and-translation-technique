@@ -381,8 +381,12 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
+      // Program
+      // Type
+      // VarDeclaration
       // Expression
       // Term
+      // Statement
       // lrecexp
       char dummy1[sizeof (Node *)];
 
@@ -419,6 +423,7 @@ namespace yy {
       // WHILE
       // PRINT
       // INTARR
+      // EQUALSIGN
       char dummy2[sizeof (std::string)];
     };
 
@@ -495,7 +500,8 @@ namespace yy {
     ELSE = 287,                    // ELSE
     WHILE = 288,                   // WHILE
     PRINT = 289,                   // PRINT
-    INTARR = 290                   // INTARR
+    INTARR = 290,                  // INTARR
+    EQUALSIGN = 291                // EQUALSIGN
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -512,7 +518,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 36, ///< Number of tokens.
+        YYNTOKENS = 37, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -550,11 +556,16 @@ namespace yy {
         S_WHILE = 33,                            // WHILE
         S_PRINT = 34,                            // PRINT
         S_INTARR = 35,                           // INTARR
-        S_YYACCEPT = 36,                         // $accept
-        S_root = 37,                             // root
-        S_Expression = 38,                       // Expression
-        S_Term = 39,                             // Term
-        S_lrecexp = 40                           // lrecexp
+        S_EQUALSIGN = 36,                        // EQUALSIGN
+        S_YYACCEPT = 37,                         // $accept
+        S_root = 38,                             // root
+        S_Program = 39,                          // Program
+        S_Type = 40,                             // Type
+        S_VarDeclaration = 41,                   // VarDeclaration
+        S_Expression = 42,                       // Expression
+        S_Term = 43,                             // Term
+        S_Statement = 44,                        // Statement
+        S_lrecexp = 45                           // lrecexp
       };
     };
 
@@ -589,8 +600,12 @@ namespace yy {
       {
         switch (this->kind ())
     {
+      case symbol_kind::S_Program: // Program
+      case symbol_kind::S_Type: // Type
+      case symbol_kind::S_VarDeclaration: // VarDeclaration
       case symbol_kind::S_Expression: // Expression
       case symbol_kind::S_Term: // Term
+      case symbol_kind::S_Statement: // Statement
       case symbol_kind::S_lrecexp: // lrecexp
         value.move< Node * > (std::move (that.value));
         break;
@@ -628,6 +643,7 @@ namespace yy {
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INTARR: // INTARR
+      case symbol_kind::S_EQUALSIGN: // EQUALSIGN
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -700,8 +716,12 @@ namespace yy {
         // Value type destructor.
 switch (yykind)
     {
+      case symbol_kind::S_Program: // Program
+      case symbol_kind::S_Type: // Type
+      case symbol_kind::S_VarDeclaration: // VarDeclaration
       case symbol_kind::S_Expression: // Expression
       case symbol_kind::S_Term: // Term
+      case symbol_kind::S_Statement: // Statement
       case symbol_kind::S_lrecexp: // lrecexp
         value.template destroy< Node * > ();
         break;
@@ -739,6 +759,7 @@ switch (yykind)
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INTARR: // INTARR
+      case symbol_kind::S_EQUALSIGN: // EQUALSIGN
         value.template destroy< std::string > ();
         break;
 
@@ -1430,6 +1451,21 @@ switch (yykind)
         return symbol_type (token::INTARR, v);
       }
 #endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_EQUALSIGN (std::string v)
+      {
+        return symbol_type (token::EQUALSIGN, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_EQUALSIGN (const std::string& v)
+      {
+        return symbol_type (token::EQUALSIGN, v);
+      }
+#endif
 
 
     class context
@@ -1498,7 +1534,7 @@ switch (yykind)
     // Tables.
     // YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
     // STATE-NUM.
-    static const signed char yypact_[];
+    static const short yypact_[];
 
     // YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
     // Performed when YYTABLE does not specify something else to do.  Zero
@@ -1531,7 +1567,7 @@ switch (yykind)
 
 #if YYDEBUG
     // YYRLINE[YYN] -- Source line where rule number YYN was defined.
-    static const unsigned char yyrline_[];
+    static const short yyrline_[];
     /// Report on the debug stream that the rule \a r is going to be reduced.
     virtual void yy_reduce_print_ (int r) const;
     /// Print the state stack on the debug stream.
@@ -1758,9 +1794,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 97,     ///< Last index in yytable_.
-      yynnts_ = 5,  ///< Number of nonterminal symbols.
-      yyfinal_ = 16 ///< Termination state number.
+      yylast_ = 200,     ///< Last index in yytable_.
+      yynnts_ = 9,  ///< Number of nonterminal symbols.
+      yyfinal_ = 28 ///< Termination state number.
     };
 
 
@@ -1806,10 +1842,10 @@ switch (yykind)
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35
+      35,    36
     };
     // Last valid token kind.
-    const int code_max = 290;
+    const int code_max = 291;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1827,8 +1863,12 @@ switch (yykind)
   {
     switch (this->kind ())
     {
+      case symbol_kind::S_Program: // Program
+      case symbol_kind::S_Type: // Type
+      case symbol_kind::S_VarDeclaration: // VarDeclaration
       case symbol_kind::S_Expression: // Expression
       case symbol_kind::S_Term: // Term
+      case symbol_kind::S_Statement: // Statement
       case symbol_kind::S_lrecexp: // lrecexp
         value.copy< Node * > (YY_MOVE (that.value));
         break;
@@ -1866,6 +1906,7 @@ switch (yykind)
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INTARR: // INTARR
+      case symbol_kind::S_EQUALSIGN: // EQUALSIGN
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -1900,8 +1941,12 @@ switch (yykind)
     super_type::move (s);
     switch (this->kind ())
     {
+      case symbol_kind::S_Program: // Program
+      case symbol_kind::S_Type: // Type
+      case symbol_kind::S_VarDeclaration: // VarDeclaration
       case symbol_kind::S_Expression: // Expression
       case symbol_kind::S_Term: // Term
+      case symbol_kind::S_Statement: // Statement
       case symbol_kind::S_lrecexp: // lrecexp
         value.move< Node * > (YY_MOVE (s.value));
         break;
@@ -1939,6 +1984,7 @@ switch (yykind)
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INTARR: // INTARR
+      case symbol_kind::S_EQUALSIGN: // EQUALSIGN
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -2007,7 +2053,7 @@ switch (yykind)
 
 
 } // yy
-#line 2011 "parser.tab.hh"
+#line 2057 "parser.tab.hh"
 
 
 

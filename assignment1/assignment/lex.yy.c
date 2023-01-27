@@ -377,8 +377,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 35
-#define YY_END_OF_BUFFER 36
+#define YY_NUM_RULES 36
+#define YY_END_OF_BUFFER 37
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -388,14 +388,14 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[94] =
     {   0,
-        0,    0,   36,   34,   33,   35,   10,   34,   11,   12,
-       20,   18,   30,   19,   22,   21,   31,    5,   15,   34,
-       16,   32,   32,    2,    3,   32,   32,   32,   32,   32,
-       32,   32,   32,   24,   34,   25,   33,   13,   31,   17,
-       32,   32,   32,   32,   32,   26,   32,   32,   32,   32,
-       32,   32,   14,   32,   32,   32,   32,    1,   32,    9,
-       32,   32,   32,   32,   32,   27,   32,   32,    8,    6,
-       32,   32,   32,    7,   32,   28,   32,   32,   23,    0,
+        0,    0,   37,   35,   34,   36,   10,   35,   11,   12,
+       20,   18,   30,   19,   22,   21,   32,    5,   15,   31,
+       16,   33,   33,    2,    3,   33,   33,   33,   33,   33,
+       33,   33,   33,   24,   35,   25,   34,   13,   32,   17,
+       33,   33,   33,   33,   33,   26,   33,   33,   33,   33,
+       33,   33,   14,   33,   33,   33,   33,    1,   33,    9,
+       33,   33,   33,   33,   33,   27,   33,   33,    8,    6,
+       33,   33,   33,    7,   33,   28,   33,   33,   23,    0,
         4,    0,    0,    0,    0,    0,    0,    0,    0,    0,
         0,   29,    0
 
@@ -513,10 +513,10 @@ static const flex_int16_t yy_chk[151] =
     } ;
 
 /* Table of booleans, true if rule could match eol. */
-static const flex_int32_t yy_rule_can_match_eol[36] =
+static const flex_int32_t yy_rule_can_match_eol[37] =
     {   0,
 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,     };
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -978,20 +978,25 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
+#line 40 "lexer.flex"
+{printf("Found =\n");return yy::parser::make_EQUALSIGN(yytext);}
+	YY_BREAK
+case 32:
+YY_RULE_SETUP
 #line 41 "lexer.flex"
 {printf("Found NUM\n");return yy::parser::make_NUM(yytext);}
 	YY_BREAK
-case 32:
+case 33:
 YY_RULE_SETUP
 #line 42 "lexer.flex"
 {printf("Found ID\n");return yy::parser::make_ID(yytext);}
 	YY_BREAK
-case 33:
+case 34:
 YY_RULE_SETUP
 #line 43 "lexer.flex"
 {}
 	YY_BREAK
-case 34:
+case 35:
 YY_RULE_SETUP
 #line 44 "lexer.flex"
 { if(!lexical_errors) fprintf(stderr, "Lexical errors found! See the logs below: \n"); printf("Character %s is not recognized\n", yytext); lexical_errors = 1;}
@@ -1000,12 +1005,12 @@ case YY_STATE_EOF(INITIAL):
 #line 45 "lexer.flex"
 return yy::parser::make_END();
 	YY_BREAK
-case 35:
+case 36:
 YY_RULE_SETUP
 #line 46 "lexer.flex"
 ECHO;
 	YY_BREAK
-#line 1009 "lex.yy.c"
+#line 1014 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{

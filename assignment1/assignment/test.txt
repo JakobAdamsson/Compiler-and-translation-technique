@@ -1,1 +1,1 @@
-abc.ident(as,asd,cs,dc)
+System.out.println(A[5]);

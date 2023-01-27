@@ -37,7 +37,7 @@ int lexical_errors = 0;
 "while"                 {printf("Found while\n");return yy::parser::make_WHILE(yytext);}
 "System.out.println"    {printf("Found System.out.println\n");return yy::parser::make_PRINT(yytext);}
 ","                     {printf("Found ,\n");return yy::parser::make_COMMA(yytext);}
-
+"="                     {printf("Found =\n");return yy::parser::make_EQUALSIGN(yytext);}
 [1-9][0-9]*             {printf("Found NUM\n");return yy::parser::make_NUM(yytext);}
 [a-zA-Z][a-zA-Z0-9]*    {printf("Found ID\n");return yy::parser::make_ID(yytext);}
 [ \t\r]+                {}
