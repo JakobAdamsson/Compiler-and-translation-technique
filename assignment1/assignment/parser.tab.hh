@@ -387,8 +387,13 @@ namespace yy {
       // Expression
       // Term
       // Statement
+      // MainClass
+      // MethodDeclaration
       // lrecexp
       // lrecstatement
+      // lrectype
+      // lrecvardec
+      // StateEpsilon
       char dummy1[sizeof (Node *)];
 
       // INT
@@ -420,11 +425,18 @@ namespace yy {
       // RBRACE
       // COMMA
       // IF
+      // RETURN
       // ELSE
       // WHILE
       // PRINT
       // INTARR
       // EQUALSIGN
+      // PUBLIC
+      // STATIC
+      // VOID
+      // MAIN
+      // STRING
+      // CLASS
       char dummy2[sizeof (std::string)];
     };
 
@@ -498,11 +510,18 @@ namespace yy {
     RBRACE = 284,                  // RBRACE
     COMMA = 285,                   // COMMA
     IF = 286,                      // IF
-    ELSE = 287,                    // ELSE
-    WHILE = 288,                   // WHILE
-    PRINT = 289,                   // PRINT
-    INTARR = 290,                  // INTARR
-    EQUALSIGN = 291                // EQUALSIGN
+    RETURN = 287,                  // RETURN
+    ELSE = 288,                    // ELSE
+    WHILE = 289,                   // WHILE
+    PRINT = 290,                   // PRINT
+    INTARR = 291,                  // INTARR
+    EQUALSIGN = 292,               // EQUALSIGN
+    PUBLIC = 293,                  // PUBLIC
+    STATIC = 294,                  // STATIC
+    VOID = 295,                    // VOID
+    MAIN = 296,                    // MAIN
+    STRING = 297,                  // STRING
+    CLASS = 298                    // CLASS
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -519,7 +538,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 37, ///< Number of tokens.
+        YYNTOKENS = 44, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -553,21 +572,33 @@ namespace yy {
         S_RBRACE = 29,                           // RBRACE
         S_COMMA = 30,                            // COMMA
         S_IF = 31,                               // IF
-        S_ELSE = 32,                             // ELSE
-        S_WHILE = 33,                            // WHILE
-        S_PRINT = 34,                            // PRINT
-        S_INTARR = 35,                           // INTARR
-        S_EQUALSIGN = 36,                        // EQUALSIGN
-        S_YYACCEPT = 37,                         // $accept
-        S_root = 38,                             // root
-        S_Program = 39,                          // Program
-        S_Type = 40,                             // Type
-        S_VarDeclaration = 41,                   // VarDeclaration
-        S_Expression = 42,                       // Expression
-        S_Term = 43,                             // Term
-        S_Statement = 44,                        // Statement
-        S_lrecexp = 45,                          // lrecexp
-        S_lrecstatement = 46                     // lrecstatement
+        S_RETURN = 32,                           // RETURN
+        S_ELSE = 33,                             // ELSE
+        S_WHILE = 34,                            // WHILE
+        S_PRINT = 35,                            // PRINT
+        S_INTARR = 36,                           // INTARR
+        S_EQUALSIGN = 37,                        // EQUALSIGN
+        S_PUBLIC = 38,                           // PUBLIC
+        S_STATIC = 39,                           // STATIC
+        S_VOID = 40,                             // VOID
+        S_MAIN = 41,                             // MAIN
+        S_STRING = 42,                           // STRING
+        S_CLASS = 43,                            // CLASS
+        S_YYACCEPT = 44,                         // $accept
+        S_root = 45,                             // root
+        S_Program = 46,                          // Program
+        S_Type = 47,                             // Type
+        S_VarDeclaration = 48,                   // VarDeclaration
+        S_Expression = 49,                       // Expression
+        S_Term = 50,                             // Term
+        S_Statement = 51,                        // Statement
+        S_MainClass = 52,                        // MainClass
+        S_MethodDeclaration = 53,                // MethodDeclaration
+        S_lrecexp = 54,                          // lrecexp
+        S_lrecstatement = 55,                    // lrecstatement
+        S_lrectype = 56,                         // lrectype
+        S_lrecvardec = 57,                       // lrecvardec
+        S_StateEpsilon = 58                      // StateEpsilon
       };
     };
 
@@ -608,8 +639,13 @@ namespace yy {
       case symbol_kind::S_Expression: // Expression
       case symbol_kind::S_Term: // Term
       case symbol_kind::S_Statement: // Statement
+      case symbol_kind::S_MainClass: // MainClass
+      case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_lrecexp: // lrecexp
       case symbol_kind::S_lrecstatement: // lrecstatement
+      case symbol_kind::S_lrectype: // lrectype
+      case symbol_kind::S_lrecvardec: // lrecvardec
+      case symbol_kind::S_StateEpsilon: // StateEpsilon
         value.move< Node * > (std::move (that.value));
         break;
 
@@ -642,11 +678,18 @@ namespace yy {
       case symbol_kind::S_RBRACE: // RBRACE
       case symbol_kind::S_COMMA: // COMMA
       case symbol_kind::S_IF: // IF
+      case symbol_kind::S_RETURN: // RETURN
       case symbol_kind::S_ELSE: // ELSE
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INTARR: // INTARR
       case symbol_kind::S_EQUALSIGN: // EQUALSIGN
+      case symbol_kind::S_PUBLIC: // PUBLIC
+      case symbol_kind::S_STATIC: // STATIC
+      case symbol_kind::S_VOID: // VOID
+      case symbol_kind::S_MAIN: // MAIN
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_CLASS: // CLASS
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -725,8 +768,13 @@ switch (yykind)
       case symbol_kind::S_Expression: // Expression
       case symbol_kind::S_Term: // Term
       case symbol_kind::S_Statement: // Statement
+      case symbol_kind::S_MainClass: // MainClass
+      case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_lrecexp: // lrecexp
       case symbol_kind::S_lrecstatement: // lrecstatement
+      case symbol_kind::S_lrectype: // lrectype
+      case symbol_kind::S_lrecvardec: // lrecvardec
+      case symbol_kind::S_StateEpsilon: // StateEpsilon
         value.template destroy< Node * > ();
         break;
 
@@ -759,11 +807,18 @@ switch (yykind)
       case symbol_kind::S_RBRACE: // RBRACE
       case symbol_kind::S_COMMA: // COMMA
       case symbol_kind::S_IF: // IF
+      case symbol_kind::S_RETURN: // RETURN
       case symbol_kind::S_ELSE: // ELSE
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INTARR: // INTARR
       case symbol_kind::S_EQUALSIGN: // EQUALSIGN
+      case symbol_kind::S_PUBLIC: // PUBLIC
+      case symbol_kind::S_STATIC: // STATIC
+      case symbol_kind::S_VOID: // VOID
+      case symbol_kind::S_MAIN: // MAIN
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_CLASS: // CLASS
         value.template destroy< std::string > ();
         break;
 
@@ -1398,6 +1453,21 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_RETURN (std::string v)
+      {
+        return symbol_type (token::RETURN, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_RETURN (const std::string& v)
+      {
+        return symbol_type (token::RETURN, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_ELSE (std::string v)
       {
         return symbol_type (token::ELSE, std::move (v));
@@ -1470,6 +1540,96 @@ switch (yykind)
         return symbol_type (token::EQUALSIGN, v);
       }
 #endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_PUBLIC (std::string v)
+      {
+        return symbol_type (token::PUBLIC, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_PUBLIC (const std::string& v)
+      {
+        return symbol_type (token::PUBLIC, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_STATIC (std::string v)
+      {
+        return symbol_type (token::STATIC, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_STATIC (const std::string& v)
+      {
+        return symbol_type (token::STATIC, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_VOID (std::string v)
+      {
+        return symbol_type (token::VOID, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_VOID (const std::string& v)
+      {
+        return symbol_type (token::VOID, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_MAIN (std::string v)
+      {
+        return symbol_type (token::MAIN, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_MAIN (const std::string& v)
+      {
+        return symbol_type (token::MAIN, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_STRING (std::string v)
+      {
+        return symbol_type (token::STRING, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_STRING (const std::string& v)
+      {
+        return symbol_type (token::STRING, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_CLASS (std::string v)
+      {
+        return symbol_type (token::CLASS, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_CLASS (const std::string& v)
+      {
+        return symbol_type (token::CLASS, v);
+      }
+#endif
 
 
     class context
@@ -1498,7 +1658,7 @@ switch (yykind)
 
 
     /// Stored state numbers (used for stacks).
-    typedef signed char state_type;
+    typedef unsigned char state_type;
 
     /// The arguments of the error message.
     int yy_syntax_error_arguments_ (const context& yyctx,
@@ -1554,9 +1714,9 @@ switch (yykind)
     // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
     // positive, shift that token.  If negative, reduce the rule whose
     // number is the opposite.  If YYTABLE_NINF, syntax error.
-    static const signed char yytable_[];
+    static const short yytable_[];
 
-    static const signed char yycheck_[];
+    static const short yycheck_[];
 
     // YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
     // state STATE-NUM.
@@ -1798,9 +1958,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 241,     ///< Last index in yytable_.
-      yynnts_ = 10,  ///< Number of nonterminal symbols.
-      yyfinal_ = 34 ///< Termination state number.
+      yylast_ = 354,     ///< Last index in yytable_.
+      yynnts_ = 15,  ///< Number of nonterminal symbols.
+      yyfinal_ = 42 ///< Termination state number.
     };
 
 
@@ -1846,10 +2006,10 @@ switch (yykind)
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36
+      35,    36,    37,    38,    39,    40,    41,    42,    43
     };
     // Last valid token kind.
-    const int code_max = 291;
+    const int code_max = 298;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1873,8 +2033,13 @@ switch (yykind)
       case symbol_kind::S_Expression: // Expression
       case symbol_kind::S_Term: // Term
       case symbol_kind::S_Statement: // Statement
+      case symbol_kind::S_MainClass: // MainClass
+      case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_lrecexp: // lrecexp
       case symbol_kind::S_lrecstatement: // lrecstatement
+      case symbol_kind::S_lrectype: // lrectype
+      case symbol_kind::S_lrecvardec: // lrecvardec
+      case symbol_kind::S_StateEpsilon: // StateEpsilon
         value.copy< Node * > (YY_MOVE (that.value));
         break;
 
@@ -1907,11 +2072,18 @@ switch (yykind)
       case symbol_kind::S_RBRACE: // RBRACE
       case symbol_kind::S_COMMA: // COMMA
       case symbol_kind::S_IF: // IF
+      case symbol_kind::S_RETURN: // RETURN
       case symbol_kind::S_ELSE: // ELSE
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INTARR: // INTARR
       case symbol_kind::S_EQUALSIGN: // EQUALSIGN
+      case symbol_kind::S_PUBLIC: // PUBLIC
+      case symbol_kind::S_STATIC: // STATIC
+      case symbol_kind::S_VOID: // VOID
+      case symbol_kind::S_MAIN: // MAIN
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_CLASS: // CLASS
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -1952,8 +2124,13 @@ switch (yykind)
       case symbol_kind::S_Expression: // Expression
       case symbol_kind::S_Term: // Term
       case symbol_kind::S_Statement: // Statement
+      case symbol_kind::S_MainClass: // MainClass
+      case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_lrecexp: // lrecexp
       case symbol_kind::S_lrecstatement: // lrecstatement
+      case symbol_kind::S_lrectype: // lrectype
+      case symbol_kind::S_lrecvardec: // lrecvardec
+      case symbol_kind::S_StateEpsilon: // StateEpsilon
         value.move< Node * > (YY_MOVE (s.value));
         break;
 
@@ -1986,11 +2163,18 @@ switch (yykind)
       case symbol_kind::S_RBRACE: // RBRACE
       case symbol_kind::S_COMMA: // COMMA
       case symbol_kind::S_IF: // IF
+      case symbol_kind::S_RETURN: // RETURN
       case symbol_kind::S_ELSE: // ELSE
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INTARR: // INTARR
       case symbol_kind::S_EQUALSIGN: // EQUALSIGN
+      case symbol_kind::S_PUBLIC: // PUBLIC
+      case symbol_kind::S_STATIC: // STATIC
+      case symbol_kind::S_VOID: // VOID
+      case symbol_kind::S_MAIN: // MAIN
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_CLASS: // CLASS
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -2059,7 +2243,7 @@ switch (yykind)
 
 
 } // yy
-#line 2063 "parser.tab.hh"
+#line 2247 "parser.tab.hh"
 
 
 

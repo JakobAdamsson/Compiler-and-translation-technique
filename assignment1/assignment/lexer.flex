@@ -38,6 +38,13 @@ int lexical_errors = 0;
 "System.out.println"    {printf("Found System.out.println\n");return yy::parser::make_PRINT(yytext);}
 ","                     {printf("Found ,\n");return yy::parser::make_COMMA(yytext);}
 "="                     {printf("Found =\n");return yy::parser::make_EQUALSIGN(yytext);}
+"public"                {printf("Found PUBLIC\n");return yy::parser::make_PUBLIC(yytext);}
+"static"                {printf("Found STATIC\n");return yy::parser::make_STATIC(yytext);}
+"void"                  {printf("Found VOID\n");return yy::parser::make_VOID(yytext);}
+"main"                  {printf("Found MAIN\n");return yy::parser::make_MAIN(yytext);}
+"String"                {printf("Found STRING\n");return yy::parser::make_STRING(yytext);}
+"class"                 {printf("Found CLASS\n");return yy::parser::make_CLASS(yytext);}
+"return"                {printf("Found RETURN\n");return yy::parser::make_RETURN(yytext);}
 [1-9][0-9]*             {printf("Found NUM\n");return yy::parser::make_NUM(yytext);}
 [a-zA-Z][a-zA-Z0-9]*    {printf("Found ID\n");return yy::parser::make_ID(yytext);}
 [ \t\r]+                {}

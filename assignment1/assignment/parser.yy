@@ -21,15 +21,17 @@
 // definition of set of tokens. All tokens are of type string
 %token <std::string> INT LBRACKET RBRACKET BOOLEAN ID SEMICOLON NUM TRUE 
 %token <std::string> FALSE THIS NEW NOT LPAREN RPAREN AND OR LT GT EQ PLUS
-%token <std::string> MINUS TIMES DIVIDE DOT LENGTH LBRACE RBRACE COMMA IF 
-%token <std::string> ELSE WHILE PRINT INTARR EQUALSIGN 
+%token <std::string> MINUS TIMES DIVIDE DOT LENGTH LBRACE RBRACE COMMA IF RETURN 
+%token <std::string> ELSE WHILE PRINT INTARR EQUALSIGN PUBLIC STATIC VOID MAIN STRING CLASS
 %token END 0 "end of file"
 
 //defition of operator precedence. See https://www.gnu.org/software/bison/manual/bison.html#Precedence-Decl
 
 
 // definition of the production rules. All production rules are of type Node
-%type <Node *> Type VarDeclaration Term Expression lrecexp Statement Program lrecstatement
+%type <Node *> Type VarDeclaration Term Expression lrecexp Statement 
+%type <Node *> Program lrecstatement MainClass StateQuest StateEpsilon
+%type <Node *> MethodDeclaration lrecvardec lrectype
 
 %%
 root: Program {root = $1;};
@@ -57,7 +59,18 @@ Program: Type
             {          
               $$ = new Node("Program", "", yylineno);
               $$->children.push_back($1);
-            };
+            }
+            | MainClass
+            {
+              $$ = new Node("Program", "", yylineno);
+              $$->children.push_back($1);
+            }
+            | MethodDeclaration
+            {
+              $$ = new Node("Program", "", yylineno);
+              $$->children.push_back($1);
+            }
+            ;
 
 Type: INT LBRACKET RBRACKET 
             {
@@ -271,7 +284,78 @@ Statement: ID LBRACKET Expression RBRACKET EQUALSIGN Expression SEMICOLON
               $$->children.push_back(new Node("LBRACE", $1, yylineno));
               $$->children.push_back($2);
               $$->children.push_back(new Node("RBRACE", $3, yylineno));
+            }
+            | IF LPAREN Expression RPAREN Statement StateEpsilon
+            {
+              $$ = new Node("IF STATEMENT", "", yylineno);
+              $$->children.push_back(new Node("IF", $1, yylineno));
+              $$->children.push_back(new Node("LPAREN", $2, yylineno));
+              $$->children.push_back($3);
+              $$->children.push_back(new Node("RPAREN", $4, yylineno));
+              $$->children.push_back($5);
+              $$->children.push_back($6);
             };
+
+
+
+MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LBRACE lrecstatement RBRACE RBRACE
+            {
+              $$ = new Node("MainClass", "", yylineno);
+              $$->children.push_back(new Node("PUBLIC", $1, yylineno));
+              $$->children.push_back(new Node("CLASS", $2, yylineno));
+              $$->children.push_back(new Node("ID", $3, yylineno));
+              $$->children.push_back(new Node("LBRACE", $4, yylineno));
+              $$->children.push_back(new Node("PUBLIC", $5, yylineno));
+              $$->children.push_back(new Node("STATIC", $6, yylineno));
+              $$->children.push_back(new Node("VOID", $7, yylineno));
+              $$->children.push_back(new Node("MAIN", $8, yylineno));
+              $$->children.push_back(new Node("LPAREN", $9, yylineno));
+              $$->children.push_back(new Node("STRING", $10, yylineno));
+              $$->children.push_back(new Node("LBRACKET", $11, yylineno));
+              $$->children.push_back(new Node("RBRACKET", $12, yylineno));
+              $$->children.push_back(new Node("ID", $13, yylineno));
+              $$->children.push_back(new Node("RPAREN", $14, yylineno));
+              $$->children.push_back(new Node("LBRACE", $15, yylineno));
+              $$->children.push_back($16);
+              $$->children.push_back(new Node("RBRACE", $17, yylineno));
+              $$->children.push_back(new Node("RBRACE", $18, yylineno));
+            };
+
+
+MethodDeclaration: PUBLIC Type ID LPAREN lrectype RPAREN LBRACE lrecstatement RETURN Expression SEMICOLON RBRACE
+            {
+              $$ = new Node("MethodDeclaration", "", yylineno);
+              $$->children.push_back(new Node("PUBLIC", $1, yylineno));
+              $$->children.push_back($2);
+              $$->children.push_back(new Node("ID", $3, yylineno));
+              $$->children.push_back(new Node("LPAREN", $4, yylineno));
+              $$->children.push_back($5);
+              $$->children.push_back(new Node("RPAREN", $6, yylineno));
+              $$->children.push_back(new Node("LBRACE", $7, yylineno));
+              $$->children.push_back($8);
+              $$->children.push_back(new Node("RETURN", $9, yylineno));
+              $$->children.push_back($10);
+              $$->children.push_back(new Node("SEMICOLON", $11, yylineno));
+              $$->children.push_back(new Node("RBRACE", $12, yylineno));
+            }
+
+            |PUBLIC Type ID LPAREN lrectype RPAREN LBRACE lrecvardec RETURN Expression SEMICOLON RBRACE
+            {
+              $$ = new Node("MethodDeclaration", "", yylineno);
+              $$->children.push_back(new Node("PUBLIC", $1, yylineno));
+              $$->children.push_back($2);
+              $$->children.push_back(new Node("ID", $3, yylineno));
+              $$->children.push_back(new Node("LPAREN", $4, yylineno));
+              $$->children.push_back($5);
+              $$->children.push_back(new Node("RPAREN", $6, yylineno));
+              $$->children.push_back(new Node("LBRACE", $7, yylineno));
+              $$->children.push_back($8);
+              $$->children.push_back(new Node("RETURN", $9, yylineno));
+              $$->children.push_back($10);
+              $$->children.push_back(new Node("SEMICOLON", $11, yylineno));
+              $$->children.push_back(new Node("RBRACE", $12, yylineno));
+            };
+
 lrecexp: %empty
             {
               $$ = new Node("EMPTY", "", yylineno);
@@ -302,3 +386,52 @@ lrecstatement: %empty
                 $$->children.push_back($1);
                 $$->children.push_back($2);
               };
+lrectype: %empty
+              {
+                $$ = new Node("EMPTY", "ɛ", yylineno);
+              }
+              | Type
+              {
+                $$ = $1;
+              }
+              | lrectype Type
+              {
+                $$ = new Node("lrectype", "", yylineno);
+                $$->children.push_back($1);
+                $$->children.push_back($2);
+              };
+lrecvardec: %empty
+              {
+                $$ = new Node("EMPTY", "ɛ", yylineno);
+              }
+              | VarDeclaration
+              {
+                $$ = $1;
+              }
+              | lrecvardec VarDeclaration
+              {
+                $$ = new Node("lrecvardec", "", yylineno);
+                $$->children.push_back($1);
+                $$->children.push_back($2);
+              };
+
+StateQuest: Statement 
+          {
+            $$ = new Node("STATEMENT", "", yylineno);
+            $$->children.push_back($1);
+          }
+          | StateQuest Statement  
+          {
+            $$ = new Node("STATEMENT", "", yylineno);
+            $$->children.push_back($1);
+            $$->children.push_back($2);
+          };
+StateEpsilon: %empty 
+          {
+            $$ = new Node("EMPTY", "ɛ", yylineno);
+          } 
+          | ELSE Statement 
+          {
+            $$ = new Node("ELSE", $1, yylineno);
+            $$->children.push_back($2);
+          };

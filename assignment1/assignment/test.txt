@@ -1,1 +1,1 @@
-{}
+public boolean hej(int x){x = 5;}
