@@ -389,13 +389,19 @@ namespace yy {
       // Statement
       // MainClass
       // MethodDeclaration
+      // ClassDeclaration
+      // Goal
       // lrecexp
       // lrecstatement
-      // lrectype
       // lrecvardec
+      // lrecparameter
+      // lrecvardecorstate
+      // lrecmethoddec
+      // lrecclassdec
       // StateEpsilon
       char dummy1[sizeof (Node *)];
 
+      // "end of file"
       // INT
       // LBRACKET
       // RBRACKET
@@ -429,7 +435,6 @@ namespace yy {
       // ELSE
       // WHILE
       // PRINT
-      // INTARR
       // EQUALSIGN
       // PUBLIC
       // STATIC
@@ -514,14 +519,13 @@ namespace yy {
     ELSE = 288,                    // ELSE
     WHILE = 289,                   // WHILE
     PRINT = 290,                   // PRINT
-    INTARR = 291,                  // INTARR
-    EQUALSIGN = 292,               // EQUALSIGN
-    PUBLIC = 293,                  // PUBLIC
-    STATIC = 294,                  // STATIC
-    VOID = 295,                    // VOID
-    MAIN = 296,                    // MAIN
-    STRING = 297,                  // STRING
-    CLASS = 298                    // CLASS
+    EQUALSIGN = 291,               // EQUALSIGN
+    PUBLIC = 292,                  // PUBLIC
+    STATIC = 293,                  // STATIC
+    VOID = 294,                    // VOID
+    MAIN = 295,                    // MAIN
+    STRING = 296,                  // STRING
+    CLASS = 297                    // CLASS
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -538,7 +542,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 44, ///< Number of tokens.
+        YYNTOKENS = 43, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -576,29 +580,33 @@ namespace yy {
         S_ELSE = 33,                             // ELSE
         S_WHILE = 34,                            // WHILE
         S_PRINT = 35,                            // PRINT
-        S_INTARR = 36,                           // INTARR
-        S_EQUALSIGN = 37,                        // EQUALSIGN
-        S_PUBLIC = 38,                           // PUBLIC
-        S_STATIC = 39,                           // STATIC
-        S_VOID = 40,                             // VOID
-        S_MAIN = 41,                             // MAIN
-        S_STRING = 42,                           // STRING
-        S_CLASS = 43,                            // CLASS
-        S_YYACCEPT = 44,                         // $accept
-        S_root = 45,                             // root
-        S_Program = 46,                          // Program
-        S_Type = 47,                             // Type
-        S_VarDeclaration = 48,                   // VarDeclaration
-        S_Expression = 49,                       // Expression
-        S_Term = 50,                             // Term
-        S_Statement = 51,                        // Statement
-        S_MainClass = 52,                        // MainClass
-        S_MethodDeclaration = 53,                // MethodDeclaration
-        S_lrecexp = 54,                          // lrecexp
-        S_lrecstatement = 55,                    // lrecstatement
-        S_lrectype = 56,                         // lrectype
+        S_EQUALSIGN = 36,                        // EQUALSIGN
+        S_PUBLIC = 37,                           // PUBLIC
+        S_STATIC = 38,                           // STATIC
+        S_VOID = 39,                             // VOID
+        S_MAIN = 40,                             // MAIN
+        S_STRING = 41,                           // STRING
+        S_CLASS = 42,                            // CLASS
+        S_YYACCEPT = 43,                         // $accept
+        S_root = 44,                             // root
+        S_Program = 45,                          // Program
+        S_Type = 46,                             // Type
+        S_VarDeclaration = 47,                   // VarDeclaration
+        S_Expression = 48,                       // Expression
+        S_Term = 49,                             // Term
+        S_Statement = 50,                        // Statement
+        S_MainClass = 51,                        // MainClass
+        S_MethodDeclaration = 52,                // MethodDeclaration
+        S_ClassDeclaration = 53,                 // ClassDeclaration
+        S_Goal = 54,                             // Goal
+        S_lrecexp = 55,                          // lrecexp
+        S_lrecstatement = 56,                    // lrecstatement
         S_lrecvardec = 57,                       // lrecvardec
-        S_StateEpsilon = 58                      // StateEpsilon
+        S_lrecparameter = 58,                    // lrecparameter
+        S_lrecvardecorstate = 59,                // lrecvardecorstate
+        S_lrecmethoddec = 60,                    // lrecmethoddec
+        S_lrecclassdec = 61,                     // lrecclassdec
+        S_StateEpsilon = 62                      // StateEpsilon
       };
     };
 
@@ -641,14 +649,20 @@ namespace yy {
       case symbol_kind::S_Statement: // Statement
       case symbol_kind::S_MainClass: // MainClass
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
+      case symbol_kind::S_ClassDeclaration: // ClassDeclaration
+      case symbol_kind::S_Goal: // Goal
       case symbol_kind::S_lrecexp: // lrecexp
       case symbol_kind::S_lrecstatement: // lrecstatement
-      case symbol_kind::S_lrectype: // lrectype
       case symbol_kind::S_lrecvardec: // lrecvardec
+      case symbol_kind::S_lrecparameter: // lrecparameter
+      case symbol_kind::S_lrecvardecorstate: // lrecvardecorstate
+      case symbol_kind::S_lrecmethoddec: // lrecmethoddec
+      case symbol_kind::S_lrecclassdec: // lrecclassdec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
         value.move< Node * > (std::move (that.value));
         break;
 
+      case symbol_kind::S_YYEOF: // "end of file"
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
@@ -682,7 +696,6 @@ namespace yy {
       case symbol_kind::S_ELSE: // ELSE
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_PRINT: // PRINT
-      case symbol_kind::S_INTARR: // INTARR
       case symbol_kind::S_EQUALSIGN: // EQUALSIGN
       case symbol_kind::S_PUBLIC: // PUBLIC
       case symbol_kind::S_STATIC: // STATIC
@@ -770,14 +783,20 @@ switch (yykind)
       case symbol_kind::S_Statement: // Statement
       case symbol_kind::S_MainClass: // MainClass
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
+      case symbol_kind::S_ClassDeclaration: // ClassDeclaration
+      case symbol_kind::S_Goal: // Goal
       case symbol_kind::S_lrecexp: // lrecexp
       case symbol_kind::S_lrecstatement: // lrecstatement
-      case symbol_kind::S_lrectype: // lrectype
       case symbol_kind::S_lrecvardec: // lrecvardec
+      case symbol_kind::S_lrecparameter: // lrecparameter
+      case symbol_kind::S_lrecvardecorstate: // lrecvardecorstate
+      case symbol_kind::S_lrecmethoddec: // lrecmethoddec
+      case symbol_kind::S_lrecclassdec: // lrecclassdec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
         value.template destroy< Node * > ();
         break;
 
+      case symbol_kind::S_YYEOF: // "end of file"
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
@@ -811,7 +830,6 @@ switch (yykind)
       case symbol_kind::S_ELSE: // ELSE
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_PRINT: // PRINT
-      case symbol_kind::S_INTARR: // INTARR
       case symbol_kind::S_EQUALSIGN: // EQUALSIGN
       case symbol_kind::S_PUBLIC: // PUBLIC
       case symbol_kind::S_STATIC: // STATIC
@@ -973,16 +991,16 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_END ()
+      make_END (std::string v)
       {
-        return symbol_type (token::END);
+        return symbol_type (token::END, std::move (v));
       }
 #else
       static
       symbol_type
-      make_END ()
+      make_END (const std::string& v)
       {
-        return symbol_type (token::END);
+        return symbol_type (token::END, v);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1513,21 +1531,6 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_INTARR (std::string v)
-      {
-        return symbol_type (token::INTARR, std::move (v));
-      }
-#else
-      static
-      symbol_type
-      make_INTARR (const std::string& v)
-      {
-        return symbol_type (token::INTARR, v);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
       make_EQUALSIGN (std::string v)
       {
         return symbol_type (token::EQUALSIGN, std::move (v));
@@ -1709,7 +1712,7 @@ switch (yykind)
     static const signed char yypgoto_[];
 
     // YYDEFGOTO[NTERM-NUM].
-    static const signed char yydefgoto_[];
+    static const unsigned char yydefgoto_[];
 
     // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
     // positive, shift that token.  If negative, reduce the rule whose
@@ -1958,9 +1961,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 354,     ///< Last index in yytable_.
-      yynnts_ = 15,  ///< Number of nonterminal symbols.
-      yyfinal_ = 42 ///< Termination state number.
+      yylast_ = 347,     ///< Last index in yytable_.
+      yynnts_ = 20,  ///< Number of nonterminal symbols.
+      yyfinal_ = 46 ///< Termination state number.
     };
 
 
@@ -2006,10 +2009,10 @@ switch (yykind)
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40,    41,    42,    43
+      35,    36,    37,    38,    39,    40,    41,    42
     };
     // Last valid token kind.
-    const int code_max = 298;
+    const int code_max = 297;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2035,14 +2038,20 @@ switch (yykind)
       case symbol_kind::S_Statement: // Statement
       case symbol_kind::S_MainClass: // MainClass
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
+      case symbol_kind::S_ClassDeclaration: // ClassDeclaration
+      case symbol_kind::S_Goal: // Goal
       case symbol_kind::S_lrecexp: // lrecexp
       case symbol_kind::S_lrecstatement: // lrecstatement
-      case symbol_kind::S_lrectype: // lrectype
       case symbol_kind::S_lrecvardec: // lrecvardec
+      case symbol_kind::S_lrecparameter: // lrecparameter
+      case symbol_kind::S_lrecvardecorstate: // lrecvardecorstate
+      case symbol_kind::S_lrecmethoddec: // lrecmethoddec
+      case symbol_kind::S_lrecclassdec: // lrecclassdec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
         value.copy< Node * > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_YYEOF: // "end of file"
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
@@ -2076,7 +2085,6 @@ switch (yykind)
       case symbol_kind::S_ELSE: // ELSE
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_PRINT: // PRINT
-      case symbol_kind::S_INTARR: // INTARR
       case symbol_kind::S_EQUALSIGN: // EQUALSIGN
       case symbol_kind::S_PUBLIC: // PUBLIC
       case symbol_kind::S_STATIC: // STATIC
@@ -2126,14 +2134,20 @@ switch (yykind)
       case symbol_kind::S_Statement: // Statement
       case symbol_kind::S_MainClass: // MainClass
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
+      case symbol_kind::S_ClassDeclaration: // ClassDeclaration
+      case symbol_kind::S_Goal: // Goal
       case symbol_kind::S_lrecexp: // lrecexp
       case symbol_kind::S_lrecstatement: // lrecstatement
-      case symbol_kind::S_lrectype: // lrectype
       case symbol_kind::S_lrecvardec: // lrecvardec
+      case symbol_kind::S_lrecparameter: // lrecparameter
+      case symbol_kind::S_lrecvardecorstate: // lrecvardecorstate
+      case symbol_kind::S_lrecmethoddec: // lrecmethoddec
+      case symbol_kind::S_lrecclassdec: // lrecclassdec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
         value.move< Node * > (YY_MOVE (s.value));
         break;
 
+      case symbol_kind::S_YYEOF: // "end of file"
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
@@ -2167,7 +2181,6 @@ switch (yykind)
       case symbol_kind::S_ELSE: // ELSE
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_PRINT: // PRINT
-      case symbol_kind::S_INTARR: // INTARR
       case symbol_kind::S_EQUALSIGN: // EQUALSIGN
       case symbol_kind::S_PUBLIC: // PUBLIC
       case symbol_kind::S_STATIC: // STATIC
@@ -2243,7 +2256,7 @@ switch (yykind)
 
 
 } // yy
-#line 2247 "parser.tab.hh"
+#line 2260 "parser.tab.hh"
 
 
 

@@ -46,10 +46,10 @@ int lexical_errors = 0;
 "class"                 {printf("Found CLASS\n");return yy::parser::make_CLASS(yytext);}
 "return"                {printf("Found RETURN\n");return yy::parser::make_RETURN(yytext);}
 [1-9][0-9]*             {printf("Found NUM\n");return yy::parser::make_NUM(yytext);}
-[a-zA-Z][a-zA-Z0-9]*    {printf("Found ID\n");return yy::parser::make_ID(yytext);}
+[a-zA-Z][a-zA-Z0-9_]*   {printf("Found ID\n");return yy::parser::make_ID(yytext);}
 [ \t\r]+                {}
 .                       { if(!lexical_errors) fprintf(stderr, "Lexical errors found! See the logs below: \n"); printf("Character %s is not recognized\n", yytext); lexical_errors = 1;}
-<<EOF>>                 return yy::parser::make_END();
+<<EOF>>                 {printf("Found END\n");return yy::parser::make_END(yytext);}
 %%
 
 

@@ -22,7 +22,8 @@
 %token <std::string> INT LBRACKET RBRACKET BOOLEAN ID SEMICOLON NUM TRUE 
 %token <std::string> FALSE THIS NEW NOT LPAREN RPAREN AND OR LT GT EQ PLUS
 %token <std::string> MINUS TIMES DIVIDE DOT LENGTH LBRACE RBRACE COMMA IF RETURN 
-%token <std::string> ELSE WHILE PRINT INTARR EQUALSIGN PUBLIC STATIC VOID MAIN STRING CLASS
+%token <std::string> ELSE WHILE PRINT EQUALSIGN PUBLIC STATIC VOID MAIN STRING CLASS 
+%token <std::string> END 
 %token END 0 "end of file"
 
 //defition of operator precedence. See https://www.gnu.org/software/bison/manual/bison.html#Precedence-Decl
@@ -30,8 +31,9 @@
 
 // definition of the production rules. All production rules are of type Node
 %type <Node *> Type VarDeclaration Term Expression lrecexp Statement 
-%type <Node *> Program lrecstatement MainClass StateQuest StateEpsilon
-%type <Node *> MethodDeclaration lrecvardec lrectype
+%type <Node *> Program lrecstatement MainClass StateQuest StateEpsilon 
+%type <Node *> MethodDeclaration lrecvardec lrectype lrecparameter lrecvardecorstate lrecmethoddec
+%type <Node *> ClassDeclaration Goal lrecclassdec
 
 %%
 root: Program {root = $1;};
@@ -70,7 +72,16 @@ Program: Type
               $$ = new Node("Program", "", yylineno);
               $$->children.push_back($1);
             }
-            ;
+            | ClassDeclaration
+            {
+              $$ = new Node("Program", "", yylineno);
+              $$->children.push_back($1);
+            }
+            | Goal
+            {
+              $$ = new Node("Program", "", yylineno);
+              $$->children.push_back($1);
+            };
 
 Type: INT LBRACKET RBRACKET 
             {
@@ -322,7 +333,7 @@ MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET
             };
 
 
-MethodDeclaration: PUBLIC Type ID LPAREN lrectype RPAREN LBRACE lrecstatement RETURN Expression SEMICOLON RBRACE
+MethodDeclaration: PUBLIC Type ID LPAREN lrecparameter RPAREN LBRACE lrecvardecorstate RETURN Expression SEMICOLON RBRACE
             {
               $$ = new Node("MethodDeclaration", "", yylineno);
               $$->children.push_back(new Node("PUBLIC", $1, yylineno));
@@ -337,23 +348,29 @@ MethodDeclaration: PUBLIC Type ID LPAREN lrectype RPAREN LBRACE lrecstatement RE
               $$->children.push_back($10);
               $$->children.push_back(new Node("SEMICOLON", $11, yylineno));
               $$->children.push_back(new Node("RBRACE", $12, yylineno));
-            }
+            };
 
-            |PUBLIC Type ID LPAREN lrectype RPAREN LBRACE lrecvardec RETURN Expression SEMICOLON RBRACE
+
+
+
+ClassDeclaration: CLASS ID LBRACE lrecvardec lrecmethoddec RBRACE
             {
-              $$ = new Node("MethodDeclaration", "", yylineno);
-              $$->children.push_back(new Node("PUBLIC", $1, yylineno));
-              $$->children.push_back($2);
-              $$->children.push_back(new Node("ID", $3, yylineno));
-              $$->children.push_back(new Node("LPAREN", $4, yylineno));
+              $$ = new Node("ClassDeclaration", "", yylineno);
+              $$->children.push_back(new Node("CLASS", $1, yylineno));
+              $$->children.push_back(new Node("ID", $2, yylineno));
+              $$->children.push_back(new Node("LBRACE", $3, yylineno));
+              $$->children.push_back($4);
               $$->children.push_back($5);
-              $$->children.push_back(new Node("RPAREN", $6, yylineno));
-              $$->children.push_back(new Node("LBRACE", $7, yylineno));
-              $$->children.push_back($8);
-              $$->children.push_back(new Node("RETURN", $9, yylineno));
-              $$->children.push_back($10);
-              $$->children.push_back(new Node("SEMICOLON", $11, yylineno));
-              $$->children.push_back(new Node("RBRACE", $12, yylineno));
+              $$->children.push_back(new Node("RBRACE", $6, yylineno));
+            
+            };
+
+Goal: MainClass lrecclassdec END
+            {
+              $$ = new Node("Goal", "", yylineno);
+              $$->children.push_back($1);
+              $$->children.push_back($2);
+              $$->children.push_back(new Node("END", $3, yylineno));
             };
 
 lrecexp: %empty
@@ -394,11 +411,13 @@ lrectype: %empty
               {
                 $$ = $1;
               }
-              | lrectype Type
+              | lrectype Type ID COMMA
               {
                 $$ = new Node("lrectype", "", yylineno);
                 $$->children.push_back($1);
                 $$->children.push_back($2);
+                $$->children.push_back(new Node("IDENTIFIER", $3, yylineno));
+                $$->children.push_back(new Node("COMMA", $4, yylineno));
               };
 lrecvardec: %empty
               {
@@ -414,24 +433,98 @@ lrecvardec: %empty
                 $$->children.push_back($1);
                 $$->children.push_back($2);
               };
+lrecparameter: %empty
+              {
+                $$ = new Node("EMPTY", "ɛ", yylineno);
+              }
+              | Type ID
+              {
+                $$ = new Node("lrecparameter", "", yylineno);
+                $$->children.push_back($1);
+                $$->children.push_back(new Node("IDENTIFIER", $2, yylineno));
+              }
+              | lrecparameter COMMA Type ID
+              {
+                $$ = new Node("lrecparameter", "", yylineno);
+                $$->children.push_back($1);
+                $$->children.push_back(new Node("COMMA", $2, yylineno));
+                $$->children.push_back($3);
+                $$->children.push_back(new Node("IDENTIFIER", $4, yylineno));
+              };
+
+lrecvardecorstate: %empty
+              {
+                $$ = new Node("EMPTY", "ɛ", yylineno);
+              }
+              | VarDeclaration
+              {
+                $$ = $1;
+              }
+              | Statement
+              {
+                $$ = $1;
+              }
+              | lrecvardecorstate VarDeclaration
+              {
+                $$ = new Node("lrecvarorvardec", "", yylineno);
+                $$->children.push_back($1);
+                $$->children.push_back($2);
+              }
+              | lrecvardecorstate Statement
+              {
+                $$ = new Node("lrecvarorstate", "", yylineno);
+                $$->children.push_back($1);
+                $$->children.push_back($2);
+              };
+
+lrecmethoddec: %empty
+              {
+                $$ = new Node("EMPTY", "ɛ", yylineno);
+              }
+              | MethodDeclaration
+              {
+                $$ = $1;
+              }
+              | lrecmethoddec MethodDeclaration
+              {
+                $$ = new Node("lrecmethoddec", "", yylineno);
+                $$->children.push_back($1);
+                $$->children.push_back($2);
+              };
+              
+lrecclassdec: %empty
+              {
+                $$ = new Node("EMPTY", "ɛ", yylineno);
+              }
+              | ClassDeclaration
+              {
+                $$ = $1;
+              }
+              | lrecclassdec ClassDeclaration
+              {
+                $$ = new Node("lrecclassdec", "", yylineno);
+                $$->children.push_back($1);
+                $$->children.push_back($2);
+              };
 
 StateQuest: Statement 
-          {
-            $$ = new Node("STATEMENT", "", yylineno);
-            $$->children.push_back($1);
-          }
-          | StateQuest Statement  
-          {
-            $$ = new Node("STATEMENT", "", yylineno);
-            $$->children.push_back($1);
-            $$->children.push_back($2);
-          };
+              {
+                $$ = new Node("STATEMENT", "", yylineno);
+                $$->children.push_back($1);
+              }
+              | StateQuest Statement  
+              {
+                $$ = new Node("STATEMENT", "", yylineno);
+                $$->children.push_back($1);
+                $$->children.push_back($2);
+              };
+
 StateEpsilon: %empty 
-          {
-            $$ = new Node("EMPTY", "ɛ", yylineno);
-          } 
-          | ELSE Statement 
-          {
-            $$ = new Node("ELSE", $1, yylineno);
-            $$->children.push_back($2);
-          };
+              {
+                $$ = new Node("EMPTY", "ɛ", yylineno);
+              } 
+              | ELSE Statement 
+              {
+                $$ = new Node("ELSE", $1, yylineno);
+                $$->children.push_back($2);
+              };
