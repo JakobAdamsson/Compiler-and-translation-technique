@@ -89,167 +89,163 @@ n45 [label="RPAREN:)"];
 n39 -> n45
 n46 [label="LBRACE:{"];
 n39 -> n46
-n47 [label="lrecvardecorstate CommentList:"];
-n48 [label="lrecvardecorstate CommentList:"];
-n49 [label="lrecvarorstate:"];
-n50 [label="lrecvarorstate:"];
-n51 [label="lrecvarorvardec:"];
-n52 [label="VarDeclaration:"];
-n53 [label="BOOLEAN:boolean"];
-n52 -> n53
-n54 [label="ID:A"];
-n52 -> n54
-n55 [label="SEMICOLON:;"];
-n52 -> n55
-n51 -> n52
-n56 [label="VarDeclaration:"];
-n57 [label="BOOLEAN:boolean"];
-n56 -> n57
-n58 [label="ID:B"];
-n56 -> n58
-n59 [label="SEMICOLON:;"];
-n56 -> n59
-n51 -> n56
+n47 [label="lrecvarorstate:"];
+n48 [label="lrecvarorstate:"];
+n49 [label="lrecvarorvardec:"];
+n50 [label="VarDeclaration:"];
+n51 [label="BOOLEAN:boolean"];
 n50 -> n51
-n60 [label="ASSIGNSTATEMENT:"];
-n61 [label="ID:A"];
-n60 -> n61
-n62 [label="EQUAL:="];
-n60 -> n62
-n63 [label="FALSE:false"];
-n60 -> n63
-n64 [label="SEMICOLON:;"];
-n60 -> n64
-n50 -> n60
+n52 [label="ID:A"];
+n50 -> n52
+n53 [label="SEMICOLON:;"];
+n50 -> n53
 n49 -> n50
-n65 [label="ASSIGNSTATEMENT:"];
-n66 [label="ID:B"];
-n65 -> n66
-n67 [label="EQUAL:="];
-n65 -> n67
-n68 [label="TRUE:true"];
-n65 -> n68
-n69 [label="SEMICOLON:;"];
-n65 -> n69
-n49 -> n65
+n54 [label="VarDeclaration:"];
+n55 [label="BOOLEAN:boolean"];
+n54 -> n55
+n56 [label="ID:B"];
+n54 -> n56
+n57 [label="SEMICOLON:;"];
+n54 -> n57
+n49 -> n54
 n48 -> n49
-n70 [label="EMPTY:ɛ"];
-n48 -> n70
-n71 [label="COMMENT://The following if-statements should generate the same tree."];
-n48 -> n71
+n58 [label="ASSIGNSTATEMENT:"];
+n59 [label="ID:A"];
+n58 -> n59
+n60 [label="EQUAL:="];
+n58 -> n60
+n61 [label="FALSE:false"];
+n58 -> n61
+n62 [label="SEMICOLON:;"];
+n58 -> n62
+n48 -> n58
 n47 -> n48
-n72 [label="lrecvarorstate:"];
-n73 [label="IF STATEMENT:"];
-n74 [label="IF:if"];
-n73 -> n74
-n75 [label="LPAREN:("];
-n73 -> n75
-n76 [label="ID:A"];
-n73 -> n76
-n77 [label="RPAREN:)"];
-n73 -> n77
-n78 [label="IF STATEMENT:"];
-n79 [label="IF:if"];
-n78 -> n79
-n80 [label="LPAREN:("];
-n78 -> n80
-n81 [label="ID:B"];
-n78 -> n81
-n82 [label="RPAREN:)"];
-n78 -> n82
-n83 [label="ASSIGNSTATEMENT:"];
-n84 [label="ID:B"];
-n83 -> n84
-n85 [label="EQUAL:="];
-n83 -> n85
-n86 [label="TRUE:true"];
-n83 -> n86
-n87 [label="SEMICOLON:;"];
-n83 -> n87
-n78 -> n83
-n88 [label="ELSE:else"];
-n89 [label="ASSIGNSTATEMENT:"];
-n90 [label="ID:B"];
-n89 -> n90
-n91 [label="EQUAL:="];
-n89 -> n91
-n92 [label="FALSE:false"];
-n89 -> n92
-n93 [label="SEMICOLON:;"];
-n89 -> n93
-n88 -> n89
-n78 -> n88
-n73 -> n78
-n94 [label="EMPTY:ɛ"];
-n73 -> n94
-n72 -> n73
-n95 [label="IF STATEMENT:"];
-n96 [label="IF:if"];
-n95 -> n96
-n97 [label="LPAREN:("];
-n95 -> n97
-n98 [label="ID:A"];
-n95 -> n98
-n99 [label="RPAREN:)"];
-n95 -> n99
-n100 [label="LBRACE STATEMENT RBRACE:"];
-n101 [label="LBRACE:{"];
+n63 [label="ASSIGNSTATEMENT:"];
+n64 [label="ID:B"];
+n63 -> n64
+n65 [label="EQUAL:="];
+n63 -> n65
+n66 [label="TRUE:true"];
+n63 -> n66
+n67 [label="SEMICOLON:;"];
+n63 -> n67
+n47 -> n63
+n68 [label="EMPTY:ɛ"];
+n47 -> n68
+n69 [label="COMMENT://The following if-statements should generate the same tree."];
+n47 -> n69
+n70 [label="lrecvarorstate:"];
+n71 [label="IF STATEMENT:"];
+n72 [label="IF:if"];
+n71 -> n72
+n73 [label="LPAREN:("];
+n71 -> n73
+n74 [label="ID:A"];
+n71 -> n74
+n75 [label="RPAREN:)"];
+n71 -> n75
+n76 [label="IF STATEMENT:"];
+n77 [label="IF:if"];
+n76 -> n77
+n78 [label="LPAREN:("];
+n76 -> n78
+n79 [label="ID:B"];
+n76 -> n79
+n80 [label="RPAREN:)"];
+n76 -> n80
+n81 [label="ASSIGNSTATEMENT:"];
+n82 [label="ID:B"];
+n81 -> n82
+n83 [label="EQUAL:="];
+n81 -> n83
+n84 [label="TRUE:true"];
+n81 -> n84
+n85 [label="SEMICOLON:;"];
+n81 -> n85
+n76 -> n81
+n86 [label="ELSE:else"];
+n87 [label="ASSIGNSTATEMENT:"];
+n88 [label="ID:B"];
+n87 -> n88
+n89 [label="EQUAL:="];
+n87 -> n89
+n90 [label="FALSE:false"];
+n87 -> n90
+n91 [label="SEMICOLON:;"];
+n87 -> n91
+n86 -> n87
+n76 -> n86
+n71 -> n76
+n92 [label="EMPTY:ɛ"];
+n71 -> n92
+n70 -> n71
+n93 [label="IF STATEMENT:"];
+n94 [label="IF:if"];
+n93 -> n94
+n95 [label="LPAREN:("];
+n93 -> n95
+n96 [label="ID:A"];
+n93 -> n96
+n97 [label="RPAREN:)"];
+n93 -> n97
+n98 [label="LBRACE STATEMENT RBRACE:"];
+n99 [label="LBRACE:{"];
+n98 -> n99
+n100 [label="IF STATEMENT:"];
+n101 [label="IF:if"];
 n100 -> n101
-n102 [label="IF STATEMENT:"];
-n103 [label="IF:if"];
-n102 -> n103
-n104 [label="LPAREN:("];
-n102 -> n104
-n105 [label="ID:B"];
-n102 -> n105
-n106 [label="RPAREN:)"];
-n102 -> n106
-n107 [label="ASSIGNSTATEMENT:"];
-n108 [label="ID:B"];
-n107 -> n108
-n109 [label="EQUAL:="];
-n107 -> n109
-n110 [label="TRUE:true"];
-n107 -> n110
-n111 [label="SEMICOLON:;"];
-n107 -> n111
-n102 -> n107
-n112 [label="ELSE:else"];
-n113 [label="ASSIGNSTATEMENT:"];
-n114 [label="ID:A"];
-n113 -> n114
-n115 [label="EQUAL:="];
-n113 -> n115
-n116 [label="FALSE:false"];
-n113 -> n116
-n117 [label="SEMICOLON:;"];
-n113 -> n117
-n112 -> n113
-n102 -> n112
+n102 [label="LPAREN:("];
 n100 -> n102
-n118 [label="RBRACE:}"];
-n100 -> n118
-n95 -> n100
-n119 [label="EMPTY:ɛ"];
-n95 -> n119
-n72 -> n95
-n47 -> n72
-n120 [label="EMPTY:ɛ"];
-n47 -> n120
+n103 [label="ID:B"];
+n100 -> n103
+n104 [label="RPAREN:)"];
+n100 -> n104
+n105 [label="ASSIGNSTATEMENT:"];
+n106 [label="ID:B"];
+n105 -> n106
+n107 [label="EQUAL:="];
+n105 -> n107
+n108 [label="TRUE:true"];
+n105 -> n108
+n109 [label="SEMICOLON:;"];
+n105 -> n109
+n100 -> n105
+n110 [label="ELSE:else"];
+n111 [label="ASSIGNSTATEMENT:"];
+n112 [label="ID:A"];
+n111 -> n112
+n113 [label="EQUAL:="];
+n111 -> n113
+n114 [label="FALSE:false"];
+n111 -> n114
+n115 [label="SEMICOLON:;"];
+n111 -> n115
+n110 -> n111
+n100 -> n110
+n98 -> n100
+n116 [label="RBRACE:}"];
+n98 -> n116
+n93 -> n98
+n117 [label="EMPTY:ɛ"];
+n93 -> n117
+n70 -> n93
+n47 -> n70
+n118 [label="EMPTY:ɛ"];
+n47 -> n118
 n39 -> n47
-n121 [label="RETURN:return"];
+n119 [label="RETURN:return"];
+n39 -> n119
+n120 [label="NUM:1"];
+n39 -> n120
+n121 [label="SEMICOLON:;"];
 n39 -> n121
-n122 [label="NUM:1"];
+n122 [label="RBRACE:}"];
 n39 -> n122
-n123 [label="SEMICOLON:;"];
-n39 -> n123
-n124 [label="RBRACE:}"];
-n39 -> n124
 n35 -> n39
-n125 [label="RBRACE:}"];
-n35 -> n125
+n123 [label="RBRACE:}"];
+n35 -> n123
 n1 -> n35
-n126 [label="END:"];
-n1 -> n126
+n124 [label="END:"];
+n1 -> n124
 n0 -> n1
 }

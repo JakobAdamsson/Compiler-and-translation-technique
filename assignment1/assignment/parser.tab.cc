@@ -1381,8 +1381,8 @@ namespace yy {
   case 52: // CommentMethod: CommentMethod lrecvardecorstate CommentList
 #line 392 "parser.yy"
             {
-              yylhs.value.as < Node * > () = new Node("lrecvardecorstate CommentList", "", yylineno);
-              yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
+              yylhs.value.as < Node * > () = yystack_[2].value.as < Node * > ();
+              //$$->children.push_back($1);
               yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
               yylhs.value.as < Node * > ()->children.push_back(yystack_[0].value.as < Node * > ());
             }
