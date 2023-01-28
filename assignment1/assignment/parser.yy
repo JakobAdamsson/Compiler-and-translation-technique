@@ -7,6 +7,8 @@
 %code requires{
   #include <string>
   #include "Node.h"
+  #include <vector>
+  #include <iostream>
 }
 %code{
   #define YY_DECL yy::parser::symbol_type yylex()
@@ -23,18 +25,18 @@
 %token <std::string> FALSE THIS NEW NOT LPAREN RPAREN AND OR LT GT EQ PLUS
 %token <std::string> MINUS TIMES DIVIDE DOT LENGTH LBRACE RBRACE COMMA IF RETURN 
 %token <std::string> ELSE WHILE PRINT EQUALSIGN PUBLIC STATIC VOID MAIN STRING CLASS 
-%token <std::string> END 
+%token <std::string> END COMMENT
 %token END 0 "end of file"
 
 //defition of operator precedence. See https://www.gnu.org/software/bison/manual/bison.html#Precedence-Decl
-
 
 // definition of the production rules. All production rules are of type Node
 %type <Node *> Type VarDeclaration Term Expression lrecexp Statement 
 %type <Node *> Program lrecstatement MainClass StateQuest StateEpsilon 
 %type <Node *> MethodDeclaration lrecvardec lrectype lrecparameter lrecvardecorstate lrecmethoddec
-%type <Node *> ClassDeclaration Goal lrecclassdec
+%type <Node *> ClassDeclaration Goal lrecclassdec CommentList CommentMethod Comments CommentClass
 
+%nonassoc COMMENT
 %%
 root: Program {root = $1;};
 
@@ -81,8 +83,12 @@ Program: Type
             {
               $$ = new Node("Program", "", yylineno);
               $$->children.push_back($1);
+            }
+            | Comments
+            {
+              $$ = new Node("Program", "", yylineno);
+              $$->children.push_back($1);
             };
-
 Type: INT LBRACKET RBRACKET 
             {
               $$ = new Node("ARRDEC", "", yylineno);
@@ -333,7 +339,7 @@ MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET
             };
 
 
-MethodDeclaration: PUBLIC Type ID LPAREN lrecparameter RPAREN LBRACE lrecvardecorstate RETURN Expression SEMICOLON RBRACE
+MethodDeclaration: PUBLIC Type ID LPAREN lrecparameter RPAREN LBRACE CommentMethod RETURN Expression SEMICOLON RBRACE
             {
               $$ = new Node("MethodDeclaration", "", yylineno);
               $$->children.push_back(new Node("PUBLIC", $1, yylineno));
@@ -350,19 +356,15 @@ MethodDeclaration: PUBLIC Type ID LPAREN lrecparameter RPAREN LBRACE lrecvardeco
               $$->children.push_back(new Node("RBRACE", $12, yylineno));
             };
 
-
-
-
-ClassDeclaration: CLASS ID LBRACE lrecvardec lrecmethoddec RBRACE
+ClassDeclaration: CLASS ID LBRACE CommentClass RBRACE
             {
               $$ = new Node("ClassDeclaration", "", yylineno);
               $$->children.push_back(new Node("CLASS", $1, yylineno));
               $$->children.push_back(new Node("ID", $2, yylineno));
               $$->children.push_back(new Node("LBRACE", $3, yylineno));
               $$->children.push_back($4);
-              $$->children.push_back($5);
-              $$->children.push_back(new Node("RBRACE", $6, yylineno));
-            
+              // $$->children.push_back($5);
+              $$->children.push_back(new Node("RBRACE", $5, yylineno));
             };
 
 Goal: MainClass lrecclassdec END
@@ -372,10 +374,73 @@ Goal: MainClass lrecclassdec END
               $$->children.push_back($2);
               $$->children.push_back(new Node("END", $3, yylineno));
             };
+  
+Comments: COMMENT
+            {
+              $$ = new Node("COMMENT", $1, yylineno);
+            };
 
+CommentMethod: lrecvardecorstate
+            {
+              $$ = $1;
+            }
+            | CommentList
+            {
+               $$ = $1;
+            }
+            | CommentMethod lrecvardecorstate CommentList
+            {
+              $$ = new Node("lrecvardecorstate CommentList", "", yylineno);
+              $$->children.push_back($1);
+              $$->children.push_back($2);
+              $$->children.push_back($3);
+            };
+
+
+CommentClass: lrecvardec
+            {
+              $$ = $1;
+            }
+            | lrecmethoddec
+            {
+              $$ = $1;
+            }
+            | CommentList
+            {
+              $$ = $1;
+            }
+            | CommentClass lrecvardec lrecmethoddec
+            {
+              $$ = new Node("CommentVarMethod", "", yylineno);
+              $$->children.push_back($1);
+              $$->children.push_back($2);
+              $$->children.push_back($3);
+            }
+            | CommentClass lrecvardec CommentList lrecmethoddec
+            {
+              $$ = new Node("CommentVarListMethod", "", yylineno);
+              $$->children.push_back($1);
+              $$->children.push_back($3);
+              $$->children.push_back($4);
+            };
+
+CommentList: %empty
+            {
+              $$ = new Node("EMPTY", "ɛ", yylineno);
+            }
+            |COMMENT
+            {
+              $$ = new Node("COMMENT", $1, yylineno);
+            }
+            | CommentList COMMENT
+            {
+              $$ = new Node("CommentList", "", yylineno);
+              $$->children.push_back($1);
+              $$->children.push_back(new Node("COMMENT", $2, yylineno));
+            };
 lrecexp: %empty
             {
-              $$ = new Node("EMPTY", "", yylineno);
+              $$ = new Node("EMPTY", "ɛ", yylineno);
             }
             | Expression
             {
