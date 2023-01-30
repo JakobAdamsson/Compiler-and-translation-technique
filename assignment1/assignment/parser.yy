@@ -45,59 +45,34 @@
 %type <Node *> ClassDeclaration Goal lrecclassdec 
 
 %%
-root: Program {root = $1;};
+root: Program{root = $1;};
+//root: Program {root = $1;};
 
 
-Program: Type
+Program: Goal
             {
               $$ = $1;
             }
-            
-            | VarDeclaration
+            | Program ClassDeclaration
             {
               $$ = $1;
-            } 
-            
-            | Expression
-            {
-              $$ = $1;
-            }
-            
-            | Statement
-            {          
-              $$ = $1;
-            }
-            | MainClass
-            {
-              $$ = $1;
-            }
-            | MethodDeclaration
-            {
-              $$ = $1;
-            }
-            | ClassDeclaration
-            {
-              $$ = $1;
-            }
-            | Goal
-            {
-              $$ = $1;
+              $$->children.push_back($2);
             };
 Type: INT LBRACKET RBRACKET 
             {
               $$ = new Node("ARRDEC", "", yylineno);
               $$->children.push_back(new Node("INTARR", $1, yylineno));
-              $$->children.push_back(new Node("LBRACKET", $2, yylineno));
-              $$->children.push_back(new Node("RBRACKET", $3, yylineno));
+              //$$->children.push_back(new Node("LBRACKET", $2, yylineno));
+              //$$->children.push_back(new Node("RBRACKET", $3, yylineno));
             }
             | INT 
             {
               $$ = new Node("INT", $1, yylineno);
             }
 
-            | BOOLEAN{
+            | BOOLEAN
+            {
               $$ = new Node("BOOLEAN", $1, yylineno);
-
             }
             | ID
             {
@@ -108,7 +83,7 @@ VarDeclaration: Type ID SEMICOLON
               $$ = new Node("VarDeclaration", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back(new Node("ID", $2, yylineno));
-              $$->children.push_back(new Node("SEMICOLON", $3, yylineno));
+              //$$->children.push_back(new Node("SEMICOLON", $3, yylineno));
             };
 
 
@@ -119,25 +94,25 @@ Expression: Term
 
             | Expression AND Expression
             {
-              $$ = new Node("AND", "&&", yylineno);
+              $$ = new Node("AND", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression OR Expression
             {
-              $$ = new Node("OR", "||", yylineno);
+              $$ = new Node("OR", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression LT Expression
             {
-              $$ = new Node("LT", "<", yylineno);
+              $$ = new Node("LT", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression GT Expression
             {
-              $$ = new Node("GT", ">", yylineno);
+              $$ = new Node("GT", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
@@ -176,9 +151,9 @@ Expression: Term
             {
               $$ = new Node("ARRDEC", "", yylineno);
               $$->children.push_back($1);
-              $$->children.push_back(new Node("LBRACKET", $2, yylineno));
+              //$$->children.push_back(new Node("LBRACKET", $2, yylineno));
               $$->children.push_back($3);
-              $$->children.push_back(new Node("RBRACKET", $4, yylineno));
+              //$$->children.push_back(new Node("RBRACKET", $4, yylineno));
             }
             | Expression DOT LENGTH
             {
@@ -193,12 +168,12 @@ Expression: Term
               $$->children.push_back($1);
               $$->children.push_back(new Node("DOT", $2, yylineno));
               $$->children.push_back(new Node("ID", $3, yylineno));
-              $$->children.push_back(new Node("LPAREN", $4, yylineno));
+              //$$->children.push_back(new Node("LPAREN", $4, yylineno));
               $$->children.push_back($5);
-              $$->children.push_back(new Node("RPAREN", $6, yylineno));
+              //$$->children.push_back(new Node("RPAREN", $6, yylineno));
             };
 
-Term:         NUM
+Term:       NUM
             {
               $$ = new Node("NUM", $1, yylineno);
             }
@@ -206,64 +181,57 @@ Term:         NUM
             {
               $$ = new Node("TRUE", $1, yylineno);
             }
-
             | FALSE
             {
               $$ = new Node("FALSE", $1, yylineno);
             }
-
             | ID
             {
               $$ = new Node("ID", $1, yylineno);
             }
-
             | THIS
             {
               $$ = new Node("THIS", $1, yylineno);
             }
-
             | NEW INT LBRACKET Expression RBRACKET
             {
               $$ = new Node("INTARRDEC", "", yylineno);
               $$->children.push_back(new Node("NEW", $1, yylineno));
               $$->children.push_back(new Node("INT", $2, yylineno));
-              $$->children.push_back(new Node("LBRACKET", $3, yylineno));
+              //$$->children.push_back(new Node("LBRACKET", $3, yylineno));
               $$->children.push_back($4);
-              $$->children.push_back(new Node("RBRACKET", $5, yylineno));
+              //$$->children.push_back(new Node("RBRACKET", $5, yylineno));
             }
-
             | NEW ID LPAREN RPAREN
             {
               $$ = new Node("DECEXP", "", yylineno);
               $$->children.push_back(new Node("NEW", $1, yylineno));
               $$->children.push_back(new Node("ID", $2, yylineno));
-              $$->children.push_back(new Node("LPAREN", $3, yylineno));
-              $$->children.push_back(new Node("RPAREN", $4, yylineno));
-            }
-             
+              //$$->children.push_back(new Node("LPAREN", $3, yylineno));
+              //$$->children.push_back(new Node("RPAREN", $4, yylineno));
+            } 
             | NOT Expression
             {
               $$ = new Node("NOTEXP", "", yylineno);
               $$->children.push_back($2);
             }
-
             | LPAREN Expression RPAREN
             {
               $$ = new Node("LPAREN EXP RPAREN", "", yylineno);
-              $$->children.push_back(new Node("LPAREN", $1, yylineno));
+              //$$->children.push_back(new Node("LPAREN", $1, yylineno));
               $$->children.push_back($2);
-              $$->children.push_back(new Node("RPAREN", $3, yylineno));
+              //$$->children.push_back(new Node("RPAREN", $3, yylineno));
             };
 Statement: ID LBRACKET Expression RBRACKET EQUALSIGN Expression SEMICOLON
             {
               $$ = new Node("ARRSTATEMENT", "", yylineno);
               $$->children.push_back(new Node("ID", $1, yylineno));
-              $$->children.push_back(new Node("LBRACKET", $2, yylineno));
+              //$$->children.push_back(new Node("LBRACKET", $2, yylineno));
               $$->children.push_back($3);
-              $$->children.push_back(new Node("RBRACKET", $4, yylineno));
+              //$$->children.push_back(new Node("RBRACKET", $4, yylineno));
               $$->children.push_back(new Node("EQUALSIGN", $5, yylineno));
               $$->children.push_back($6);
-              $$->children.push_back(new Node("SEMICOLON", $7, yylineno));
+              //$$->children.push_back(new Node("SEMICOLON", $7, yylineno));
             }
             | ID EQUALSIGN Expression SEMICOLON
             {
@@ -271,107 +239,99 @@ Statement: ID LBRACKET Expression RBRACKET EQUALSIGN Expression SEMICOLON
               $$->children.push_back(new Node("ID", $1, yylineno));
               $$->children.push_back(new Node("EQUAL", $2, yylineno));
               $$->children.push_back($3);
-              $$->children.push_back(new Node("SEMICOLON", $4, yylineno));
+              //$$->children.push_back(new Node("SEMICOLON", $4, yylineno));
             }
             | PRINT LPAREN Expression RPAREN SEMICOLON
             {
               $$ = new Node("PRINTSTATEMENT", $1, yylineno);
-              $$->children.push_back(new Node("LPAREN", $2, yylineno));
+              //$$->children.push_back(new Node("LPAREN", $2, yylineno));
               $$->children.push_back($3);
-              $$->children.push_back(new Node("RPAREN", $4, yylineno));
-              $$->children.push_back(new Node("SEMICOLON", $5, yylineno));
-
+              //$$->children.push_back(new Node("RPAREN", $4, yylineno));
+              //$$->children.push_back(new Node("SEMICOLON", $5, yylineno));
             }
             | WHILE LPAREN Expression RPAREN Statement
             {
               $$ = new Node("WHILE STATEMENT", $1, yylineno);
-              $$->children.push_back(new Node("LPAREN", $2, yylineno));
+              //$$->children.push_back(new Node("LPAREN", $2, yylineno));
               $$->children.push_back($3);
-              $$->children.push_back(new Node("RPAREN", $4, yylineno));
+              //$$->children.push_back(new Node("RPAREN", $4, yylineno));
               $$->children.push_back($5);
             }
             | LBRACE lrecstatement RBRACE
             {
               $$ = new Node("LBRACE STATEMENT RBRACE", "", yylineno);
-              $$->children.push_back(new Node("LBRACE", $1, yylineno));
+              //$$->children.push_back(new Node("LBRACE", $1, yylineno));
               $$->children.push_back($2);
-              $$->children.push_back(new Node("RBRACE", $3, yylineno));
+              //$$->children.push_back(new Node("RBRACE", $3, yylineno));
             }
+            // INTE DENNA :(p)
             | IF LPAREN Expression RPAREN Statement StateEpsilon
             {
               $$ = new Node("IF STATEMENT", "", yylineno);
               $$->children.push_back(new Node("IF", $1, yylineno));
-              $$->children.push_back(new Node("LPAREN", $2, yylineno));
+              //$$->children.push_back(new Node("LPAREN", $2, yylineno));
               $$->children.push_back($3);
-              $$->children.push_back(new Node("RPAREN", $4, yylineno));
+              //$$->children.push_back(new Node("RPAREN", $4, yylineno));
               $$->children.push_back($5);
               $$->children.push_back($6);
             };
-
-
-
 MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LBRACE lrecstatement RBRACE RBRACE
             {
               $$ = new Node("MainClass", "", yylineno);
               $$->children.push_back(new Node("PUBLIC", $1, yylineno));
               $$->children.push_back(new Node("CLASS", $2, yylineno));
               $$->children.push_back(new Node("ID", $3, yylineno));
-              $$->children.push_back(new Node("LBRACE", $4, yylineno));
+              //$$->children.push_back(new Node("LBRACE", $4, yylineno));
               $$->children.push_back(new Node("PUBLIC", $5, yylineno));
               $$->children.push_back(new Node("STATIC", $6, yylineno));
               $$->children.push_back(new Node("VOID", $7, yylineno));
               $$->children.push_back(new Node("MAIN", $8, yylineno));
               $$->children.push_back(new Node("LPAREN", $9, yylineno));
               $$->children.push_back(new Node("STRING", $10, yylineno));
-              $$->children.push_back(new Node("LBRACKET", $11, yylineno));
-              $$->children.push_back(new Node("RBRACKET", $12, yylineno));
+              //$$->children.push_back(new Node("LBRACKET", $11, yylineno));
+              //$$->children.push_back(new Node("RBRACKET", $12, yylineno));
               $$->children.push_back(new Node("ID", $13, yylineno));
-              $$->children.push_back(new Node("RPAREN", $14, yylineno));
-              $$->children.push_back(new Node("LBRACE", $15, yylineno));
+              //$$->children.push_back(new Node("RPAREN", $14, yylineno));
+              //$$->children.push_back(new Node("LBRACE", $15, yylineno));
               $$->children.push_back($16);
-              $$->children.push_back(new Node("RBRACE", $17, yylineno));
-              $$->children.push_back(new Node("RBRACE", $18, yylineno));
+              //$$->children.push_back(new Node("RBRACE", $17, yylineno));
+              //$$->children.push_back(new Node("RBRACE", $18, yylineno));
             };
-
-
 MethodDeclaration: PUBLIC Type ID LPAREN lrecparameter RPAREN LBRACE lrecvardecorstate RETURN Expression SEMICOLON RBRACE
             {
               $$ = new Node("MethodDeclaration", "", yylineno);
               $$->children.push_back(new Node("PUBLIC", $1, yylineno));
               $$->children.push_back($2);
               $$->children.push_back(new Node("ID", $3, yylineno));
-              $$->children.push_back(new Node("LPAREN", $4, yylineno));
+              //$$->children.push_back(new Node("LPAREN", $4, yylineno));
               $$->children.push_back($5);
-              $$->children.push_back(new Node("RPAREN", $6, yylineno));
-              $$->children.push_back(new Node("LBRACE", $7, yylineno));
+              //$$->children.push_back(new Node("RPAREN", $6, yylineno));
+              //$$->children.push_back(new Node("LBRACE", $7, yylineno));
               $$->children.push_back($8);
               $$->children.push_back(new Node("RETURN", $9, yylineno));
               $$->children.push_back($10);
-              $$->children.push_back(new Node("SEMICOLON", $11, yylineno));
-              $$->children.push_back(new Node("RBRACE", $12, yylineno));
+              //$$->children.push_back(new Node("SEMICOLON", $11, yylineno));
+              //$$->children.push_back(new Node("RBRACE", $12, yylineno));
             };
-
 ClassDeclaration: CLASS ID LBRACE lrecvardec lrecmethoddec RBRACE
             {
               $$ = new Node("ClassDeclaration", "", yylineno);
               $$->children.push_back(new Node("CLASS", $1, yylineno));
               $$->children.push_back(new Node("ID", $2, yylineno));
-              $$->children.push_back(new Node("LBRACE", $3, yylineno));
+              //$$->children.push_back(new Node("LBRACE", $3, yylineno));
               $$->children.push_back($4);
               $$->children.push_back($5);
-              $$->children.push_back(new Node("RBRACE", $6, yylineno));
+              //$$->children.push_back(new Node("RBRACE", $6, yylineno));
             };
-
 Goal: MainClass lrecclassdec END
             {
               $$ = new Node("Goal", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($2);
             };
-  
 lrecexp: %empty
             {
-              $$ = new Node("EMPTY", "ɛ", yylineno);
+              $$ = new Node("EMPTY", "", yylineno);
             }
             | Expression
             {
@@ -379,7 +339,7 @@ lrecexp: %empty
             }
             | lrecexp COMMA Expression   
             {
-              $$ = new Node("lrecexp", "ɛ", yylineno);
+              $$ = new Node("lrecexp", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back(new Node("COMMA", $2, yylineno));
               $$->children.push_back($3);
@@ -398,7 +358,7 @@ lrecstatement: Statement
 
 lrecvardec: %empty
               {
-                $$ = new Node("EMPTY", "ɛ", yylineno);
+                $$ = new Node("EMPTY", "", yylineno);
               }
               | VarDeclaration
               {
@@ -412,7 +372,7 @@ lrecvardec: %empty
               };
 lrecparameter: %empty
               {
-                $$ = new Node("EMPTY", "ɛ", yylineno);
+                $$ = new Node("EMPTY", "", yylineno);
               }
               | Type ID
               {
@@ -431,7 +391,7 @@ lrecparameter: %empty
 
 lrecvardecorstate: %empty
               {
-                $$ = new Node("EMPTY", "ɛ", yylineno);
+                $$ = new Node("EMPTY", "", yylineno);
               }
               | VarDeclaration
               {
@@ -465,7 +425,11 @@ lrecmethoddec: MethodDeclaration
                 $$->children.push_back($2);
               };
               
-StateEpsilon: ELSE Statement 
+StateEpsilon: %empty
+              {
+                $$ = new Node("EMPTY", "", yylineno);
+              }
+              | ELSE Statement 
               {
                 $$ = new Node("ELSE", $1, yylineno);
                 $$->children.push_back($2);

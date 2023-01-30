@@ -1,73 +1,341 @@
 digraph {
-n0 [label="ClassDeclaration:"];
-n1 [label="CLASS:class"];
-n0 -> n1
-n2 [label="ID:List"];
-n0 -> n2
-n3 [label="LBRACE:{"];
-n0 -> n3
-n4 [label="lrecvardec:"];
-n5 [label="lrecvardec:"];
-n6 [label="VarDeclaration:"];
-n7 [label="IDENTIFIER:Element"];
-n6 -> n7
-n8 [label="ID:elem"];
-n6 -> n8
-n9 [label="SEMICOLON:;"];
-n6 -> n9
-n5 -> n6
-n10 [label="VarDeclaration:"];
-n11 [label="IDENTIFIER:List"];
-n10 -> n11
-n12 [label="ID:next"];
-n10 -> n12
-n13 [label="SEMICOLON:;"];
-n10 -> n13
-n5 -> n10
-n4 -> n5
-n14 [label="VarDeclaration:"];
-n15 [label="BOOLEAN:boolean"];
+n0 [label="Goal:"];
+n1 [label="MainClass:"];
+n2 [label="PUBLIC:public"];
+n1 -> n2
+n3 [label="CLASS:class"];
+n1 -> n3
+n4 [label="ID:OperatorPriority"];
+n1 -> n4
+n5 [label="PUBLIC:public"];
+n1 -> n5
+n6 [label="STATIC:static"];
+n1 -> n6
+n7 [label="VOID:void"];
+n1 -> n7
+n8 [label="MAIN:main"];
+n1 -> n8
+n9 [label="LPAREN:("];
+n1 -> n9
+n10 [label="STRING:String"];
+n1 -> n10
+n11 [label="ID:a"];
+n1 -> n11
+n12 [label="PRINTSTATEMENT:System.out.println"];
+n13 [label="FCALL:"];
+n14 [label="DECEXP:"];
+n15 [label="NEW:new"];
 n14 -> n15
-n16 [label="ID:end"];
+n16 [label="ID:OP"];
 n14 -> n16
-n17 [label="SEMICOLON:;"];
-n14 -> n17
-n4 -> n14
-n0 -> n4
-n18 [label="MethodDeclaration:"];
-n19 [label="PUBLIC:public"];
-n18 -> n19
-n20 [label="BOOLEAN:boolean"];
-n18 -> n20
-n21 [label="ID:Init"];
-n18 -> n21
-n22 [label="LPAREN:("];
-n18 -> n22
-n23 [label="EMPTY:ɛ"];
-n18 -> n23
-n24 [label="RPAREN:)"];
-n18 -> n24
-n25 [label="LBRACE:{"];
-n18 -> n25
-n26 [label="ASSIGNSTATEMENT:"];
-n27 [label="ID:end"];
-n26 -> n27
-n28 [label="EQUAL:="];
-n26 -> n28
-n29 [label="TRUE:true"];
-n26 -> n29
-n30 [label="SEMICOLON:;"];
-n26 -> n30
-n18 -> n26
-n31 [label="RETURN:return"];
-n18 -> n31
-n32 [label="TRUE:true"];
-n18 -> n32
-n33 [label="SEMICOLON:;"];
-n18 -> n33
-n34 [label="RBRACE:}"];
-n18 -> n34
-n0 -> n18
-n35 [label="RBRACE:}"];
-n0 -> n35
+n13 -> n14
+n17 [label="DOT:."];
+n13 -> n17
+n18 [label="ID:arithmetic"];
+n13 -> n18
+n19 [label="EMPTY:"];
+n13 -> n19
+n12 -> n13
+n1 -> n12
+n0 -> n1
+n20 [label="ClassDeclaration:"];
+n21 [label="CLASS:class"];
+n20 -> n21
+n22 [label="ID:OP"];
+n20 -> n22
+n23 [label="EMPTY:"];
+n20 -> n23
+n24 [label="lrecmethoddec:"];
+n25 [label="MethodDeclaration:"];
+n26 [label="PUBLIC:public"];
+n25 -> n26
+n27 [label="INT:int"];
+n25 -> n27
+n28 [label="ID:arithmetic"];
+n25 -> n28
+n29 [label="EMPTY:"];
+n25 -> n29
+n30 [label="lrecvarorstate:"];
+n31 [label="lrecvarorstate:"];
+n32 [label="lrecvarorvardec:"];
+n33 [label="lrecvarorstate:"];
+n34 [label="lrecvarorvardec:"];
+n35 [label="lrecvarorstate:"];
+n36 [label="VarDeclaration:"];
+n37 [label="INT:int"];
+n36 -> n37
+n38 [label="ID:b"];
+n36 -> n38
+n35 -> n36
+n39 [label="ASSIGNSTATEMENT:"];
+n40 [label="ID:b"];
+n39 -> n40
+n41 [label="EQUAL:="];
+n39 -> n41
+n42 [label="NUM:4"];
+n39 -> n42
+n35 -> n39
+n34 -> n35
+n43 [label="VarDeclaration:"];
+n44 [label="INT:int"];
+n43 -> n44
+n45 [label="ID:c"];
+n43 -> n45
+n34 -> n43
+n33 -> n34
+n46 [label="ASSIGNSTATEMENT:"];
+n47 [label="ID:c"];
+n46 -> n47
+n48 [label="EQUAL:="];
+n46 -> n48
+n49 [label="NUM:8"];
+n46 -> n49
+n33 -> n46
+n32 -> n33
+n50 [label="VarDeclaration:"];
+n51 [label="INT:int"];
+n50 -> n51
+n52 [label="ID:ret"];
+n50 -> n52
+n32 -> n50
+n31 -> n32
+n53 [label="ASSIGNSTATEMENT:"];
+n54 [label="ID:ret"];
+n53 -> n54
+n55 [label="EQUAL:="];
+n53 -> n55
+n56 [label="PLUS:"];
+n57 [label="MINUS:"];
+n58 [label="PLUS:"];
+n59 [label="NUM:1"];
+n58 -> n59
+n60 [label="PLUS:+"];
+n58 -> n60
+n61 [label="DIVIDE:"];
+n62 [label="NUM:18"];
+n61 -> n62
+n63 [label="NUM:3"];
+n61 -> n63
+n58 -> n61
+n57 -> n58
+n64 [label="ID:b"];
+n57 -> n64
+n56 -> n57
+n65 [label="PLUS:+"];
+n56 -> n65
+n66 [label="TIMES:"];
+n67 [label="ID:c"];
+n66 -> n67
+n68 [label="NUM:9"];
+n66 -> n68
+n56 -> n66
+n53 -> n56
+n31 -> n53
+n30 -> n31
+n69 [label="ASSIGNSTATEMENT:"];
+n70 [label="ID:ret"];
+n69 -> n70
+n71 [label="EQUAL:="];
+n69 -> n71
+n72 [label="PLUS:"];
+n73 [label="MINUS:"];
+n74 [label="PLUS:"];
+n75 [label="NUM:1"];
+n74 -> n75
+n76 [label="PLUS:+"];
+n74 -> n76
+n77 [label="LPAREN EXP RPAREN:"];
+n78 [label="DIVIDE:"];
+n79 [label="NUM:18"];
+n78 -> n79
+n80 [label="NUM:3"];
+n78 -> n80
+n77 -> n78
+n74 -> n77
+n73 -> n74
+n81 [label="ID:b"];
+n73 -> n81
+n72 -> n73
+n82 [label="PLUS:+"];
+n72 -> n82
+n83 [label="LPAREN EXP RPAREN:"];
+n84 [label="TIMES:"];
+n85 [label="ID:c"];
+n84 -> n85
+n86 [label="NUM:9"];
+n84 -> n86
+n83 -> n84
+n72 -> n83
+n69 -> n72
+n30 -> n69
+n25 -> n30
+n87 [label="RETURN:return"];
+n25 -> n87
+n88 [label="ID:ret"];
+n25 -> n88
+n24 -> n25
+n89 [label="MethodDeclaration:"];
+n90 [label="PUBLIC:public"];
+n89 -> n90
+n91 [label="BOOLEAN:boolean"];
+n89 -> n91
+n92 [label="ID:relational"];
+n89 -> n92
+n93 [label="EMPTY:"];
+n89 -> n93
+n94 [label="lrecvarorstate:"];
+n95 [label="lrecvarorstate:"];
+n96 [label="lrecvarorvardec:"];
+n97 [label="lrecvarorstate:"];
+n98 [label="lrecvarorstate:"];
+n99 [label="lrecvarorstate:"];
+n100 [label="lrecvarorstate:"];
+n101 [label="lrecvarorvardec:"];
+n102 [label="lrecvarorvardec:"];
+n103 [label="lrecvarorvardec:"];
+n104 [label="VarDeclaration:"];
+n105 [label="INT:int"];
+n104 -> n105
+n106 [label="ID:a"];
+n104 -> n106
+n103 -> n104
+n107 [label="VarDeclaration:"];
+n108 [label="INT:int"];
+n107 -> n108
+n109 [label="ID:b"];
+n107 -> n109
+n103 -> n107
+n102 -> n103
+n110 [label="VarDeclaration:"];
+n111 [label="BOOLEAN:boolean"];
+n110 -> n111
+n112 [label="ID:c"];
+n110 -> n112
+n102 -> n110
+n101 -> n102
+n113 [label="VarDeclaration:"];
+n114 [label="BOOLEAN:boolean"];
+n113 -> n114
+n115 [label="ID:d"];
+n113 -> n115
+n101 -> n113
+n100 -> n101
+n116 [label="ASSIGNSTATEMENT:"];
+n117 [label="ID:a"];
+n116 -> n117
+n118 [label="EQUAL:="];
+n116 -> n118
+n119 [label="NUM:10"];
+n116 -> n119
+n100 -> n116
+n99 -> n100
+n120 [label="ASSIGNSTATEMENT:"];
+n121 [label="ID:b"];
+n120 -> n121
+n122 [label="EQUAL:="];
+n120 -> n122
+n123 [label="NUM:12"];
+n120 -> n123
+n99 -> n120
+n98 -> n99
+n124 [label="ASSIGNSTATEMENT:"];
+n125 [label="ID:d"];
+n124 -> n125
+n126 [label="EQUAL:="];
+n124 -> n126
+n127 [label="FALSE:false"];
+n124 -> n127
+n98 -> n124
+n97 -> n98
+n128 [label="ASSIGNSTATEMENT:"];
+n129 [label="ID:c"];
+n128 -> n129
+n130 [label="EQUAL:="];
+n128 -> n130
+n131 [label="TRUE:true"];
+n128 -> n131
+n97 -> n128
+n96 -> n97
+n132 [label="VarDeclaration:"];
+n133 [label="IDENTIFIER:booleat"];
+n132 -> n133
+n134 [label="ID:ret"];
+n132 -> n134
+n96 -> n132
+n95 -> n96
+n135 [label="ASSIGNSTATEMENT:"];
+n136 [label="ID:ret"];
+n135 -> n136
+n137 [label="EQUAL:="];
+n135 -> n137
+n138 [label="OR:"];
+n139 [label="AND:"];
+n140 [label="LT:"];
+n141 [label="ID:a"];
+n140 -> n141
+n142 [label="ID:b"];
+n140 -> n142
+n139 -> n140
+n143 [label="NOTEXP:"];
+n144 [label="ID:d"];
+n143 -> n144
+n139 -> n143
+n138 -> n139
+n145 [label="EQ:"];
+n146 [label="ID:d"];
+n145 -> n146
+n147 [label="NOTEXP:"];
+n148 [label="ID:c"];
+n147 -> n148
+n145 -> n147
+n138 -> n145
+n135 -> n138
+n95 -> n135
+n94 -> n95
+n149 [label="ASSIGNSTATEMENT:"];
+n150 [label="ID:ret"];
+n149 -> n150
+n151 [label="EQUAL:="];
+n149 -> n151
+n152 [label="OR:"];
+n153 [label="LPAREN EXP RPAREN:"];
+n154 [label="AND:"];
+n155 [label="LPAREN EXP RPAREN:"];
+n156 [label="LT:"];
+n157 [label="ID:a"];
+n156 -> n157
+n158 [label="ID:b"];
+n156 -> n158
+n155 -> n156
+n154 -> n155
+n159 [label="LPAREN EXP RPAREN:"];
+n160 [label="NOTEXP:"];
+n161 [label="ID:d"];
+n160 -> n161
+n159 -> n160
+n154 -> n159
+n153 -> n154
+n152 -> n153
+n162 [label="LPAREN EXP RPAREN:"];
+n163 [label="EQ:"];
+n164 [label="ID:d"];
+n163 -> n164
+n165 [label="LPAREN EXP RPAREN:"];
+n166 [label="NOTEXP:"];
+n167 [label="ID:c"];
+n166 -> n167
+n165 -> n166
+n163 -> n165
+n162 -> n163
+n152 -> n162
+n149 -> n152
+n94 -> n149
+n89 -> n94
+n168 [label="RETURN:return"];
+n89 -> n168
+n169 [label="ID:ret"];
+n89 -> n169
+n24 -> n89
+n20 -> n24
+n0 -> n20
 }
