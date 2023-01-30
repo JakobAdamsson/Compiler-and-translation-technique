@@ -1,15 +1,16 @@
+// A class
 class List
 {
+    // A class variable
     Element elem ;
     List next ;
     boolean end ;
-
-    // Initialize the node list as the last node
-    public boolean Init()
+    // Hej
+    public boolean Init() // HEJ
     {
-        // True or false
-		end = true ;
-        // Return true
+        // Something
+		end = true ; // HEJ!
 		return true ;
+        // Hejsan
     }
 }

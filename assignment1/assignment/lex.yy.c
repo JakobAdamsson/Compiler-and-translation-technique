@@ -388,21 +388,21 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[133] =
     {   0,
-        0,    0,   45,   43,   42,   44,   10,   43,   11,   12,
-       20,   18,   30,   19,   22,   21,   40,   40,    5,   15,
-       31,   16,   41,   41,    2,    3,   41,   41,   41,   41,
+        0,    0,   45,   43,   42,   44,   11,   43,   12,   13,
+       21,   19,   31,   20,   23,   22,   40,   40,    6,   16,
+       32,   17,   41,   41,    3,    4,   41,   41,   41,   41,
        41,   41,   41,   41,   41,   41,   41,   41,   41,   41,
-       24,   43,   25,   42,   13,   39,   40,   17,   41,   41,
-       41,   41,   41,   41,   41,   26,   41,   41,   41,   41,
-       41,   41,   41,   41,   41,   41,   41,   14,   39,   41,
-       41,   41,   41,   41,   41,    1,   41,   41,    9,   41,
+       25,   43,   26,   42,   14,    1,   40,   18,   41,   41,
+       41,   41,   41,   41,   41,   27,   41,   41,   41,   41,
+       41,   41,   41,   41,   41,   41,   41,   15,    1,   41,
+       41,   41,   41,   41,   41,    2,   41,   41,   10,   41,
        41,   41,   41,   41,   41,   41,   41,   41,   41,   41,
-       27,   41,   41,   35,   41,   41,   41,    8,    6,   34,
+       28,   41,   41,   36,   41,   41,   41,    9,    7,   35,
 
-       41,   41,   41,   41,   37,    7,   41,   41,   41,   41,
-       28,   36,   41,   41,   23,   32,   38,   33,    0,    4,
+       41,   41,   41,   41,   38,    8,   41,   41,   41,   41,
+       29,   37,   41,   41,   24,   33,   39,   34,    0,    5,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-       29,    0
+       30,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -787,8 +787,7 @@ YY_DECL
 	{
 #line 8 "lexer.flex"
 
-
-#line 792 "lex.yy.c"
+#line 791 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -853,229 +852,229 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
+#line 9 "lexer.flex"
+{printf("Found Comment!\n");/* DO NOTHING */ }
+	YY_BREAK
+case 2:
+YY_RULE_SETUP
 #line 10 "lexer.flex"
 {printf("Found int\n") ; return yy::parser::make_INT(yytext);}
 	YY_BREAK
-case 2:
+case 3:
 YY_RULE_SETUP
 #line 11 "lexer.flex"
 {printf("Found [\n") ; return yy::parser::make_LBRACKET(yytext);}
 	YY_BREAK
-case 3:
+case 4:
 YY_RULE_SETUP
 #line 12 "lexer.flex"
 {printf("Found ]\n") ; return yy::parser::make_RBRACKET(yytext);}
 	YY_BREAK
-case 4:
+case 5:
 YY_RULE_SETUP
 #line 13 "lexer.flex"
 {printf("Found boolean\n") ; return yy::parser::make_BOOLEAN(yytext);}
 	YY_BREAK
-case 5:
+case 6:
 YY_RULE_SETUP
 #line 14 "lexer.flex"
 {printf("Found semicolon\n");return yy::parser::make_SEMICOLON(yytext);}
 	YY_BREAK
-case 6:
+case 7:
 YY_RULE_SETUP
 #line 15 "lexer.flex"
 {printf("Found true\n");return yy::parser::make_TRUE(yytext);}
 	YY_BREAK
-case 7:
+case 8:
 YY_RULE_SETUP
 #line 16 "lexer.flex"
 {printf("Found false\n");return yy::parser::make_FALSE(yytext);}
 	YY_BREAK
-case 8:
+case 9:
 YY_RULE_SETUP
 #line 17 "lexer.flex"
 {printf("Found this\n");return yy::parser::make_THIS(yytext);}
 	YY_BREAK
-case 9:
+case 10:
 YY_RULE_SETUP
 #line 18 "lexer.flex"
 {printf("Found new\n");return yy::parser::make_NEW(yytext);}                   
 	YY_BREAK
-case 10:
+case 11:
 YY_RULE_SETUP
 #line 19 "lexer.flex"
 {printf("Found !\n");return yy::parser::make_NOT(yytext);}
 	YY_BREAK
-case 11:
+case 12:
 YY_RULE_SETUP
 #line 20 "lexer.flex"
 {printf("Found (\n");return yy::parser::make_LPAREN(yytext);}
 	YY_BREAK
-case 12:
+case 13:
 YY_RULE_SETUP
 #line 21 "lexer.flex"
 {printf("Found )\n");return yy::parser::make_RPAREN(yytext);}
 	YY_BREAK
-case 13:
+case 14:
 YY_RULE_SETUP
 #line 22 "lexer.flex"
 {printf("Found &&\n");return yy::parser::make_AND(yytext);}
 	YY_BREAK
-case 14:
+case 15:
 YY_RULE_SETUP
 #line 23 "lexer.flex"
 {printf("Found ||\n");return yy::parser::make_OR(yytext);}
 	YY_BREAK
-case 15:
+case 16:
 YY_RULE_SETUP
 #line 24 "lexer.flex"
 {printf("Found <\n");return yy::parser::make_LT(yytext);}
 	YY_BREAK
-case 16:
+case 17:
 YY_RULE_SETUP
 #line 25 "lexer.flex"
 {printf("Found >\n");return yy::parser::make_GT(yytext);}
 	YY_BREAK
-case 17:
+case 18:
 YY_RULE_SETUP
 #line 26 "lexer.flex"
 {printf("Found ==\n");return yy::parser::make_EQ(yytext);}
 	YY_BREAK
-case 18:
+case 19:
 YY_RULE_SETUP
 #line 27 "lexer.flex"
 {printf("Found +\n");return yy::parser::make_PLUS(yytext);}
 	YY_BREAK
-case 19:
+case 20:
 YY_RULE_SETUP
 #line 28 "lexer.flex"
 {printf("Found -\n");return yy::parser::make_MINUS(yytext);}
 	YY_BREAK
-case 20:
+case 21:
 YY_RULE_SETUP
 #line 29 "lexer.flex"
 {printf("Found *\n");return yy::parser::make_TIMES(yytext);}
 	YY_BREAK
-case 21:
+case 22:
 YY_RULE_SETUP
 #line 30 "lexer.flex"
 {printf("Found /\n");return yy::parser::make_DIVIDE(yytext);}
 	YY_BREAK
-case 22:
+case 23:
 YY_RULE_SETUP
 #line 31 "lexer.flex"
 {printf("Found .\n");return yy::parser::make_DOT(yytext);}
 	YY_BREAK
-case 23:
+case 24:
 YY_RULE_SETUP
 #line 32 "lexer.flex"
 {printf("Found lenght\n");return yy::parser::make_LENGTH(yytext);}
 	YY_BREAK
-case 24:
+case 25:
 YY_RULE_SETUP
 #line 33 "lexer.flex"
 {printf("Found {\n");return yy::parser::make_LBRACE(yytext);}
 	YY_BREAK
-case 25:
+case 26:
 YY_RULE_SETUP
 #line 34 "lexer.flex"
 {printf("Found }\n");return yy::parser::make_RBRACE(yytext);}
 	YY_BREAK
-case 26:
+case 27:
 YY_RULE_SETUP
 #line 35 "lexer.flex"
 {printf("Found if\n");return yy::parser::make_IF(yytext);}
 	YY_BREAK
-case 27:
+case 28:
 YY_RULE_SETUP
 #line 36 "lexer.flex"
 {printf("Found else\n");return yy::parser::make_ELSE(yytext);}
 	YY_BREAK
-case 28:
+case 29:
 YY_RULE_SETUP
 #line 37 "lexer.flex"
 {printf("Found while\n");return yy::parser::make_WHILE(yytext);}
 	YY_BREAK
-case 29:
+case 30:
 YY_RULE_SETUP
 #line 38 "lexer.flex"
 {printf("Found System.out.println\n");return yy::parser::make_PRINT(yytext);}
 	YY_BREAK
-case 30:
+case 31:
 YY_RULE_SETUP
 #line 39 "lexer.flex"
 {printf("Found ,\n");return yy::parser::make_COMMA(yytext);}
 	YY_BREAK
-case 31:
+case 32:
 YY_RULE_SETUP
 #line 40 "lexer.flex"
 {printf("Found =\n");return yy::parser::make_EQUALSIGN(yytext);}
 	YY_BREAK
-case 32:
+case 33:
 YY_RULE_SETUP
 #line 41 "lexer.flex"
 {printf("Found PUBLIC\n");return yy::parser::make_PUBLIC(yytext);}
 	YY_BREAK
-case 33:
+case 34:
 YY_RULE_SETUP
 #line 42 "lexer.flex"
 {printf("Found STATIC\n");return yy::parser::make_STATIC(yytext);}
 	YY_BREAK
-case 34:
+case 35:
 YY_RULE_SETUP
 #line 43 "lexer.flex"
 {printf("Found VOID\n");return yy::parser::make_VOID(yytext);}
 	YY_BREAK
-case 35:
+case 36:
 YY_RULE_SETUP
 #line 44 "lexer.flex"
 {printf("Found MAIN\n");return yy::parser::make_MAIN(yytext);}
 	YY_BREAK
-case 36:
+case 37:
 YY_RULE_SETUP
 #line 45 "lexer.flex"
 {printf("Found STRING\n");return yy::parser::make_STRING(yytext);}
 	YY_BREAK
-case 37:
+case 38:
 YY_RULE_SETUP
 #line 46 "lexer.flex"
 {printf("Found CLASS\n");return yy::parser::make_CLASS(yytext);}
 	YY_BREAK
-case 38:
+case 39:
 YY_RULE_SETUP
 #line 47 "lexer.flex"
 {printf("Found RETURN\n");return yy::parser::make_RETURN(yytext);}
 	YY_BREAK
-case 39:
-YY_RULE_SETUP
-#line 48 "lexer.flex"
-{printf("Found // \n");return yy::parser::make_COMMENT(yytext);}
-	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 49 "lexer.flex"
+#line 48 "lexer.flex"
 {printf("Found NUM\n");return yy::parser::make_NUM(yytext);}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 50 "lexer.flex"
+#line 49 "lexer.flex"
 {printf("Found ID\n");return yy::parser::make_ID(yytext);}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 51 "lexer.flex"
+#line 50 "lexer.flex"
 {}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 52 "lexer.flex"
+#line 51 "lexer.flex"
 { if(!lexical_errors) fprintf(stderr, "Lexical errors found! See the logs below: \n"); printf("Character %s is not recognized\n", yytext); lexical_errors = 1;}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 53 "lexer.flex"
+#line 52 "lexer.flex"
 {printf("Found END\n");return yy::parser::make_END(yytext);}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 54 "lexer.flex"
+#line 53 "lexer.flex"
 ECHO;
 	YY_BREAK
-#line 1079 "lex.yy.c"
+#line 1078 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2096,7 +2095,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 54 "lexer.flex"
+#line 53 "lexer.flex"
 
 
 

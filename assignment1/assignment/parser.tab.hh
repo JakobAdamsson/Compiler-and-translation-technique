@@ -393,10 +393,6 @@ namespace yy {
       // MethodDeclaration
       // ClassDeclaration
       // Goal
-      // Comments
-      // CommentMethod
-      // CommentClass
-      // CommentList
       // lrecexp
       // lrecstatement
       // lrecvardec
@@ -448,7 +444,6 @@ namespace yy {
       // MAIN
       // STRING
       // CLASS
-      // COMMENT
       char dummy2[sizeof (std::string)];
     };
 
@@ -532,8 +527,7 @@ namespace yy {
     VOID = 294,                    // VOID
     MAIN = 295,                    // MAIN
     STRING = 296,                  // STRING
-    CLASS = 297,                   // CLASS
-    COMMENT = 298                  // COMMENT
+    CLASS = 297                    // CLASS
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -550,7 +544,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 44, ///< Number of tokens.
+        YYNTOKENS = 43, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -595,31 +589,26 @@ namespace yy {
         S_MAIN = 40,                             // MAIN
         S_STRING = 41,                           // STRING
         S_CLASS = 42,                            // CLASS
-        S_COMMENT = 43,                          // COMMENT
-        S_YYACCEPT = 44,                         // $accept
-        S_root = 45,                             // root
-        S_Program = 46,                          // Program
-        S_Type = 47,                             // Type
-        S_VarDeclaration = 48,                   // VarDeclaration
-        S_Expression = 49,                       // Expression
-        S_Term = 50,                             // Term
-        S_Statement = 51,                        // Statement
-        S_MainClass = 52,                        // MainClass
-        S_MethodDeclaration = 53,                // MethodDeclaration
-        S_ClassDeclaration = 54,                 // ClassDeclaration
-        S_Goal = 55,                             // Goal
-        S_Comments = 56,                         // Comments
-        S_CommentMethod = 57,                    // CommentMethod
-        S_CommentClass = 58,                     // CommentClass
-        S_CommentList = 59,                      // CommentList
-        S_lrecexp = 60,                          // lrecexp
-        S_lrecstatement = 61,                    // lrecstatement
-        S_lrecvardec = 62,                       // lrecvardec
-        S_lrecparameter = 63,                    // lrecparameter
-        S_lrecvardecorstate = 64,                // lrecvardecorstate
-        S_lrecmethoddec = 65,                    // lrecmethoddec
-        S_lrecclassdec = 66,                     // lrecclassdec
-        S_StateEpsilon = 67                      // StateEpsilon
+        S_YYACCEPT = 43,                         // $accept
+        S_root = 44,                             // root
+        S_Program = 45,                          // Program
+        S_Type = 46,                             // Type
+        S_VarDeclaration = 47,                   // VarDeclaration
+        S_Expression = 48,                       // Expression
+        S_Term = 49,                             // Term
+        S_Statement = 50,                        // Statement
+        S_MainClass = 51,                        // MainClass
+        S_MethodDeclaration = 52,                // MethodDeclaration
+        S_ClassDeclaration = 53,                 // ClassDeclaration
+        S_Goal = 54,                             // Goal
+        S_lrecexp = 55,                          // lrecexp
+        S_lrecstatement = 56,                    // lrecstatement
+        S_lrecvardec = 57,                       // lrecvardec
+        S_lrecparameter = 58,                    // lrecparameter
+        S_lrecvardecorstate = 59,                // lrecvardecorstate
+        S_lrecmethoddec = 60,                    // lrecmethoddec
+        S_lrecclassdec = 61,                     // lrecclassdec
+        S_StateEpsilon = 62                      // StateEpsilon
       };
     };
 
@@ -664,10 +653,6 @@ namespace yy {
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_ClassDeclaration: // ClassDeclaration
       case symbol_kind::S_Goal: // Goal
-      case symbol_kind::S_Comments: // Comments
-      case symbol_kind::S_CommentMethod: // CommentMethod
-      case symbol_kind::S_CommentClass: // CommentClass
-      case symbol_kind::S_CommentList: // CommentList
       case symbol_kind::S_lrecexp: // lrecexp
       case symbol_kind::S_lrecstatement: // lrecstatement
       case symbol_kind::S_lrecvardec: // lrecvardec
@@ -720,7 +705,6 @@ namespace yy {
       case symbol_kind::S_MAIN: // MAIN
       case symbol_kind::S_STRING: // STRING
       case symbol_kind::S_CLASS: // CLASS
-      case symbol_kind::S_COMMENT: // COMMENT
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -803,10 +787,6 @@ switch (yykind)
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_ClassDeclaration: // ClassDeclaration
       case symbol_kind::S_Goal: // Goal
-      case symbol_kind::S_Comments: // Comments
-      case symbol_kind::S_CommentMethod: // CommentMethod
-      case symbol_kind::S_CommentClass: // CommentClass
-      case symbol_kind::S_CommentList: // CommentList
       case symbol_kind::S_lrecexp: // lrecexp
       case symbol_kind::S_lrecstatement: // lrecstatement
       case symbol_kind::S_lrecvardec: // lrecvardec
@@ -859,7 +839,6 @@ switch (yykind)
       case symbol_kind::S_MAIN: // MAIN
       case symbol_kind::S_STRING: // STRING
       case symbol_kind::S_CLASS: // CLASS
-      case symbol_kind::S_COMMENT: // COMMENT
         value.template destroy< std::string > ();
         break;
 
@@ -1656,21 +1635,6 @@ switch (yykind)
         return symbol_type (token::CLASS, v);
       }
 #endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_COMMENT (std::string v)
-      {
-        return symbol_type (token::COMMENT, std::move (v));
-      }
-#else
-      static
-      symbol_type
-      make_COMMENT (const std::string& v)
-      {
-        return symbol_type (token::COMMENT, v);
-      }
-#endif
 
 
     class context
@@ -1999,9 +1963,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 386,     ///< Last index in yytable_.
-      yynnts_ = 24,  ///< Number of nonterminal symbols.
-      yyfinal_ = 48 ///< Termination state number.
+      yylast_ = 347,     ///< Last index in yytable_.
+      yynnts_ = 20,  ///< Number of nonterminal symbols.
+      yyfinal_ = 46 ///< Termination state number.
     };
 
 
@@ -2047,10 +2011,10 @@ switch (yykind)
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40,    41,    42,    43
+      35,    36,    37,    38,    39,    40,    41,    42
     };
     // Last valid token kind.
-    const int code_max = 298;
+    const int code_max = 297;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2078,10 +2042,6 @@ switch (yykind)
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_ClassDeclaration: // ClassDeclaration
       case symbol_kind::S_Goal: // Goal
-      case symbol_kind::S_Comments: // Comments
-      case symbol_kind::S_CommentMethod: // CommentMethod
-      case symbol_kind::S_CommentClass: // CommentClass
-      case symbol_kind::S_CommentList: // CommentList
       case symbol_kind::S_lrecexp: // lrecexp
       case symbol_kind::S_lrecstatement: // lrecstatement
       case symbol_kind::S_lrecvardec: // lrecvardec
@@ -2134,7 +2094,6 @@ switch (yykind)
       case symbol_kind::S_MAIN: // MAIN
       case symbol_kind::S_STRING: // STRING
       case symbol_kind::S_CLASS: // CLASS
-      case symbol_kind::S_COMMENT: // COMMENT
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -2179,10 +2138,6 @@ switch (yykind)
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_ClassDeclaration: // ClassDeclaration
       case symbol_kind::S_Goal: // Goal
-      case symbol_kind::S_Comments: // Comments
-      case symbol_kind::S_CommentMethod: // CommentMethod
-      case symbol_kind::S_CommentClass: // CommentClass
-      case symbol_kind::S_CommentList: // CommentList
       case symbol_kind::S_lrecexp: // lrecexp
       case symbol_kind::S_lrecstatement: // lrecstatement
       case symbol_kind::S_lrecvardec: // lrecvardec
@@ -2235,7 +2190,6 @@ switch (yykind)
       case symbol_kind::S_MAIN: // MAIN
       case symbol_kind::S_STRING: // STRING
       case symbol_kind::S_CLASS: // CLASS
-      case symbol_kind::S_COMMENT: // COMMENT
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -2304,7 +2258,7 @@ switch (yykind)
 
 
 } // yy
-#line 2308 "parser.tab.hh"
+#line 2262 "parser.tab.hh"
 
 
 
