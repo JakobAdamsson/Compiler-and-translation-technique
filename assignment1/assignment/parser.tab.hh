@@ -399,11 +399,10 @@ namespace yy {
       // lrecparameter
       // lrecvardecorstate
       // lrecmethoddec
-      // lrecclassdec
       // StateEpsilon
+      // lrecclassdec
       char dummy1[sizeof (Node *)];
 
-      // "end of file"
       // INT
       // LBRACKET
       // RBRACKET
@@ -607,8 +606,8 @@ namespace yy {
         S_lrecparameter = 58,                    // lrecparameter
         S_lrecvardecorstate = 59,                // lrecvardecorstate
         S_lrecmethoddec = 60,                    // lrecmethoddec
-        S_lrecclassdec = 61,                     // lrecclassdec
-        S_StateEpsilon = 62                      // StateEpsilon
+        S_StateEpsilon = 61,                     // StateEpsilon
+        S_lrecclassdec = 62                      // lrecclassdec
       };
     };
 
@@ -659,12 +658,11 @@ namespace yy {
       case symbol_kind::S_lrecparameter: // lrecparameter
       case symbol_kind::S_lrecvardecorstate: // lrecvardecorstate
       case symbol_kind::S_lrecmethoddec: // lrecmethoddec
-      case symbol_kind::S_lrecclassdec: // lrecclassdec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
+      case symbol_kind::S_lrecclassdec: // lrecclassdec
         value.move< Node * > (std::move (that.value));
         break;
 
-      case symbol_kind::S_YYEOF: // "end of file"
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
@@ -793,12 +791,11 @@ switch (yykind)
       case symbol_kind::S_lrecparameter: // lrecparameter
       case symbol_kind::S_lrecvardecorstate: // lrecvardecorstate
       case symbol_kind::S_lrecmethoddec: // lrecmethoddec
-      case symbol_kind::S_lrecclassdec: // lrecclassdec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
+      case symbol_kind::S_lrecclassdec: // lrecclassdec
         value.template destroy< Node * > ();
         break;
 
-      case symbol_kind::S_YYEOF: // "end of file"
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
@@ -993,16 +990,16 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_END (std::string v)
+      make_END ()
       {
-        return symbol_type (token::END, std::move (v));
+        return symbol_type (token::END);
       }
 #else
       static
       symbol_type
-      make_END (const std::string& v)
+      make_END ()
       {
-        return symbol_type (token::END, v);
+        return symbol_type (token::END);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1963,7 +1960,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 347,     ///< Last index in yytable_.
+      yylast_ = 378,     ///< Last index in yytable_.
       yynnts_ = 20,  ///< Number of nonterminal symbols.
       yyfinal_ = 46 ///< Termination state number.
     };
@@ -2048,12 +2045,11 @@ switch (yykind)
       case symbol_kind::S_lrecparameter: // lrecparameter
       case symbol_kind::S_lrecvardecorstate: // lrecvardecorstate
       case symbol_kind::S_lrecmethoddec: // lrecmethoddec
-      case symbol_kind::S_lrecclassdec: // lrecclassdec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
+      case symbol_kind::S_lrecclassdec: // lrecclassdec
         value.copy< Node * > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_YYEOF: // "end of file"
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
@@ -2144,12 +2140,11 @@ switch (yykind)
       case symbol_kind::S_lrecparameter: // lrecparameter
       case symbol_kind::S_lrecvardecorstate: // lrecvardecorstate
       case symbol_kind::S_lrecmethoddec: // lrecmethoddec
-      case symbol_kind::S_lrecclassdec: // lrecclassdec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
+      case symbol_kind::S_lrecclassdec: // lrecclassdec
         value.move< Node * > (YY_MOVE (s.value));
         break;
 
-      case symbol_kind::S_YYEOF: // "end of file"
       case symbol_kind::S_INT: // INT
       case symbol_kind::S_LBRACKET: // LBRACKET
       case symbol_kind::S_RBRACKET: // RBRACKET
@@ -2258,7 +2253,7 @@ switch (yykind)
 
 
 } // yy
-#line 2262 "parser.tab.hh"
+#line 2257 "parser.tab.hh"
 
 
 

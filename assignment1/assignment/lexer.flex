@@ -6,7 +6,6 @@ int lexical_errors = 0;
 }
 %option yylineno noyywrap nounput batch noinput stack 
 %%
-"//".*                  {printf("Found Comment!\n");/* DO NOTHING */ }
 "int"                   {printf("Found int\n") ; return yy::parser::make_INT(yytext);}
 "["                     {printf("Found [\n") ; return yy::parser::make_LBRACKET(yytext);}
 "]"                     {printf("Found ]\n") ; return yy::parser::make_RBRACKET(yytext);}
@@ -45,11 +44,12 @@ int lexical_errors = 0;
 "String"                {printf("Found STRING\n");return yy::parser::make_STRING(yytext);}
 "class"                 {printf("Found CLASS\n");return yy::parser::make_CLASS(yytext);}
 "return"                {printf("Found RETURN\n");return yy::parser::make_RETURN(yytext);}
-0|[1-9][0-9]*           {printf("Found NUM\n");return yy::parser::make_NUM(yytext);}
 [a-zA-Z][a-zA-Z0-9_]*   {printf("Found ID\n");return yy::parser::make_ID(yytext);}
+"//".*                 {printf("Found Comment!\n");/* DO NOTHING */ }
+0|[1-9][0-9]*           {printf("Found NUM\n");return yy::parser::make_NUM(yytext);}
 [ \t\r]+                {}
 .                       { if(!lexical_errors) fprintf(stderr, "Lexical errors found! See the logs below: \n"); printf("Character %s is not recognized\n", yytext); lexical_errors = 1;}
-<<EOF>>                 {printf("Found END\n");return yy::parser::make_END(yytext);}
+<<EOF>>                 {printf("Found END\n");return yy::parser::make_END();}
 %%
 
 

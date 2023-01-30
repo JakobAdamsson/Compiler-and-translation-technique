@@ -1,75 +1,73 @@
 digraph {
-n0 [label="Program:"];
-n1 [label="ClassDeclaration:"];
-n2 [label="CLASS:class"];
-n1 -> n2
-n3 [label="ID:List"];
-n1 -> n3
-n4 [label="LBRACE:{"];
-n1 -> n4
-n5 [label="lrecvardec:"];
-n6 [label="lrecvardec:"];
-n7 [label="VarDeclaration:"];
-n8 [label="IDENTIFIER:Element"];
-n7 -> n8
-n9 [label="ID:elem"];
-n7 -> n9
-n10 [label="SEMICOLON:;"];
-n7 -> n10
-n6 -> n7
-n11 [label="VarDeclaration:"];
-n12 [label="IDENTIFIER:List"];
-n11 -> n12
-n13 [label="ID:next"];
-n11 -> n13
-n14 [label="SEMICOLON:;"];
-n11 -> n14
-n6 -> n11
-n5 -> n6
-n15 [label="VarDeclaration:"];
-n16 [label="BOOLEAN:boolean"];
-n15 -> n16
-n17 [label="ID:end"];
-n15 -> n17
-n18 [label="SEMICOLON:;"];
-n15 -> n18
-n5 -> n15
-n1 -> n5
-n19 [label="MethodDeclaration:"];
-n20 [label="PUBLIC:public"];
-n19 -> n20
-n21 [label="BOOLEAN:boolean"];
-n19 -> n21
-n22 [label="ID:Init"];
-n19 -> n22
-n23 [label="LPAREN:("];
-n19 -> n23
-n24 [label="EMPTY:ɛ"];
-n19 -> n24
-n25 [label="RPAREN:)"];
-n19 -> n25
-n26 [label="LBRACE:{"];
-n19 -> n26
-n27 [label="ASSIGNSTATEMENT:"];
-n28 [label="ID:end"];
-n27 -> n28
-n29 [label="EQUAL:="];
-n27 -> n29
-n30 [label="TRUE:true"];
-n27 -> n30
-n31 [label="SEMICOLON:;"];
-n27 -> n31
-n19 -> n27
-n32 [label="RETURN:return"];
-n19 -> n32
-n33 [label="TRUE:true"];
-n19 -> n33
-n34 [label="SEMICOLON:;"];
-n19 -> n34
-n35 [label="RBRACE:}"];
-n19 -> n35
-n1 -> n19
-n36 [label="RBRACE:}"];
-n1 -> n36
+n0 [label="ClassDeclaration:"];
+n1 [label="CLASS:class"];
 n0 -> n1
+n2 [label="ID:List"];
+n0 -> n2
+n3 [label="LBRACE:{"];
+n0 -> n3
+n4 [label="lrecvardec:"];
+n5 [label="lrecvardec:"];
+n6 [label="VarDeclaration:"];
+n7 [label="IDENTIFIER:Element"];
+n6 -> n7
+n8 [label="ID:elem"];
+n6 -> n8
+n9 [label="SEMICOLON:;"];
+n6 -> n9
+n5 -> n6
+n10 [label="VarDeclaration:"];
+n11 [label="IDENTIFIER:List"];
+n10 -> n11
+n12 [label="ID:next"];
+n10 -> n12
+n13 [label="SEMICOLON:;"];
+n10 -> n13
+n5 -> n10
+n4 -> n5
+n14 [label="VarDeclaration:"];
+n15 [label="BOOLEAN:boolean"];
+n14 -> n15
+n16 [label="ID:end"];
+n14 -> n16
+n17 [label="SEMICOLON:;"];
+n14 -> n17
+n4 -> n14
+n0 -> n4
+n18 [label="MethodDeclaration:"];
+n19 [label="PUBLIC:public"];
+n18 -> n19
+n20 [label="BOOLEAN:boolean"];
+n18 -> n20
+n21 [label="ID:Init"];
+n18 -> n21
+n22 [label="LPAREN:("];
+n18 -> n22
+n23 [label="EMPTY:ɛ"];
+n18 -> n23
+n24 [label="RPAREN:)"];
+n18 -> n24
+n25 [label="LBRACE:{"];
+n18 -> n25
+n26 [label="ASSIGNSTATEMENT:"];
+n27 [label="ID:end"];
+n26 -> n27
+n28 [label="EQUAL:="];
+n26 -> n28
+n29 [label="TRUE:true"];
+n26 -> n29
+n30 [label="SEMICOLON:;"];
+n26 -> n30
+n18 -> n26
+n31 [label="RETURN:return"];
+n18 -> n31
+n32 [label="TRUE:true"];
+n18 -> n32
+n33 [label="SEMICOLON:;"];
+n18 -> n33
+n34 [label="RBRACE:}"];
+n18 -> n34
+n0 -> n18
+n35 [label="RBRACE:}"];
+n0 -> n35
 }

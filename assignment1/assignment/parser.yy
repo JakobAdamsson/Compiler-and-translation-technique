@@ -25,15 +25,23 @@
 %token <std::string> FALSE THIS NEW NOT LPAREN RPAREN AND OR LT GT EQ PLUS
 %token <std::string> MINUS TIMES DIVIDE DOT LENGTH LBRACE RBRACE COMMA IF RETURN 
 %token <std::string> ELSE WHILE PRINT EQUALSIGN PUBLIC STATIC VOID MAIN STRING CLASS 
-%token <std::string> END 
 %token END 0 "end of file"
 
 //defition of operator precedence. See https://www.gnu.org/software/bison/manual/bison.html#Precedence-Decl
+%left OR
+%left AND
+%left EQ
+%left LT GT
+%left NEW
+%right NOT
+%left PLUS MINUS 
+%left TIMES DIVIDE 
+%left LBRACKET RBRACKET LPAREN RPAREN
 
 // definition of the production rules. All production rules are of type Node
 %type <Node *> Type VarDeclaration Term Expression lrecexp Statement 
-%type <Node *> Program lrecstatement MainClass StateQuest StateEpsilon 
-%type <Node *> MethodDeclaration lrecvardec lrectype lrecparameter lrecvardecorstate lrecmethoddec
+%type <Node *> Program lrecstatement MainClass StateEpsilon 
+%type <Node *> MethodDeclaration lrecvardec lrecparameter lrecvardecorstate lrecmethoddec
 %type <Node *> ClassDeclaration Goal lrecclassdec 
 
 %%
@@ -42,46 +50,38 @@ root: Program {root = $1;};
 
 Program: Type
             {
-              $$ = new Node("Program", "", yylineno);
-              $$->children.push_back($1);
+              $$ = $1;
             }
             
             | VarDeclaration
             {
-              $$ = new Node("Program", "", yylineno);
-              $$->children.push_back($1);  
+              $$ = $1;
             } 
             
             | Expression
             {
-              $$ = new Node("Program", "", yylineno);
-              $$->children.push_back($1);
+              $$ = $1;
             }
             
             | Statement
             {          
-              $$ = new Node("Program", "", yylineno);
-              $$->children.push_back($1);
+              $$ = $1;
             }
             | MainClass
             {
-              $$ = new Node("Program", "", yylineno);
-              $$->children.push_back($1);
+              $$ = $1;
             }
             | MethodDeclaration
             {
-              $$ = new Node("Program", "", yylineno);
-              $$->children.push_back($1);
+              $$ = $1;
             }
             | ClassDeclaration
             {
-              $$ = new Node("Program", "", yylineno);
-              $$->children.push_back($1);
+              $$ = $1;
             }
             | Goal
             {
-              $$ = new Node("Program", "", yylineno);
-              $$->children.push_back($1);
+              $$ = $1;
             };
 Type: INT LBRACKET RBRACKET 
             {
@@ -174,7 +174,8 @@ Expression: Term
             }
             | Expression LBRACKET Expression RBRACKET
             {
-              $$ = $1;
+              $$ = new Node("ARRDEC", "", yylineno);
+              $$->children.push_back($1);
               $$->children.push_back(new Node("LBRACKET", $2, yylineno));
               $$->children.push_back($3);
               $$->children.push_back(new Node("RBRACKET", $4, yylineno));
@@ -188,7 +189,7 @@ Expression: Term
 
             | Expression DOT ID LPAREN lrecexp RPAREN
             {
-              $$ = new Node("EXPREC", "", yylineno);
+              $$ = new Node("FCALL", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back(new Node("DOT", $2, yylineno));
               $$->children.push_back(new Node("ID", $3, yylineno));
@@ -366,7 +367,6 @@ Goal: MainClass lrecclassdec END
               $$ = new Node("Goal", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($2);
-              $$->children.push_back(new Node("END", $3, yylineno));
             };
   
 lrecexp: %empty
@@ -385,11 +385,7 @@ lrecexp: %empty
               $$->children.push_back($3);
             };
 
-lrecstatement: %empty
-              {
-                $$ = new Node("EMPTY", "ɛ", yylineno);
-              }
-              | Statement
+lrecstatement: Statement
               {
                 $$ = $1;
               }
@@ -399,22 +395,7 @@ lrecstatement: %empty
                 $$->children.push_back($1);
                 $$->children.push_back($2);
               };
-lrectype: %empty
-              {
-                $$ = new Node("EMPTY", "ɛ", yylineno);
-              }
-              | Type
-              {
-                $$ = $1;
-              }
-              | lrectype Type ID COMMA
-              {
-                $$ = new Node("lrectype", "", yylineno);
-                $$->children.push_back($1);
-                $$->children.push_back($2);
-                $$->children.push_back(new Node("IDENTIFIER", $3, yylineno));
-                $$->children.push_back(new Node("COMMA", $4, yylineno));
-              };
+
 lrecvardec: %empty
               {
                 $$ = new Node("EMPTY", "ɛ", yylineno);
@@ -473,11 +454,7 @@ lrecvardecorstate: %empty
                 $$->children.push_back($2);
               };
 
-lrecmethoddec: %empty
-              {
-                $$ = new Node("EMPTY", "ɛ", yylineno);
-              }
-              | MethodDeclaration
+lrecmethoddec: MethodDeclaration
               {
                 $$ = $1;
               }
@@ -488,11 +465,13 @@ lrecmethoddec: %empty
                 $$->children.push_back($2);
               };
               
-lrecclassdec: %empty
+StateEpsilon: ELSE Statement 
               {
-                $$ = new Node("EMPTY", "ɛ", yylineno);
-              }
-              | ClassDeclaration
+                $$ = new Node("ELSE", $1, yylineno);
+                $$->children.push_back($2);
+              };
+
+lrecclassdec: ClassDeclaration
               {
                 $$ = $1;
               }
@@ -500,27 +479,5 @@ lrecclassdec: %empty
               {
                 $$ = new Node("lrecclassdec", "", yylineno);
                 $$->children.push_back($1);
-                $$->children.push_back($2);
-              };
-
-StateQuest: Statement 
-              {
-                $$ = new Node("STATEMENT", "", yylineno);
-                $$->children.push_back($1);
-              }
-              | StateQuest Statement  
-              {
-                $$ = new Node("STATEMENT", "", yylineno);
-                $$->children.push_back($1);
-                $$->children.push_back($2);
-              };
-
-StateEpsilon: %empty 
-              {
-                $$ = new Node("EMPTY", "ɛ", yylineno);
-              } 
-              | ELSE Statement 
-              {
-                $$ = new Node("ELSE", $1, yylineno);
                 $$->children.push_back($2);
               };
