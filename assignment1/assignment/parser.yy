@@ -1,3 +1,11 @@
+/*
+Authors:
+Jakob Adamsson(jaad19)
+Emil Gullbrandsson(emgb20)
+
+
+This file is a part of the course DV1655 Compiler and translation techniques at BTH.
+*/
 %skeleton "lalr1.cc" 
 %defines
 %define parse.error verbose
@@ -39,14 +47,13 @@
 %left LBRACKET RBRACKET LPAREN RPAREN
 
 // definition of the production rules. All production rules are of type Node
-%type <Node *> Type VarDeclaration Term Expression lrecexp Statement 
-%type <Node *> Program lrecstatement MainClass StateEpsilon 
-%type <Node *> MethodDeclaration lrecvardec lrecparameter lrecvardecorstate lrecmethoddec
-%type <Node *> ClassDeclaration Goal lrecclassdec 
+%type <Node *> Type VarDeclaration Term Expression LRExp Statement 
+%type <Node *> Program LRStatement MainClass StateEpsilon 
+%type <Node *> MethodDeclaration LRVarDec LRParamater LRVarOrStatementDec LRMethodDec
+%type <Node *> ClassDeclaration Goal LRClassDec 
 
 %%
 root: Program{root = $1;};
-//root: Program {root = $1;};
 
 
 Program: Goal
@@ -58,32 +65,25 @@ Program: Goal
               $$ = $1;
               $$->children.push_back($2);
             };
-Type: INT LBRACKET RBRACKET 
+
+Type:       INT 
             {
-              $$ = new Node("ARRDEC", "", yylineno);
-              $$->children.push_back(new Node("INTARR", $1, yylineno));
-              //$$->children.push_back(new Node("LBRACKET", $2, yylineno));
-              //$$->children.push_back(new Node("RBRACKET", $3, yylineno));
-            }
-            | INT 
-            {
-              $$ = new Node("INT", $1, yylineno);
+              $$ = new Node("Int", "", yylineno);
             }
 
             | BOOLEAN
             {
-              $$ = new Node("BOOLEAN", $1, yylineno);
+              $$ = new Node("Boolean", "", yylineno);
             }
             | ID
             {
-              $$ = new Node("IDENTIFIER", $1, yylineno);
+              $$ = new Node("Identifier", $1, yylineno);
             };
 VarDeclaration: Type ID SEMICOLON
             {
               $$ = new Node("VarDeclaration", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back(new Node("ID", $2, yylineno));
-              //$$->children.push_back(new Node("SEMICOLON", $3, yylineno));
             };
 
 
@@ -94,304 +94,294 @@ Expression: Term
 
             | Expression AND Expression
             {
-              $$ = new Node("AND", "", yylineno);
+              $$ = new Node("And", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression OR Expression
             {
-              $$ = new Node("OR", "", yylineno);
+              $$ = new Node("Or", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression LT Expression
             {
-              $$ = new Node("LT", "", yylineno);
+              $$ = new Node("Lt", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression GT Expression
             {
-              $$ = new Node("GT", "", yylineno);
+              $$ = new Node("Gt", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression EQ Expression
             {
-              $$ = new Node("EQ", "", yylineno);
+              $$ = new Node("==", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression PLUS Expression
             {
-              $$ = new Node("PLUS", "", yylineno);
+              $$ = new Node("Plus", "", yylineno);
               $$->children.push_back($1);
-              $$->children.push_back(new Node("PLUS", $2, yylineno));
+              $$->children.push_back(new Node("PLUS", "", yylineno));
               $$->children.push_back($3);
             }
             | Expression MINUS Expression
             {
-              $$ = new Node("MINUS", "", yylineno);
+              $$ = new Node("Minus", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression TIMES Expression
             {
-              $$ = new Node("TIMES", "", yylineno);
+              $$ = new Node("Mult", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression DIVIDE Expression
             {
-              $$ = new Node("DIVIDE", "", yylineno);
+              $$ = new Node("Divide", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($3);
             }
             | Expression LBRACKET Expression RBRACKET
             {
-              $$ = new Node("ARRDEC", "", yylineno);
+              $$ = new Node("ArrDec", "", yylineno);
               $$->children.push_back($1);
-              //$$->children.push_back(new Node("LBRACKET", $2, yylineno));
               $$->children.push_back($3);
-              //$$->children.push_back(new Node("RBRACKET", $4, yylineno));
             }
             | Expression DOT LENGTH
             {
               $$ = $1;
-              $$->children.push_back(new Node("DOT", $2, yylineno));
-              $$->children.push_back(new Node("LENGTH", $3, yylineno));
+              $$->children.push_back(new Node("Dot", "", yylineno));
+              $$->children.push_back(new Node("Lenght", "", yylineno));
             }
 
-            | Expression DOT ID LPAREN lrecexp RPAREN
+            | Expression DOT ID LPAREN LRExp RPAREN
             {
-              $$ = new Node("FCALL", "", yylineno);
+              $$ = new Node("FCall", "", yylineno);
               $$->children.push_back($1);
-              $$->children.push_back(new Node("DOT", $2, yylineno));
-              $$->children.push_back(new Node("ID", $3, yylineno));
-              //$$->children.push_back(new Node("LPAREN", $4, yylineno));
+              $$->children.push_back(new Node("Dot", "", yylineno));
+              $$->children.push_back(new Node("Identifier", $3, yylineno));
               $$->children.push_back($5);
-              //$$->children.push_back(new Node("RPAREN", $6, yylineno));
             };
 
 Term:       NUM
             {
-              $$ = new Node("NUM", $1, yylineno);
+              $$ = new Node("Num", "", yylineno);
             }
             | TRUE
             {
-              $$ = new Node("TRUE", $1, yylineno);
+              $$ = new Node("True", "", yylineno);
             }
             | FALSE
             {
-              $$ = new Node("FALSE", $1, yylineno);
+              $$ = new Node("False", "", yylineno);
             }
             | ID
             {
-              $$ = new Node("ID", $1, yylineno);
+              $$ = new Node("Identifier", $1, yylineno);
             }
             | THIS
             {
-              $$ = new Node("THIS", $1, yylineno);
+              $$ = new Node("This", "", yylineno);
             }
             | NEW INT LBRACKET Expression RBRACKET
             {
-              $$ = new Node("INTARRDEC", "", yylineno);
-              $$->children.push_back(new Node("NEW", $1, yylineno));
-              $$->children.push_back(new Node("INT", $2, yylineno));
-              //$$->children.push_back(new Node("LBRACKET", $3, yylineno));
+              $$ = new Node("IntArrDec", "", yylineno);
+              $$->children.push_back(new Node("New", "", yylineno));
+              $$->children.push_back(new Node("Int", "", yylineno));
               $$->children.push_back($4);
-              //$$->children.push_back(new Node("RBRACKET", $5, yylineno));
             }
             | NEW ID LPAREN RPAREN
             {
-              $$ = new Node("DECEXP", "", yylineno);
-              $$->children.push_back(new Node("NEW", $1, yylineno));
-              $$->children.push_back(new Node("ID", $2, yylineno));
-              //$$->children.push_back(new Node("LPAREN", $3, yylineno));
-              //$$->children.push_back(new Node("RPAREN", $4, yylineno));
+              $$ = new Node("NewVar", "", yylineno);
+              $$->children.push_back(new Node("New", "", yylineno));
+              $$->children.push_back(new Node("Identifier", $2, yylineno));
             } 
             | NOT Expression
             {
-              $$ = new Node("NOTEXP", "", yylineno);
+              $$ = new Node("Not", "", yylineno);
               $$->children.push_back($2);
             }
             | LPAREN Expression RPAREN
             {
-              $$ = new Node("LPAREN EXP RPAREN", "", yylineno);
-              //$$->children.push_back(new Node("LPAREN", $1, yylineno));
+              $$ = new Node("ArrAcc", "", yylineno);
               $$->children.push_back($2);
-              //$$->children.push_back(new Node("RPAREN", $3, yylineno));
             };
 Statement: ID LBRACKET Expression RBRACKET EQUALSIGN Expression SEMICOLON
             {
-              $$ = new Node("ARRSTATEMENT", "", yylineno);
-              $$->children.push_back(new Node("ID", $1, yylineno));
-              //$$->children.push_back(new Node("LBRACKET", $2, yylineno));
+              $$ = new Node("ArrModifier", "", yylineno);
+              $$->children.push_back(new Node("Identifier", $1, yylineno));
               $$->children.push_back($3);
-              //$$->children.push_back(new Node("RBRACKET", $4, yylineno));
-              $$->children.push_back(new Node("EQUALSIGN", $5, yylineno));
+              $$->children.push_back(new Node("Equal", "", yylineno));
               $$->children.push_back($6);
-              //$$->children.push_back(new Node("SEMICOLON", $7, yylineno));
+
             }
             | ID EQUALSIGN Expression SEMICOLON
             {
-              $$ = new Node("ASSIGNSTATEMENT", "", yylineno);
-              $$->children.push_back(new Node("ID", $1, yylineno));
-              $$->children.push_back(new Node("EQUAL", $2, yylineno));
+              $$ = new Node("Assignment", "", yylineno);
+              $$->children.push_back(new Node("Identifier", $1, yylineno));
+              $$->children.push_back(new Node("Equal", "", yylineno));
               $$->children.push_back($3);
-              //$$->children.push_back(new Node("SEMICOLON", $4, yylineno));
             }
             | PRINT LPAREN Expression RPAREN SEMICOLON
             {
-              $$ = new Node("PRINTSTATEMENT", $1, yylineno);
-              //$$->children.push_back(new Node("LPAREN", $2, yylineno));
+              $$ = new Node("Print", "", yylineno);
               $$->children.push_back($3);
-              //$$->children.push_back(new Node("RPAREN", $4, yylineno));
-              //$$->children.push_back(new Node("SEMICOLON", $5, yylineno));
             }
             | WHILE LPAREN Expression RPAREN Statement
             {
-              $$ = new Node("WHILE STATEMENT", $1, yylineno);
-              //$$->children.push_back(new Node("LPAREN", $2, yylineno));
+              $$ = new Node("While", "", yylineno);
               $$->children.push_back($3);
-              //$$->children.push_back(new Node("RPAREN", $4, yylineno));
               $$->children.push_back($5);
             }
-            | LBRACE lrecstatement RBRACE
+            | LBRACE LRStatement RBRACE
             {
-              $$ = new Node("LBRACE STATEMENT RBRACE", "", yylineno);
-              //$$->children.push_back(new Node("LBRACE", $1, yylineno));
-              $$->children.push_back($2);
-              //$$->children.push_back(new Node("RBRACE", $3, yylineno));
+              $$ = $2;
             }
-            // INTE DENNA :(p)
+
             | IF LPAREN Expression RPAREN Statement StateEpsilon
             {
-              $$ = new Node("IF STATEMENT", "", yylineno);
-              $$->children.push_back(new Node("IF", $1, yylineno));
-              //$$->children.push_back(new Node("LPAREN", $2, yylineno));
+              $$ = new Node("If statement", "", yylineno);
+              $$->children.push_back(new Node("If", "", yylineno));
               $$->children.push_back($3);
-              //$$->children.push_back(new Node("RPAREN", $4, yylineno));
               $$->children.push_back($5);
               $$->children.push_back($6);
             };
-MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LBRACE lrecstatement RBRACE RBRACE
+MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LBRACE LRStatement RBRACE RBRACE
             {
               $$ = new Node("MainClass", "", yylineno);
-              $$->children.push_back(new Node("PUBLIC", $1, yylineno));
-              $$->children.push_back(new Node("CLASS", $2, yylineno));
-              $$->children.push_back(new Node("ID", $3, yylineno));
-              //$$->children.push_back(new Node("LBRACE", $4, yylineno));
-              $$->children.push_back(new Node("PUBLIC", $5, yylineno));
-              $$->children.push_back(new Node("STATIC", $6, yylineno));
-              $$->children.push_back(new Node("VOID", $7, yylineno));
-              $$->children.push_back(new Node("MAIN", $8, yylineno));
-              $$->children.push_back(new Node("LPAREN", $9, yylineno));
-              $$->children.push_back(new Node("STRING", $10, yylineno));
-              //$$->children.push_back(new Node("LBRACKET", $11, yylineno));
-              //$$->children.push_back(new Node("RBRACKET", $12, yylineno));
-              $$->children.push_back(new Node("ID", $13, yylineno));
-              //$$->children.push_back(new Node("RPAREN", $14, yylineno));
-              //$$->children.push_back(new Node("LBRACE", $15, yylineno));
+              $$->children.push_back(new Node("Public", "", yylineno));
+              $$->children.push_back(new Node("Class", "", yylineno));
+              $$->children.push_back(new Node("Identifier", $3, yylineno));
+              $$->children.push_back(new Node("Public", "", yylineno));
+              $$->children.push_back(new Node("Static", "", yylineno));
+              $$->children.push_back(new Node("Void", "", yylineno));
+              $$->children.push_back(new Node("Main", "", yylineno));
+              $$->children.push_back(new Node("Lparen", "", yylineno));
+              $$->children.push_back(new Node("String", "", yylineno));
+              $$->children.push_back(new Node("Identifier", $13, yylineno));
               $$->children.push_back($16);
-              //$$->children.push_back(new Node("RBRACE", $17, yylineno));
-              //$$->children.push_back(new Node("RBRACE", $18, yylineno));
             };
-MethodDeclaration: PUBLIC Type ID LPAREN lrecparameter RPAREN LBRACE lrecvardecorstate RETURN Expression SEMICOLON RBRACE
+MethodDeclaration: PUBLIC Type ID LPAREN LRParamater RPAREN LBRACE LRVarOrStatementDec RETURN Expression SEMICOLON RBRACE
             {
               $$ = new Node("MethodDeclaration", "", yylineno);
-              $$->children.push_back(new Node("PUBLIC", $1, yylineno));
+              $$->children.push_back(new Node("Public", "", yylineno));
               $$->children.push_back($2);
-              $$->children.push_back(new Node("ID", $3, yylineno));
-              //$$->children.push_back(new Node("LPAREN", $4, yylineno));
+              $$->children.push_back(new Node("Identifier", $3, yylineno));
               $$->children.push_back($5);
-              //$$->children.push_back(new Node("RPAREN", $6, yylineno));
-              //$$->children.push_back(new Node("LBRACE", $7, yylineno));
               $$->children.push_back($8);
-              $$->children.push_back(new Node("RETURN", $9, yylineno));
+              $$->children.push_back(new Node("Return", "", yylineno));
               $$->children.push_back($10);
-              //$$->children.push_back(new Node("SEMICOLON", $11, yylineno));
-              //$$->children.push_back(new Node("RBRACE", $12, yylineno));
             };
-ClassDeclaration: CLASS ID LBRACE lrecvardec lrecmethoddec RBRACE
+ClassDeclaration: CLASS ID LBRACE LRVarDec LRMethodDec RBRACE
             {
               $$ = new Node("ClassDeclaration", "", yylineno);
-              $$->children.push_back(new Node("CLASS", $1, yylineno));
-              $$->children.push_back(new Node("ID", $2, yylineno));
-              //$$->children.push_back(new Node("LBRACE", $3, yylineno));
+              $$->children.push_back(new Node("Class", "", yylineno));
+              $$->children.push_back(new Node("Identifier", $2, yylineno));
               $$->children.push_back($4);
               $$->children.push_back($5);
-              //$$->children.push_back(new Node("RBRACE", $6, yylineno));
             };
-Goal: MainClass lrecclassdec END
+/*
+This is how the structure that the program parsed is supposed to follow. 
+In Java the structure is as follows:
+public class MainClass {
+  public static void main(String[] a) {
+    System.out.println(new A().foo());
+  }
+}
+*/
+Goal: MainClass LRClassDec END
             {
               $$ = new Node("Goal", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back($2);
             };
-lrecexp: %empty
+/*
+Left recursive expression. It may either be empty, have one expression or multiple. If multiple expressions are given,
+Then it calls upon itself untill no more expressions are being read.
+*/
+LRExp: %empty
             {
-              $$ = new Node("EMPTY", "", yylineno);
+              $$ = new Node("Empty", "", yylineno);
             }
             | Expression
             {
               $$ = $1;
             }
-            | lrecexp COMMA Expression   
+            | LRExp COMMA Expression   
             {
-              $$ = new Node("lrecexp", "", yylineno);
+              $$ = new Node("LRExp", "", yylineno);
               $$->children.push_back($1);
-              $$->children.push_back(new Node("COMMA", $2, yylineno));
+              $$->children.push_back(new Node("Comma", "", yylineno));
               $$->children.push_back($3);
             };
-
-lrecstatement: Statement
+/*
+Left recursive statement. It may either be empty, have one statement or multiple. If multiple statements are given,
+Then it calls upon itself untill no more statements are being read.
+*/
+LRStatement: Statement
               {
                 $$ = $1;
               }
-              | lrecstatement Statement
+              | LRStatement Statement
               {
-                $$ = new Node("lrecstatement", "", yylineno);
+                $$ = new Node("LRStatement", "", yylineno);
                 $$->children.push_back($1);
                 $$->children.push_back($2);
               };
-
-lrecvardec: %empty
+/*
+Left recursive var declarations. It may either be empty, have one var declaration or multiple. If multiple var declarations are given,
+Then it calls upon itself untill no more var declarations are being read.
+*/
+LRVarDec: %empty
               {
-                $$ = new Node("EMPTY", "", yylineno);
+                $$ = new Node("Empty", "", yylineno);
               }
               | VarDeclaration
               {
                 $$ = $1;
               }
-              | lrecvardec VarDeclaration
+              | LRVarDec VarDeclaration
               {
-                $$ = new Node("lrecvardec", "", yylineno);
+                $$ = new Node("LRVarDec", "", yylineno);
                 $$->children.push_back($1);
                 $$->children.push_back($2);
               };
-lrecparameter: %empty
+/* 
+Left recursion on method parameters, it may either be empty, have one parameters or multiple. If multiple parameters are given,
+Then it calls upon itself untill no more parameters are being read.
+*/
+LRParamater: %empty
               {
-                $$ = new Node("EMPTY", "", yylineno);
+                $$ = new Node("Empty", "", yylineno);
               }
               | Type ID
               {
-                $$ = new Node("lrecparameter", "", yylineno);
+                $$ = new Node("LRParamater", "", yylineno);
                 $$->children.push_back($1);
-                $$->children.push_back(new Node("IDENTIFIER", $2, yylineno));
+                $$->children.push_back(new Node("Identifier", $2, yylineno));
               }
-              | lrecparameter COMMA Type ID
+              | LRParamater COMMA Type ID
               {
-                $$ = new Node("lrecparameter", "", yylineno);
+                $$ = new Node("LRParamater", "", yylineno);
                 $$->children.push_back($1);
-                $$->children.push_back(new Node("COMMA", $2, yylineno));
+                $$->children.push_back(new Node("Comma", "", yylineno));
                 $$->children.push_back($3);
-                $$->children.push_back(new Node("IDENTIFIER", $4, yylineno));
+                $$->children.push_back(new Node("Identifier", $4, yylineno));
               };
-
-lrecvardecorstate: %empty
+  
+/*
+Left recursion on statement or var declaration. It calls upon it self untill no more VarDeclaration or Statements are being read.
+It accepts either no VarDeclaration or Statement, one VarDeclaration or Statement or multiple VarDeclaration or Statements.
+*/
+LRVarOrStatementDec: %empty
               {
-                $$ = new Node("EMPTY", "", yylineno);
+                $$ = new Node("Empty", "", yylineno);
               }
               | VarDeclaration
               {
@@ -401,47 +391,57 @@ lrecvardecorstate: %empty
               {
                 $$ = $1;
               }
-              | lrecvardecorstate VarDeclaration
+              | LRVarOrStatementDec VarDeclaration
               {
-                $$ = new Node("lrecvarorvardec", "", yylineno);
+                $$ = new Node("LRVarOrStatementDec", "", yylineno);
                 $$->children.push_back($1);
                 $$->children.push_back($2);
               }
-              | lrecvardecorstate Statement
+              | LRVarOrStatementDec Statement
               {
-                $$ = new Node("lrecvarorstate", "", yylineno);
+                $$ = new Node("LRVarOrStatementDec", "", yylineno);
                 $$->children.push_back($1);
                 $$->children.push_back($2);
               };
 
-lrecmethoddec: MethodDeclaration
+
+/*
+Left Recursive Method Declaration, It requires either one method declaration or multiple
+It stops when no more method declarations are being read.
+*/
+LRMethodDec: MethodDeclaration
               {
                 $$ = $1;
               }
-              | lrecmethoddec MethodDeclaration
+              | LRMethodDec MethodDeclaration
               {
-                $$ = new Node("lrecmethoddec", "", yylineno);
+                $$ = new Node("LRMethodDec", "", yylineno);
                 $$->children.push_back($1);
                 $$->children.push_back($2);
-              };
-              
+              };    
+
+/*Statement Epsilon Handles the question mark operator, optional else statement*/
 StateEpsilon: %empty
               {
                 $$ = new Node("EMPTY", "", yylineno);
               }
               | ELSE Statement 
               {
-                $$ = new Node("ELSE", $1, yylineno);
+                $$ = new Node("ELSE", "", yylineno);
                 $$->children.push_back($2);
               };
-
-lrecclassdec: ClassDeclaration
+              
+            
+/*
+Left Recursive Class Declaration. It requires atleast one class declaration and stops when no more class declarations are read.
+*/
+LRClassDec: ClassDeclaration
               {
                 $$ = $1;
               }
-              | lrecclassdec ClassDeclaration
+              | LRClassDec ClassDeclaration
               {
-                $$ = new Node("lrecclassdec", "", yylineno);
+                $$ = new Node("LRClassDec", "", yylineno);
                 $$->children.push_back($1);
                 $$->children.push_back($2);
               };

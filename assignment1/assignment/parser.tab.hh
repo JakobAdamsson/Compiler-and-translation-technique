@@ -393,14 +393,14 @@ namespace yy {
       // MethodDeclaration
       // ClassDeclaration
       // Goal
-      // lrecexp
-      // lrecstatement
-      // lrecvardec
-      // lrecparameter
-      // lrecvardecorstate
-      // lrecmethoddec
+      // LRExp
+      // LRStatement
+      // LRVarDec
+      // LRParamater
+      // LRVarOrStatementDec
+      // LRMethodDec
       // StateEpsilon
-      // lrecclassdec
+      // LRClassDec
       char dummy1[sizeof (Node *)];
 
       // INT
@@ -600,14 +600,14 @@ namespace yy {
         S_MethodDeclaration = 52,                // MethodDeclaration
         S_ClassDeclaration = 53,                 // ClassDeclaration
         S_Goal = 54,                             // Goal
-        S_lrecexp = 55,                          // lrecexp
-        S_lrecstatement = 56,                    // lrecstatement
-        S_lrecvardec = 57,                       // lrecvardec
-        S_lrecparameter = 58,                    // lrecparameter
-        S_lrecvardecorstate = 59,                // lrecvardecorstate
-        S_lrecmethoddec = 60,                    // lrecmethoddec
+        S_LRExp = 55,                            // LRExp
+        S_LRStatement = 56,                      // LRStatement
+        S_LRVarDec = 57,                         // LRVarDec
+        S_LRParamater = 58,                      // LRParamater
+        S_LRVarOrStatementDec = 59,              // LRVarOrStatementDec
+        S_LRMethodDec = 60,                      // LRMethodDec
         S_StateEpsilon = 61,                     // StateEpsilon
-        S_lrecclassdec = 62                      // lrecclassdec
+        S_LRClassDec = 62                        // LRClassDec
       };
     };
 
@@ -652,14 +652,14 @@ namespace yy {
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_ClassDeclaration: // ClassDeclaration
       case symbol_kind::S_Goal: // Goal
-      case symbol_kind::S_lrecexp: // lrecexp
-      case symbol_kind::S_lrecstatement: // lrecstatement
-      case symbol_kind::S_lrecvardec: // lrecvardec
-      case symbol_kind::S_lrecparameter: // lrecparameter
-      case symbol_kind::S_lrecvardecorstate: // lrecvardecorstate
-      case symbol_kind::S_lrecmethoddec: // lrecmethoddec
+      case symbol_kind::S_LRExp: // LRExp
+      case symbol_kind::S_LRStatement: // LRStatement
+      case symbol_kind::S_LRVarDec: // LRVarDec
+      case symbol_kind::S_LRParamater: // LRParamater
+      case symbol_kind::S_LRVarOrStatementDec: // LRVarOrStatementDec
+      case symbol_kind::S_LRMethodDec: // LRMethodDec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
-      case symbol_kind::S_lrecclassdec: // lrecclassdec
+      case symbol_kind::S_LRClassDec: // LRClassDec
         value.move< Node * > (std::move (that.value));
         break;
 
@@ -785,14 +785,14 @@ switch (yykind)
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_ClassDeclaration: // ClassDeclaration
       case symbol_kind::S_Goal: // Goal
-      case symbol_kind::S_lrecexp: // lrecexp
-      case symbol_kind::S_lrecstatement: // lrecstatement
-      case symbol_kind::S_lrecvardec: // lrecvardec
-      case symbol_kind::S_lrecparameter: // lrecparameter
-      case symbol_kind::S_lrecvardecorstate: // lrecvardecorstate
-      case symbol_kind::S_lrecmethoddec: // lrecmethoddec
+      case symbol_kind::S_LRExp: // LRExp
+      case symbol_kind::S_LRStatement: // LRStatement
+      case symbol_kind::S_LRVarDec: // LRVarDec
+      case symbol_kind::S_LRParamater: // LRParamater
+      case symbol_kind::S_LRVarOrStatementDec: // LRVarOrStatementDec
+      case symbol_kind::S_LRMethodDec: // LRMethodDec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
-      case symbol_kind::S_lrecclassdec: // lrecclassdec
+      case symbol_kind::S_LRClassDec: // LRClassDec
         value.template destroy< Node * > ();
         break;
 
@@ -2039,14 +2039,14 @@ switch (yykind)
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_ClassDeclaration: // ClassDeclaration
       case symbol_kind::S_Goal: // Goal
-      case symbol_kind::S_lrecexp: // lrecexp
-      case symbol_kind::S_lrecstatement: // lrecstatement
-      case symbol_kind::S_lrecvardec: // lrecvardec
-      case symbol_kind::S_lrecparameter: // lrecparameter
-      case symbol_kind::S_lrecvardecorstate: // lrecvardecorstate
-      case symbol_kind::S_lrecmethoddec: // lrecmethoddec
+      case symbol_kind::S_LRExp: // LRExp
+      case symbol_kind::S_LRStatement: // LRStatement
+      case symbol_kind::S_LRVarDec: // LRVarDec
+      case symbol_kind::S_LRParamater: // LRParamater
+      case symbol_kind::S_LRVarOrStatementDec: // LRVarOrStatementDec
+      case symbol_kind::S_LRMethodDec: // LRMethodDec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
-      case symbol_kind::S_lrecclassdec: // lrecclassdec
+      case symbol_kind::S_LRClassDec: // LRClassDec
         value.copy< Node * > (YY_MOVE (that.value));
         break;
 
@@ -2134,14 +2134,14 @@ switch (yykind)
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_ClassDeclaration: // ClassDeclaration
       case symbol_kind::S_Goal: // Goal
-      case symbol_kind::S_lrecexp: // lrecexp
-      case symbol_kind::S_lrecstatement: // lrecstatement
-      case symbol_kind::S_lrecvardec: // lrecvardec
-      case symbol_kind::S_lrecparameter: // lrecparameter
-      case symbol_kind::S_lrecvardecorstate: // lrecvardecorstate
-      case symbol_kind::S_lrecmethoddec: // lrecmethoddec
+      case symbol_kind::S_LRExp: // LRExp
+      case symbol_kind::S_LRStatement: // LRStatement
+      case symbol_kind::S_LRVarDec: // LRVarDec
+      case symbol_kind::S_LRParamater: // LRParamater
+      case symbol_kind::S_LRVarOrStatementDec: // LRVarOrStatementDec
+      case symbol_kind::S_LRMethodDec: // LRMethodDec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
-      case symbol_kind::S_lrecclassdec: // lrecclassdec
+      case symbol_kind::S_LRClassDec: // LRClassDec
         value.move< Node * > (YY_MOVE (s.value));
         break;
 
