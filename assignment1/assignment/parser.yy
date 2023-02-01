@@ -213,9 +213,9 @@ Term:       NUM
               $$ = new Node("Not", "", yylineno);
               $$->children.push_back($2);
             }
-            | LPAREN Expression RPAREN
+            | LPAREN Expression RPAREN 
             {
-              $$ = new Node("(Expression)", "", yylineno);
+              $$ = new Node("ParenExp", "", yylineno);
               $$->children.push_back($2);
             };
 Statement: ID LBRACKET Expression RBRACKET EQUALSIGN Expression SEMICOLON
@@ -267,7 +267,6 @@ MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET
 MethodDeclaration: PUBLIC Type ID LPAREN LRParamater RPAREN LBRACE LRVarOrStatementDec RETURN Expression SEMICOLON RBRACE
             {
               $$ = new Node("MethodDeclaration", "", yylineno);
-              $$->children.push_back(new Node("Public", "", yylineno));
               $$->children.push_back($2);
               $$->children.push_back(new Node("Identifier", $3, yylineno));
               $$->children.push_back($5);
@@ -312,7 +311,6 @@ LRExp: %empty
             {
               $$ = new Node("LRExp", "", yylineno);
               $$->children.push_back($1);
-              $$->children.push_back(new Node("Comma", "", yylineno));
               $$->children.push_back($3);
             };
 /*
@@ -365,7 +363,6 @@ LRParamater: %empty
               {
                 $$ = new Node("LRParamater", "", yylineno);
                 $$->children.push_back($1);
-                $$->children.push_back(new Node("Comma", "", yylineno));
                 $$->children.push_back($3);
                 $$->children.push_back(new Node("Identifier", $4, yylineno));
               };

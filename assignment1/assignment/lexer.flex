@@ -1,3 +1,11 @@
+/*
+Authors:
+Jakob Adamsson(jaad19)
+Emil Gullbrandsson(emgb20)
+
+
+This file is a part of the course DV1655 Compiler and translation techniques at BTH.
+*/
 %top{
 #include "parser.tab.hh"
 #define YY_DECL yy::parser::symbol_type yylex()
