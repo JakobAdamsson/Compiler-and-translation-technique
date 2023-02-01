@@ -78,6 +78,10 @@ Type:       INT
             | ID
             {
               $$ = new Node("Identifier", $1, yylineno);
+            }
+            | INT LBRACKET RBRACKET
+            {
+              $$ = new Node("IntArr", "", yylineno);
             };
 VarDeclaration: Type ID SEMICOLON
             {
