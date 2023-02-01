@@ -1,0 +1,4 @@
+Fixa commatecken
+Fixa klasser
+Fixa Return
+Fixa If statser VAd var detta? det kan stå: |IF STATEMENT|

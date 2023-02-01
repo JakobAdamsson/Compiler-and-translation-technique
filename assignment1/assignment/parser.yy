@@ -35,7 +35,7 @@ This file is a part of the course DV1655 Compiler and translation techniques at 
 %token <std::string> ELSE WHILE PRINT EQUALSIGN PUBLIC STATIC VOID MAIN STRING CLASS 
 %token END 0 "end of file"
 
-//defition of operator precedence. See https://www.gnu.org/software/bison/manual/bison.html#Precedence-Decl
+//defition of operator precedence
 %left OR
 %left AND
 %left EQ
@@ -55,7 +55,9 @@ This file is a part of the course DV1655 Compiler and translation techniques at 
 %%
 root: Program{root = $1;};
 
-
+/*
+Needs to have a Goal production inorder to be valid Java.
+*/
 Program: Goal
             {
               $$ = $1;
@@ -213,7 +215,7 @@ Term:       NUM
             }
             | LPAREN Expression RPAREN
             {
-              $$ = new Node("ArrAcc", "", yylineno);
+              $$ = new Node("(Expression)", "", yylineno);
               $$->children.push_back($2);
             };
 Statement: ID LBRACKET Expression RBRACKET EQUALSIGN Expression SEMICOLON
@@ -251,7 +253,6 @@ Statement: ID LBRACKET Expression RBRACKET EQUALSIGN Expression SEMICOLON
             | IF LPAREN Expression RPAREN Statement StateEpsilon
             {
               $$ = new Node("If statement", "", yylineno);
-              $$->children.push_back(new Node("If", "", yylineno));
               $$->children.push_back($3);
               $$->children.push_back($5);
               $$->children.push_back($6);
@@ -259,16 +260,8 @@ Statement: ID LBRACKET Expression RBRACKET EQUALSIGN Expression SEMICOLON
 MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LBRACE LRStatement RBRACE RBRACE
             {
               $$ = new Node("MainClass", "", yylineno);
-              $$->children.push_back(new Node("Public", "", yylineno));
-              $$->children.push_back(new Node("Class", "", yylineno));
               $$->children.push_back(new Node("Identifier", $3, yylineno));
-              $$->children.push_back(new Node("Public", "", yylineno));
-              $$->children.push_back(new Node("Static", "", yylineno));
-              $$->children.push_back(new Node("Void", "", yylineno));
-              $$->children.push_back(new Node("Main", "", yylineno));
-              $$->children.push_back(new Node("Lparen", "", yylineno));
-              $$->children.push_back(new Node("String", "", yylineno));
-              $$->children.push_back(new Node("Identifier", $13, yylineno));
+              $$->children.push_back(new Node("Method Identifier", $13, yylineno));
               $$->children.push_back($16);
             };
 MethodDeclaration: PUBLIC Type ID LPAREN LRParamater RPAREN LBRACE LRVarOrStatementDec RETURN Expression SEMICOLON RBRACE
@@ -279,13 +272,11 @@ MethodDeclaration: PUBLIC Type ID LPAREN LRParamater RPAREN LBRACE LRVarOrStatem
               $$->children.push_back(new Node("Identifier", $3, yylineno));
               $$->children.push_back($5);
               $$->children.push_back($8);
-              $$->children.push_back(new Node("Return", "", yylineno));
               $$->children.push_back($10);
             };
 ClassDeclaration: CLASS ID LBRACE LRVarDec LRMethodDec RBRACE
             {
               $$ = new Node("ClassDeclaration", "", yylineno);
-              $$->children.push_back(new Node("Class", "", yylineno));
               $$->children.push_back(new Node("Identifier", $2, yylineno));
               $$->children.push_back($4);
               $$->children.push_back($5);

@@ -1,341 +1,137 @@
 digraph {
 n0 [label="Goal:"];
 n1 [label="MainClass:"];
-n2 [label="Public:"];
+n2 [label="Identifier:Factorial"];
 n1 -> n2
-n3 [label="Class:"];
+n3 [label="Method Identifier:a"];
 n1 -> n3
-n4 [label="Identifier:OperatorPriority"];
+n4 [label="Print:"];
+n5 [label="FCall:"];
+n6 [label="NewVar:"];
+n7 [label="New:"];
+n6 -> n7
+n8 [label="Identifier:AST"];
+n6 -> n8
+n5 -> n6
+n9 [label="Dot:"];
+n5 -> n9
+n10 [label="Identifier:TestIfElse"];
+n5 -> n10
+n11 [label="Num:"];
+n5 -> n11
+n4 -> n5
 n1 -> n4
-n5 [label="Public:"];
-n1 -> n5
-n6 [label="Static:"];
-n1 -> n6
-n7 [label="Void:"];
-n1 -> n7
-n8 [label="Main:"];
-n1 -> n8
-n9 [label="Lparen:"];
-n1 -> n9
-n10 [label="String:"];
-n1 -> n10
-n11 [label="Identifier:a"];
-n1 -> n11
-n12 [label="Print:"];
-n13 [label="FCall:"];
-n14 [label="NewVar:"];
-n15 [label="New:"];
-n14 -> n15
-n16 [label="Identifier:OP"];
-n14 -> n16
-n13 -> n14
-n17 [label="Dot:"];
-n13 -> n17
-n18 [label="Identifier:arithmetic"];
-n13 -> n18
-n19 [label="Empty:"];
-n13 -> n19
-n12 -> n13
-n1 -> n12
 n0 -> n1
-n20 [label="ClassDeclaration:"];
-n21 [label="Class:"];
-n20 -> n21
-n22 [label="Identifier:OP"];
-n20 -> n22
-n23 [label="Empty:"];
-n20 -> n23
-n24 [label="LRMethodDec:"];
-n25 [label="MethodDeclaration:"];
-n26 [label="Public:"];
+n12 [label="ClassDeclaration:"];
+n13 [label="Identifier:AST"];
+n12 -> n13
+n14 [label="Empty:"];
+n12 -> n14
+n15 [label="MethodDeclaration:"];
+n16 [label="Public:"];
+n15 -> n16
+n17 [label="Int:"];
+n15 -> n17
+n18 [label="Identifier:TestIfElse"];
+n15 -> n18
+n19 [label="Empty:"];
+n15 -> n19
+n20 [label="LRVarOrStatementDec:"];
+n21 [label="LRVarOrStatementDec:"];
+n22 [label="LRVarOrStatementDec:"];
+n23 [label="LRVarOrStatementDec:"];
+n24 [label="LRVarOrStatementDec:"];
+n25 [label="VarDeclaration:"];
+n26 [label="Boolean:"];
 n25 -> n26
-n27 [label="Int:"];
+n27 [label="ID:A"];
 n25 -> n27
-n28 [label="Identifier:arithmetic"];
-n25 -> n28
-n29 [label="Empty:"];
-n25 -> n29
-n30 [label="LRVarOrStatementDec:"];
-n31 [label="LRVarOrStatementDec:"];
-n32 [label="LRVarOrStatementDec:"];
-n33 [label="LRVarOrStatementDec:"];
-n34 [label="LRVarOrStatementDec:"];
-n35 [label="LRVarOrStatementDec:"];
-n36 [label="VarDeclaration:"];
-n37 [label="Int:"];
-n36 -> n37
-n38 [label="ID:b"];
-n36 -> n38
-n35 -> n36
-n39 [label="Assignment:"];
-n40 [label="Identifier:b"];
-n39 -> n40
-n41 [label="Equal:"];
-n39 -> n41
-n42 [label="Num:"];
-n39 -> n42
-n35 -> n39
-n34 -> n35
-n43 [label="VarDeclaration:"];
-n44 [label="Int:"];
-n43 -> n44
-n45 [label="ID:c"];
-n43 -> n45
-n34 -> n43
-n33 -> n34
-n46 [label="Assignment:"];
-n47 [label="Identifier:c"];
-n46 -> n47
-n48 [label="Equal:"];
-n46 -> n48
-n49 [label="Num:"];
-n46 -> n49
-n33 -> n46
-n32 -> n33
-n50 [label="VarDeclaration:"];
-n51 [label="Int:"];
-n50 -> n51
-n52 [label="ID:ret"];
-n50 -> n52
-n32 -> n50
-n31 -> n32
-n53 [label="Assignment:"];
-n54 [label="Identifier:ret"];
-n53 -> n54
-n55 [label="Equal:"];
-n53 -> n55
-n56 [label="Plus:"];
-n57 [label="Minus:"];
-n58 [label="Plus:"];
-n59 [label="Num:"];
-n58 -> n59
-n60 [label="PLUS:"];
-n58 -> n60
-n61 [label="Divide:"];
-n62 [label="Num:"];
-n61 -> n62
-n63 [label="Num:"];
-n61 -> n63
-n58 -> n61
-n57 -> n58
-n64 [label="Identifier:b"];
-n57 -> n64
-n56 -> n57
-n65 [label="PLUS:"];
-n56 -> n65
-n66 [label="Mult:"];
-n67 [label="Identifier:c"];
-n66 -> n67
-n68 [label="Num:"];
-n66 -> n68
-n56 -> n66
-n53 -> n56
-n31 -> n53
-n30 -> n31
-n69 [label="Assignment:"];
-n70 [label="Identifier:ret"];
-n69 -> n70
-n71 [label="Equal:"];
-n69 -> n71
-n72 [label="Plus:"];
-n73 [label="Minus:"];
-n74 [label="Plus:"];
-n75 [label="Num:"];
-n74 -> n75
-n76 [label="PLUS:"];
-n74 -> n76
-n77 [label="ArrAcc:"];
-n78 [label="Divide:"];
-n79 [label="Num:"];
-n78 -> n79
-n80 [label="Num:"];
-n78 -> n80
-n77 -> n78
-n74 -> n77
-n73 -> n74
-n81 [label="Identifier:b"];
-n73 -> n81
-n72 -> n73
-n82 [label="PLUS:"];
-n72 -> n82
-n83 [label="ArrAcc:"];
-n84 [label="Mult:"];
-n85 [label="Identifier:c"];
-n84 -> n85
-n86 [label="Num:"];
-n84 -> n86
-n83 -> n84
-n72 -> n83
-n69 -> n72
-n30 -> n69
-n25 -> n30
-n87 [label="Return:"];
-n25 -> n87
-n88 [label="Identifier:ret"];
-n25 -> n88
 n24 -> n25
-n89 [label="MethodDeclaration:"];
-n90 [label="Public:"];
-n89 -> n90
-n91 [label="Boolean:"];
-n89 -> n91
-n92 [label="Identifier:relational"];
-n89 -> n92
-n93 [label="Empty:"];
-n89 -> n93
-n94 [label="LRVarOrStatementDec:"];
-n95 [label="LRVarOrStatementDec:"];
-n96 [label="LRVarOrStatementDec:"];
-n97 [label="LRVarOrStatementDec:"];
-n98 [label="LRVarOrStatementDec:"];
-n99 [label="LRVarOrStatementDec:"];
-n100 [label="LRVarOrStatementDec:"];
-n101 [label="LRVarOrStatementDec:"];
-n102 [label="LRVarOrStatementDec:"];
-n103 [label="LRVarOrStatementDec:"];
-n104 [label="VarDeclaration:"];
-n105 [label="Int:"];
-n104 -> n105
-n106 [label="ID:a"];
-n104 -> n106
-n103 -> n104
-n107 [label="VarDeclaration:"];
-n108 [label="Int:"];
-n107 -> n108
-n109 [label="ID:b"];
-n107 -> n109
-n103 -> n107
-n102 -> n103
-n110 [label="VarDeclaration:"];
-n111 [label="Boolean:"];
-n110 -> n111
-n112 [label="ID:c"];
-n110 -> n112
-n102 -> n110
-n101 -> n102
-n113 [label="VarDeclaration:"];
-n114 [label="Boolean:"];
-n113 -> n114
-n115 [label="ID:d"];
-n113 -> n115
-n101 -> n113
-n100 -> n101
-n116 [label="Assignment:"];
-n117 [label="Identifier:a"];
-n116 -> n117
-n118 [label="Equal:"];
-n116 -> n118
-n119 [label="Num:"];
-n116 -> n119
-n100 -> n116
-n99 -> n100
-n120 [label="Assignment:"];
-n121 [label="Identifier:b"];
-n120 -> n121
-n122 [label="Equal:"];
-n120 -> n122
-n123 [label="Num:"];
-n120 -> n123
-n99 -> n120
-n98 -> n99
-n124 [label="Assignment:"];
-n125 [label="Identifier:d"];
-n124 -> n125
-n126 [label="Equal:"];
-n124 -> n126
-n127 [label="False:"];
-n124 -> n127
-n98 -> n124
-n97 -> n98
-n128 [label="Assignment:"];
-n129 [label="Identifier:c"];
-n128 -> n129
-n130 [label="Equal:"];
-n128 -> n130
-n131 [label="True:"];
-n128 -> n131
-n97 -> n128
-n96 -> n97
-n132 [label="VarDeclaration:"];
-n133 [label="Identifier:booleat"];
-n132 -> n133
-n134 [label="ID:ret"];
-n132 -> n134
-n96 -> n132
-n95 -> n96
-n135 [label="Assignment:"];
-n136 [label="Identifier:ret"];
-n135 -> n136
-n137 [label="Equal:"];
-n135 -> n137
-n138 [label="Or:"];
-n139 [label="And:"];
-n140 [label="Lt:"];
-n141 [label="Identifier:a"];
-n140 -> n141
-n142 [label="Identifier:b"];
-n140 -> n142
-n139 -> n140
-n143 [label="Not:"];
-n144 [label="Identifier:d"];
-n143 -> n144
-n139 -> n143
-n138 -> n139
-n145 [label="==:"];
-n146 [label="Identifier:d"];
-n145 -> n146
-n147 [label="Not:"];
-n148 [label="Identifier:c"];
-n147 -> n148
-n145 -> n147
-n138 -> n145
-n135 -> n138
-n95 -> n135
-n94 -> n95
-n149 [label="Assignment:"];
-n150 [label="Identifier:ret"];
-n149 -> n150
-n151 [label="Equal:"];
-n149 -> n151
-n152 [label="Or:"];
-n153 [label="ArrAcc:"];
-n154 [label="And:"];
-n155 [label="ArrAcc:"];
-n156 [label="Lt:"];
-n157 [label="Identifier:a"];
-n156 -> n157
-n158 [label="Identifier:b"];
-n156 -> n158
-n155 -> n156
-n154 -> n155
-n159 [label="ArrAcc:"];
-n160 [label="Not:"];
-n161 [label="Identifier:d"];
-n160 -> n161
-n159 -> n160
-n154 -> n159
-n153 -> n154
-n152 -> n153
-n162 [label="ArrAcc:"];
-n163 [label="==:"];
-n164 [label="Identifier:d"];
-n163 -> n164
-n165 [label="ArrAcc:"];
-n166 [label="Not:"];
-n167 [label="Identifier:c"];
-n166 -> n167
-n165 -> n166
-n163 -> n165
-n162 -> n163
-n152 -> n162
-n149 -> n152
-n94 -> n149
-n89 -> n94
-n168 [label="Return:"];
-n89 -> n168
-n169 [label="Identifier:ret"];
-n89 -> n169
-n24 -> n89
-n20 -> n24
-n0 -> n20
+n28 [label="VarDeclaration:"];
+n29 [label="Boolean:"];
+n28 -> n29
+n30 [label="ID:B"];
+n28 -> n30
+n24 -> n28
+n23 -> n24
+n31 [label="Assignment:"];
+n32 [label="Identifier:A"];
+n31 -> n32
+n33 [label="Equal:"];
+n31 -> n33
+n34 [label="False:"];
+n31 -> n34
+n23 -> n31
+n22 -> n23
+n35 [label="Assignment:"];
+n36 [label="Identifier:B"];
+n35 -> n36
+n37 [label="Equal:"];
+n35 -> n37
+n38 [label="True:"];
+n35 -> n38
+n22 -> n35
+n21 -> n22
+n39 [label="If statement:"];
+n40 [label="Identifier:A"];
+n39 -> n40
+n41 [label="If statement:"];
+n42 [label="Identifier:B"];
+n41 -> n42
+n43 [label="Assignment:"];
+n44 [label="Identifier:B"];
+n43 -> n44
+n45 [label="Equal:"];
+n43 -> n45
+n46 [label="True:"];
+n43 -> n46
+n41 -> n43
+n47 [label="ELSE:"];
+n48 [label="Assignment:"];
+n49 [label="Identifier:B"];
+n48 -> n49
+n50 [label="Equal:"];
+n48 -> n50
+n51 [label="False:"];
+n48 -> n51
+n47 -> n48
+n41 -> n47
+n39 -> n41
+n52 [label="EMPTY:"];
+n39 -> n52
+n21 -> n39
+n20 -> n21
+n53 [label="If statement:"];
+n54 [label="Identifier:A"];
+n53 -> n54
+n55 [label="If statement:"];
+n56 [label="Identifier:B"];
+n55 -> n56
+n57 [label="Assignment:"];
+n58 [label="Identifier:B"];
+n57 -> n58
+n59 [label="Equal:"];
+n57 -> n59
+n60 [label="True:"];
+n57 -> n60
+n55 -> n57
+n61 [label="ELSE:"];
+n62 [label="Assignment:"];
+n63 [label="Identifier:A"];
+n62 -> n63
+n64 [label="Equal:"];
+n62 -> n64
+n65 [label="False:"];
+n62 -> n65
+n61 -> n62
+n55 -> n61
+n53 -> n55
+n66 [label="EMPTY:"];
+n53 -> n66
+n20 -> n53
+n15 -> n20
+n67 [label="Num:"];
+n15 -> n67
+n12 -> n15
+n0 -> n12
 }
