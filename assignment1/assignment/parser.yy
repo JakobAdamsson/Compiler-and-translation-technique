@@ -72,7 +72,6 @@ Type:       INT
             {
               $$ = new Node("Int", "", yylineno);
             }
-
             | BOOLEAN
             {
               $$ = new Node("Boolean", "", yylineno);
@@ -91,13 +90,10 @@ VarDeclaration: Type ID SEMICOLON
               $$->children.push_back($1);
               $$->children.push_back(new Node("ID", $2, yylineno));
             };
-
-
 Expression: Term 
             {
               $$ = $1;
             }
-
             | Expression AND Expression
             {
               $$ = new Node("And", "", yylineno);
