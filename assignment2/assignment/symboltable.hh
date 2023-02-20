@@ -29,10 +29,23 @@ public:
     }
     void enterScope() { current = current->nextChild(); }
     void exitScope() { current = current->parentScope; }
-    int put(std::string key, Record item)
+    void put(std::string key, Record item)
     {
-        return 0; // I current scope, ska den använda records, som är en map med string,record par och använda functionen add variabeln på det record med motsvarande key;
-    };
+        current->putRecord(key, item); // I current scope, ska den använda records, som är en map med string,record par och använda functionen add variabeln på det record med motsvarande key;
+    }
+    Record lookup(std::string key)
+    {
+        return current->lookup(key);
+    }
+
+    void printTable()
+    {
+        root->printScope();
+    }
+    void resetTable()
+    {
+        root->resetScope(); // reset all scopes
+    }
 };
 class Scope
 {
@@ -42,6 +55,10 @@ public:
     std::list<Scope *> childrenScopes;
     std::map<std::string, Record> records;
 
+    void putRecord(std::string key, Record item)
+    {
+        records.insert(std::make_pair(key, item));
+    }
     Scope *nextChild()
     {
         Scope *nextChild;
@@ -60,6 +77,45 @@ public:
         }
         next++;
         return nextChild;
+    }
+    void printScope()
+    {
+        std::cout << "Scope: " << std::endl;
+        for (auto itr = records.begin(); itr != records.end(); ++itr)
+        {
+            printf("%s => %s", itr->first.c_str(), itr->second);
+        }
+        for (auto itr = childrenScopes.begin(); itr != childrenScopes.end(); ++itr)
+        {
+            (*itr)->printScope();
+        }
+    }
+    void resetScope()
+    {
+
+        next = 0;
+        for (auto it = childrenScopes.begin(); it != childrenScopes.end(); ++it)
+        {
+            (*it)->resetScope();
+        }
+    }
+    Record lookup(std::string key)
+    {
+        if (records.count(key)) // does it exist in the current scope?
+        {
+            return records[key];
+        }
+        else
+        {
+            if (parentScope == NULL)
+            {
+                return; // Identifier not in the symbol table
+            }
+            else
+            {
+                return parentScope->lookup(key); // Delegate the request to the parent
+            }
+        }
     }
 };
 
@@ -108,9 +164,4 @@ class Method : Record
 };
 class Variable : Record
 {
-    std::map<std::string, std::string> Variables;
-    void addVariable(std::string key, std::string type)
-    {
-        Variables.insert(std::pair<std::string, std::string>(key, type));
-    };
 };

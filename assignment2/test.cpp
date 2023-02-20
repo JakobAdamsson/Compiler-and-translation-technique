@@ -1,41 +1,20 @@
-#include <stdio.h>
-#include <list>
 #include <iostream>
-#include <fstream>
 #include <vector>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <map>
-#include <vector>
-
-#include <iostream>
-
-class Person
-{
-private:
-    std::string name;
-    int age;
-
-public:
-    Person(std::string n, int a)
-    {
-        name = n;
-        age = a;
-    }
-
-    void printDetails()
-    {
-        std::cout << "Name: " << name << ", Age: " << age << std::endl;
-    }
-};
 
 int main()
 {
-    // Create a Person object using the constructor
-    Person p("John Doe", 30);
+    std::vector<int> myVector = {1, 2, 3, 4, 5};
+    
+    // Using auto to declare the iterator type
+    for (auto it = myVector.begin(); it != myVector.end(); ++it)
+    {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
 
-    // Access the object's public method
-    p.printDetails();
+    // Using auto to declare the variable type
+    auto x = 1 + 2.5;
+    std::cout << "x = " << x << std::endl;
 
     return 0;
 }

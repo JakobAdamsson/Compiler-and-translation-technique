@@ -1,5 +1,5 @@
 #ifndef NODE_H
-#define	NODE_H
+#define NODE_H
 
 #include <list>
 #include <iostream>
@@ -7,35 +7,37 @@
 #include <vector>
 #include <unistd.h>
 #include <sys/wait.h>
+#include "symboltable.hh"
 
 using namespace std;
 
-
-
-
-class Node {
+class Node
+{
 public:
 	int id, lineno;
 	string type, value;
-	list<Node*> children;
-	Node(string t, string v, int l) : type(t), value(v), lineno(l){}
+	list<Node *> children;
+	Node(string t, string v, int l) : type(t), value(v), lineno(l) {}
 	Node()
 	{
 		type = "uninitialised";
-		value = "uninitialised"; }   // Bison needs this.
-  
-	void print_tree(int depth=0) {
-		for(int i=0; i<depth; i++)
-		cout << "  ";
+		value = "uninitialised";
+	} // Bison needs this.
+
+	void print_tree(int depth = 0)
+	{
+		for (int i = 0; i < depth; i++)
+			cout << "  ";
 		cout << type << ":" << value << endl; //<< " @line: "<< lineno << endl;
-		for(auto i=children.begin(); i!=children.end(); i++)
-		(*i)->print_tree(depth+1);
+		for (auto i = children.begin(); i != children.end(); i++)
+			(*i)->print_tree(depth + 1);
 	}
-  
-	void generate_tree() {
+
+	void generate_tree()
+	{
 		std::ofstream outStream;
-		char* filename = "tree.dot";
-	  	outStream.open(filename);
+		char *filename = "tree.dot";
+		outStream.open(filename);
 
 		int count = 0;
 		outStream << "digraph {" << std::endl;
@@ -44,21 +46,35 @@ public:
 		outStream.close();
 
 		printf("\nBuilt a parse-tree at %s. Use 'make tree' to generate the pdf version.", filename);
-  	}
-
-  	void generate_tree_content(int &count, ofstream *outStream) 
-	{
-	  id = count++;
-	  *outStream << "n" << id << " [label=\"" << type << ":" << value << "\"];" << endl;
-
-	  for (auto i = children.begin(); i != children.end(); i++)
-	  {
-		  (*i)->generate_tree_content(count, outStream);
-		  *outStream << "n" << id << " -> n" << (*i)->id << endl;
-	  }
-  	
 	}
 
+	void generate_tree_content(int &count, ofstream *outStream)
+	{
+		id = count++;
+		*outStream << "n" << id << " [label=\"" << type << ":" << value << "\"];" << endl;
+
+		for (auto i = children.begin(); i != children.end(); i++)
+		{
+			(*i)->generate_tree_content(count, outStream);
+			*outStream << "n" << id << " -> n" << (*i)->id << endl;
+		}
+	}
+
+	void generate_symboltable(SymbolTable *symboltable)
+	{
+		// vi är i "root-scopet"
+		// om vi hittar en måsvinge gå in ett nytt scope / gör ett nytt scope?
+		// skapa nya recrods för skit vi hittar?
+		// när den högra måsvingen gå ut till parent scope
+		// repetera
+		
+		// for child in childScope
+		// while (childrenScopes.size())
+			
+		//
+
+		
+	}
 };
 
 #endif
