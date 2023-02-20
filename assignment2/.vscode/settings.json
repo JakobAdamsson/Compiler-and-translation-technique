@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.flex": "lex",
+        "system_error": "cpp",
+        "type_traits": "cpp"
+    }
+}

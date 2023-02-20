@@ -1,4 +1,4 @@
-#include "Node.h"
+
 #include <stdio.h>
 #include <list>
 #include <iostream>
@@ -21,7 +21,6 @@ class SymbolTable
 public:
     Scope *root;
     Scope *current;
-
     SymbolTable()
     {
         root = new Scope();
@@ -61,22 +60,22 @@ public:
     }
     Scope *nextChild()
     {
-        Scope *nextChild;
+        Scope *next_Child;
         if (next == childrenScopes.size())
         {
             // create new child scope
-            nextChild = new Scope;
-            childrenScopes.push_back(nextChild);
+            next_Child = new Scope();
+            childrenScopes.push_back(next_Child);
         }
         else
         {
             // This code is retrieving a pointer to the next child Scope object from the list of child Scope objects stored in the current Scope object.
             auto l_front = childrenScopes.begin();
             std::advance(l_front, next);
-            nextChild = *l_front;
+            next_Child = *l_front;
         }
         next++;
-        return nextChild;
+        return next_Child;
     }
     void printScope()
     {

@@ -14,9 +14,19 @@ using namespace std;
 class Node
 {
 public:
+	// Node attributes
 	int id, lineno;
 	string type, value;
 	list<Node *> children;
+
+	// Global Symboltable
+	SymbolTable symboltable;
+	
+	// Identifiers
+	std::string mclass = "MainClass";
+	std::string classdec = "ClassDec";
+
+	// Constructor
 	Node(string t, string v, int l) : type(t), value(v), lineno(l) {}
 	Node()
 	{
@@ -46,6 +56,7 @@ public:
 		outStream.close();
 
 		printf("\nBuilt a parse-tree at %s. Use 'make tree' to generate the pdf version.", filename);
+		printf("eyy\n");
 	}
 
 	void generate_tree_content(int &count, ofstream *outStream)
@@ -60,20 +71,24 @@ public:
 		}
 	}
 
-	void generate_symboltable(SymbolTable *symboltable)
+	void create_symboltable()
 	{
-		// vi är i "root-scopet"
-		// om vi hittar en måsvinge gå in ett nytt scope / gör ett nytt scope?
-		// skapa nya recrods för skit vi hittar?
-		// när den högra måsvingen gå ut till parent scope
-		// repetera
-		
-		// for child in childScope
-		// while (childrenScopes.size())
-			
-		//
+		for(auto i = children.begin(); i!=children.end(); i++)
+		{
+			if ((*i)->type == this->mclass)
+			{
+				
+				this->Mainclass((*i)->type);
+			}
+		}
 
-		
+
+	}
+
+
+	void Mainclass(std::string i){
+
+		std::cout << "Found main class -> " << i <<std::endl;
 	}
 };
 
