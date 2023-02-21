@@ -9,43 +9,57 @@
 #include <map>
 #include <vector>
 
-class SymbolTable;
-class Scope;
-class Record;
-class Class;
-class Method;
-class Variable;
-
-class SymbolTable
+class Record
 {
 public:
-    Scope *root;
-    Scope *current;
-    SymbolTable()
-    {
-        root = new Scope();
-        current = root;
-    }
-    void enterScope() { current = current->nextChild(); }
-    void exitScope() { current = current->parentScope; }
-    void put(std::string key, Record item)
-    {
-        current->putRecord(key, item); // I current scope, ska den använda records, som är en map med string,record par och använda functionen add variabeln på det record med motsvarande key;
-    }
-    Record lookup(std::string key)
-    {
-        return current->lookup(key);
-    }
+    std::string id;
+    std::string type;
 
-    void printTable()
+    // Getters and Setters
+    void printRecord()
     {
-        root->printScope();
-    }
-    void resetTable()
-    {
-        root->resetScope(); // reset all scopes
-    }
+        std::cout << "id: " << id << " type: " << type << std::endl;
+    };
 };
+class Variable : Record
+{
+};
+
+class Method : public Record
+{
+    std::map<std::string, std::string> Parameters;
+    std::map<std::string, std::string> Variables;
+
+    // Methods
+    void addVariable(std::string key, std::string type)
+    {
+        Variables.insert(std::pair<std::string, std::string>(key, type));
+    };
+    void addParameter(std::string key, std::string type)
+    {
+        Parameters.insert(std::pair<std::string, std::string>(key, type));
+    };
+};
+
+class Class : public Record
+{
+public:
+    std::map<std::string, Variable> Variables;
+    std::map<std::string, Method> Methods;
+
+    // Methods
+    void addVariable(std::string key, Variable type)
+    {
+        Variables.insert(std::pair<std::string, Variable>(key, type));
+    };
+    void addMethod(std::string key, Method type) // borde
+    {
+        Methods.insert(std::pair<std::string, Method>(key, type));
+    };
+    void lookupVariable(){};
+    void lookupMethod(){};
+};
+
 class Scope
 {
 public:
@@ -82,7 +96,8 @@ public:
         std::cout << "Scope: " << std::endl;
         for (auto itr = records.begin(); itr != records.end(); ++itr)
         {
-            printf("%s => %s", itr->first.c_str(), itr->second);
+            std::cout << itr->second.type << " ==> " << itr->first << std::endl;
+            // printf("%s => %s", itr->first.c_str(), itr->second);
         }
         for (auto itr = childrenScopes.begin(); itr != childrenScopes.end(); ++itr)
         {
@@ -108,7 +123,7 @@ public:
         {
             if (parentScope == NULL)
             {
-                return; // Identifier not in the symbol table
+                std::cout << "IN ROOT SCOPE" << std::endl; // Identifier not in the symbol table
             }
             else
             {
@@ -118,49 +133,33 @@ public:
     }
 };
 
-class Record
+class SymbolTable
 {
-    std::string id;
-    std::string type;
+public:
+    Scope *root;
+    Scope *current;
+    SymbolTable()
+    {
+        root = new Scope();
+        current = root;
+    }
+    void enterScope() { current = current->nextChild(); }
+    void exitScope() { current = current->parentScope; }
+    void put(std::string key, Record item)
+    {
+        current->putRecord(key, item); // I current scope, ska den använda records, som är en map med string,record par och använda functionen add variabeln på det record med motsvarande key;
+    }
+    Record lookup(std::string key)
+    {
+        return current->lookup(key);
+    }
 
-    // Getters and Setters
-    void printRecord()
+    void printTable()
     {
-        std::cout << "id: " << id << " type: " << type << std::endl;
-    };
-};
-class Class : Record
-{
-    std::map<std::string, Variable> Variables;
-    std::map<std::string, Method> Methods;
-
-    // Methods
-    void addVariable(std::string key, Variable type)
+        root->printScope();
+    }
+    void resetTable()
     {
-        Variables.insert(std::pair<std::string, Variable>(key, type));
-    };
-    void addMethod(std::string key, Method type) // borde
-    {
-        Methods.insert(std::pair<std::string, Method>(key, type));
-    };
-    void lookupVariable(){};
-    void lookupMethod(){};
-};
-class Method : Record
-{
-    std::map<std::string, std::string> Parameters;
-    std::map<std::string, std::string> Variables;
-
-    // Methods
-    void addVariable(std::string key, std::string type)
-    {
-        Variables.insert(std::pair<std::string, std::string>(key, type));
-    };
-    void addParameter(std::string key, std::string type)
-    {
-        Parameters.insert(std::pair<std::string, std::string>(key, type));
-    };
-};
-class Variable : Record
-{
+        root->resetScope(); // reset all scopes
+    }
 };

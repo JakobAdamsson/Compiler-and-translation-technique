@@ -259,7 +259,7 @@ Statement: ID LBRACKET Expression RBRACKET EQUALSIGN Expression SEMICOLON
             };
 MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LBRACE LRStatement RBRACE RBRACE
             {
-              $$ = new Node("MainClass", "", yylineno);
+              $$ = new Node("MainClass", $3, yylineno);
               $$->children.push_back(new Node("Identifier", $3, yylineno));
               $$->children.push_back(new Node("Method Identifier", $13, yylineno));
               $$->children.push_back($16);

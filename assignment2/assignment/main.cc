@@ -1,6 +1,6 @@
 #include <iostream>
 #include "parser.tab.hh"
-//#include "symboltable.hh"
+// #include "symboltable.hh"
 
 extern Node *root;
 extern FILE *yyin;
@@ -15,8 +15,8 @@ void yy::parser::error(std::string const &err)
 
 int main(int argc, char **argv)
 {
-  //SymbolTable symboltable;
-  // Reads from file if a file name is passed as an argument. Otherwise, reads from stdin.
+  // SymbolTable symboltable;
+  //  Reads from file if a file name is passed as an argument. Otherwise, reads from stdin.
   if (argc > 1)
   {
     if (!(yyin = fopen(argv[1], "r")))
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
     printf("\nThe compiler successfuly generated a syntax tree for the given input! \n");
 
     printf("\nPrint Tree:  \n");
-    //root->print_tree();
+    // root->print_tree();
     root->generate_tree();
     root->create_symboltable();
     // root->generate_symboltable(&symboltable);

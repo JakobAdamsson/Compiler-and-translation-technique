@@ -1,0 +1,99 @@
+digraph {
+n0 [label="Goal:"];
+n1 [label="MainClass:Factorial"];
+n2 [label="Identifier:Factorial"];
+n1 -> n2
+n3 [label="Method Identifier:a"];
+n1 -> n3
+n4 [label="Print:"];
+n5 [label="FCall:"];
+n6 [label="NewVar:"];
+n7 [label="New:"];
+n6 -> n7
+n8 [label="Identifier:Fac"];
+n6 -> n8
+n5 -> n6
+n9 [label="Dot:"];
+n5 -> n9
+n10 [label="Identifier:ComputeFac"];
+n5 -> n10
+n11 [label="Num:"];
+n5 -> n11
+n4 -> n5
+n1 -> n4
+n0 -> n1
+n12 [label="ClassDeclaration:"];
+n13 [label="Identifier:Fac"];
+n12 -> n13
+n14 [label="Empty:"];
+n12 -> n14
+n15 [label="MethodDeclaration:"];
+n16 [label="Public:"];
+n15 -> n16
+n17 [label="Int:"];
+n15 -> n17
+n18 [label="Identifier:ComputeFac"];
+n15 -> n18
+n19 [label="LRParamater:"];
+n20 [label="Int:"];
+n19 -> n20
+n21 [label="Identifier:num"];
+n19 -> n21
+n15 -> n19
+n22 [label="LRVarOrStatementDec:"];
+n23 [label="VarDeclaration:"];
+n24 [label="Int:"];
+n23 -> n24
+n25 [label="ID:num_aux"];
+n23 -> n25
+n22 -> n23
+n26 [label="If statement:"];
+n27 [label="Lt:"];
+n28 [label="Identifier:num"];
+n27 -> n28
+n29 [label="Num:"];
+n27 -> n29
+n26 -> n27
+n30 [label="Assignment:"];
+n31 [label="Identifier:num_aux"];
+n30 -> n31
+n32 [label="Equal:"];
+n30 -> n32
+n33 [label="Num:"];
+n30 -> n33
+n26 -> n30
+n34 [label="ELSE:"];
+n35 [label="Assignment:"];
+n36 [label="Identifier:num_aux"];
+n35 -> n36
+n37 [label="Equal:"];
+n35 -> n37
+n38 [label="Mult:"];
+n39 [label="Identifier:num"];
+n38 -> n39
+n40 [label="(Expression):"];
+n41 [label="FCall:"];
+n42 [label="This:"];
+n41 -> n42
+n43 [label="Dot:"];
+n41 -> n43
+n44 [label="Identifier:ComputeFac"];
+n41 -> n44
+n45 [label="Minus:"];
+n46 [label="Identifier:num"];
+n45 -> n46
+n47 [label="Num:"];
+n45 -> n47
+n41 -> n45
+n40 -> n41
+n38 -> n40
+n35 -> n38
+n34 -> n35
+n26 -> n34
+n22 -> n26
+n15 -> n22
+n48 [label="Identifier:num_aux"];
+n15 -> n48
+n12 -> n15
+n0 -> n12
+}

@@ -21,10 +21,15 @@ public:
 
 	// Global Symboltable
 	SymbolTable symboltable;
-	
+
 	// Identifiers
 	std::string mclass = "MainClass";
 	std::string classdec = "ClassDec";
+	std::string vardec = "VarDec";
+	std::string methoddec = "MethodDec";
+	std::string parameter = "Parameter";
+	std::string statement = "Statement";
+	std::string expression = "Expression";
 
 	// Constructor
 	Node(string t, string v, int l) : type(t), value(v), lineno(l) {}
@@ -73,22 +78,35 @@ public:
 
 	void create_symboltable()
 	{
-		for(auto i = children.begin(); i!=children.end(); i++)
+		// Please keep in mind that it only iteratetes through one level of the tree(e.g root only has mainclass and class dec).
+		for (auto i = children.begin(); i != children.end(); i++)
 		{
 			if ((*i)->type == this->mclass)
 			{
-				
-				this->Mainclass((*i)->type);
+				this->Mainclass((*i)->type, (*i)->value);
 			}
 		}
-
-
 	}
 
+	// t as in type :)
+	void Mainclass(std::string t, std::string identifier)
+	{
+		// Create a new record
+		Class mainclass_test;
 
-	void Mainclass(std::string i){
+		// Fill the data
+		mainclass_test.id = identifier;
+		mainclass_test.type = t;
 
-		std::cout << "Found main class -> " << i <<std::endl;
+		// Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
+		symboltable.put(mainclass_test.id, mainclass_test);
+
+		// Enter new scope
+		symboltable.enterScope();
+
+		symboltable.printTable();
+
+		std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
 	}
 };
 
