@@ -87,7 +87,7 @@ Type:       INT
             };
 VarDeclaration: Type ID SEMICOLON
             {
-              $$ = new Node("VarDeclaration", "", yylineno);
+              $$ = new Node("VarDeclaration", $2, yylineno);
               $$->children.push_back($1);
               $$->children.push_back(new Node("ID", $2, yylineno));
             };
@@ -266,7 +266,7 @@ MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET
             };
 MethodDeclaration: PUBLIC Type ID LPAREN LRParamater RPAREN LBRACE LRVarOrStatementDec RETURN Expression SEMICOLON RBRACE
             {
-              $$ = new Node("MethodDeclaration", "", yylineno);
+              $$ = new Node("MethodDeclaration", $3, yylineno);
               $$->children.push_back(new Node("Public", "", yylineno));
               $$->children.push_back($2);
               $$->children.push_back(new Node("Identifier", $3, yylineno));
@@ -276,7 +276,7 @@ MethodDeclaration: PUBLIC Type ID LPAREN LRParamater RPAREN LBRACE LRVarOrStatem
             };
 ClassDeclaration: CLASS ID LBRACE LRVarDec LRMethodDec RBRACE
             {
-              $$ = new Node("ClassDeclaration", "", yylineno);
+              $$ = new Node("ClassDeclaration", $2, yylineno);
               $$->children.push_back(new Node("Identifier", $2, yylineno));
               $$->children.push_back($4);
               $$->children.push_back($5);

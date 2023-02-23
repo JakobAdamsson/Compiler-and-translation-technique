@@ -881,7 +881,7 @@ namespace yy {
   case 9: // VarDeclaration: Type ID SEMICOLON
 #line 89 "parser.yy"
             {
-              yylhs.value.as < Node * > () = new Node("VarDeclaration", "", yylineno);
+              yylhs.value.as < Node * > () = new Node("VarDeclaration", yystack_[1].value.as < std::string > (), yylineno);
               yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
               yylhs.value.as < Node * > ()->children.push_back(new Node("ID", yystack_[1].value.as < std::string > (), yylineno));
             }
@@ -1174,7 +1174,7 @@ namespace yy {
   case 39: // MethodDeclaration: PUBLIC Type ID LPAREN LRParamater RPAREN LBRACE LRVarOrStatementDec RETURN Expression SEMICOLON RBRACE
 #line 268 "parser.yy"
             {
-              yylhs.value.as < Node * > () = new Node("MethodDeclaration", "", yylineno);
+              yylhs.value.as < Node * > () = new Node("MethodDeclaration", yystack_[9].value.as < std::string > (), yylineno);
               yylhs.value.as < Node * > ()->children.push_back(new Node("Public", "", yylineno));
               yylhs.value.as < Node * > ()->children.push_back(yystack_[10].value.as < Node * > ());
               yylhs.value.as < Node * > ()->children.push_back(new Node("Identifier", yystack_[9].value.as < std::string > (), yylineno));
@@ -1188,7 +1188,7 @@ namespace yy {
   case 40: // ClassDeclaration: CLASS ID LBRACE LRVarDec LRMethodDec RBRACE
 #line 278 "parser.yy"
             {
-              yylhs.value.as < Node * > () = new Node("ClassDeclaration", "", yylineno);
+              yylhs.value.as < Node * > () = new Node("ClassDeclaration", yystack_[4].value.as < std::string > (), yylineno);
               yylhs.value.as < Node * > ()->children.push_back(new Node("Identifier", yystack_[4].value.as < std::string > (), yylineno));
               yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
               yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());

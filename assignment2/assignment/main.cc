@@ -15,7 +15,7 @@ void yy::parser::error(std::string const &err)
 
 int main(int argc, char **argv)
 {
-  // SymbolTable symboltable;
+  SymbolTable symboltable;
   //  Reads from file if a file name is passed as an argument. Otherwise, reads from stdin.
   if (argc > 1)
   {
@@ -36,7 +36,8 @@ int main(int argc, char **argv)
     printf("\nPrint Tree:  \n");
     // root->print_tree();
     root->generate_tree();
-    root->create_symboltable();
+    root->create_symboltable(&symboltable);
+    symboltable.printTable();
     // root->generate_symboltable(&symboltable);
   }
 

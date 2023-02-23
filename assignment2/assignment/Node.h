@@ -19,16 +19,16 @@ public:
 	string type, value;
 	list<Node *> children;
 
-	// Global Symboltable
-	SymbolTable symboltable;
-
 	// Identifiers
 	std::string mclass = "MainClass";
-	std::string classdec = "ClassDec";
-	std::string vardec = "VarDec";
+	std::string classdec = "ClassDeclaration";
+	std::string vardec = "VarDeclaration";
+	std::string midentify = "MethodDeclaration";
+	std::string lrecvarordec = "LRVarOrStatementDec";
+	std::string sment = "LRStatement";
+	std::string ifstate = "If statement";
 	std::string methoddec = "MethodDec";
 	std::string parameter = "Parameter";
-	std::string statement = "Statement";
 	std::string expression = "Expression";
 
 	// Constructor
@@ -76,37 +76,148 @@ public:
 		}
 	}
 
-	void create_symboltable()
+	void create_symboltable(SymbolTable *symboltable)
 	{
 		// Please keep in mind that it only iteratetes through one level of the tree(e.g root only has mainclass and class dec).
 		for (auto i = children.begin(); i != children.end(); i++)
 		{
+
 			if ((*i)->type == this->mclass)
 			{
-				this->Mainclass((*i)->type, (*i)->value);
+
+				Mainclass(symboltable, (*i));
+			}
+
+			else if ((*i)->type == this->classdec)
+			{
+				ClassDec(symboltable, (*i));
+			}
+
+			else if ((*i)->type == this->midentify)
+			{
+				MethDec(symboltable, (*i));
+			}
+
+			else if ((*i)->type == this->lrecvarordec)
+			{
+				// We know for a fact that this will contain more nodes, so we can only call upon create_symboltable again to traverse further.
+				(*i)->create_symboltable(symboltable);
+			}
+			else if ((*i)->type == this->ifstate)
+			{
+				StateMent(symboltable, (*i));
+			}
+			else if ((*i)->type == this->vardec)
+			{
+				VarDec(symboltable, (*i));
 			}
 		}
 	}
 
+	void StateMent(SymbolTable *symboltable, Node *i)
+	{
+		Statement statement_test;
+
+		// Fill data
+		statement_test.id = i->value;
+		statement_test.type = i->type;
+		// Add the record to the current scope record
+		symboltable->put(statement_test.id, statement_test);
+
+		// Enter new scope
+		symboltable->enterScope(this->ifstate);
+
+		i->create_symboltable(symboltable);
+
+		// symboltable.printCurrent();
+
+		// std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
+
+		symboltable->exitScope();
+	}
+	void VarDec(SymbolTable *symboltable, Node *i)
+	{
+		Variable vardec_test;
+
+		// Fill data
+		vardec_test.id = i->value;
+		vardec_test.type = i->type;
+
+		// Add the record to the current scope record
+		symboltable->put(vardec_test.id, vardec_test);
+	}
+	void MethDec(SymbolTable *symboltable, Node *i)
+	{
+		// Create a new record
+		Method methoddec_test;
+
+		// Fill the data
+		methoddec_test.id = i->value;
+		methoddec_test.type = i->type;
+
+		// Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
+		symboltable->put(methoddec_test.id, methoddec_test);
+
+		// Enter new scope
+		symboltable->enterScope(this->midentify);
+
+		i->create_symboltable(symboltable);
+
+		// symboltable.printCurrent();
+
+		// std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
+
+		symboltable->exitScope();
+	}
+
 	// t as in type :)
-	void Mainclass(std::string t, std::string identifier)
+	void Mainclass(SymbolTable *symboltable, Node *i)
 	{
 		// Create a new record
 		Class mainclass_test;
 
 		// Fill the data
-		mainclass_test.id = identifier;
-		mainclass_test.type = t;
+		mainclass_test.id = i->value;
+		mainclass_test.type = i->type;
 
 		// Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
-		symboltable.put(mainclass_test.id, mainclass_test);
+		symboltable->put(mainclass_test.id, mainclass_test);
 
 		// Enter new scope
-		symboltable.enterScope();
+		symboltable->enterScope(this->mclass);
 
-		symboltable.printTable();
+		i->create_symboltable(symboltable);
 
-		std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
+		// symboltable.printCurrent();
+
+		// std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
+
+		symboltable->exitScope();
+	}
+
+	void ClassDec(SymbolTable *symboltable, Node *i)
+	{
+
+		// Create a new record
+		Class classdec_test;
+
+		// Fill the data
+		classdec_test.id = i->value;
+		classdec_test.type = i->type;
+
+		// Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
+		symboltable->put(classdec_test.id, classdec_test);
+
+		// Enter new scope
+		symboltable->enterScope(this->classdec);
+
+		i->create_symboltable(symboltable);
+
+		// symboltable.printCurrent();
+
+		// std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
+
+		symboltable->exitScope();
 	}
 };
 

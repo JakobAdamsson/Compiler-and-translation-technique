@@ -21,10 +21,13 @@ public:
         std::cout << "id: " << id << " type: " << type << std::endl;
     };
 };
-class Variable : Record
+class Variable : public Record
 {
 };
 
+class Statement : public Record
+{
+};
 class Method : public Record
 {
     std::map<std::string, std::string> Parameters;
@@ -67,18 +70,21 @@ public:
     Scope *parentScope;
     std::list<Scope *> childrenScopes;
     std::map<std::string, Record> records;
+    std::string scopeName;
 
     void putRecord(std::string key, Record item)
     {
         records.insert(std::make_pair(key, item));
     }
-    Scope *nextChild()
+    Scope *nextChild(std::string name)
     {
         Scope *next_Child;
-        if (next == childrenScopes.size())
+        if (next == childrenScopes.size()) // If false it means that current scope has no children scope and a new scope will be crea
         {
             // create new child scope
             next_Child = new Scope();
+            next_Child->parentScope = this;
+            next_Child->scopeName = name;
             childrenScopes.push_back(next_Child);
         }
         else
@@ -91,17 +97,28 @@ public:
         next++;
         return next_Child;
     }
-    void printScope()
+    void printScope(int depth = 0)
     {
-        std::cout << "Scope: " << std::endl;
+        for (int i = 0; i < depth; i++)
+            std::cout << "  ";
+
+        std::cout << "Scope: " << this->scopeName << std::endl;
         for (auto itr = records.begin(); itr != records.end(); ++itr)
         {
-            std::cout << itr->second.type << " ==> " << itr->first << std::endl;
-            // printf("%s => %s", itr->first.c_str(), itr->second);
+            for (int i = 0; i < depth + 1; i++)
+                std::cout << "  ";
+            std::cout << itr->second.type << ": " << itr->first << std::endl;
+        }
+        if (records.empty())
+        {
+            for (int i = 0; i < depth + 1; i++)
+                std::cout << "  ";
+            std::cout << "Empty\n"
+                      << std::endl;
         }
         for (auto itr = childrenScopes.begin(); itr != childrenScopes.end(); ++itr)
         {
-            (*itr)->printScope();
+            (*itr)->printScope(depth + 1);
         }
     }
     void resetScope()
@@ -141,10 +158,17 @@ public:
     SymbolTable()
     {
         root = new Scope();
+        root->scopeName = "root";
         current = root;
     }
-    void enterScope() { current = current->nextChild(); }
-    void exitScope() { current = current->parentScope; }
+    void enterScope(std::string name = "")
+    {
+        current = current->nextChild(name);
+    }
+    void exitScope()
+    {
+        current = current->parentScope;
+    }
     void put(std::string key, Record item)
     {
         current->putRecord(key, item); // I current scope, ska den använda records, som är en map med string,record par och använda functionen add variabeln på det record med motsvarande key;
@@ -154,6 +178,10 @@ public:
         return current->lookup(key);
     }
 
+    void printCurrent()
+    {
+        current->printScope();
+    }
     void printTable()
     {
         root->printScope();

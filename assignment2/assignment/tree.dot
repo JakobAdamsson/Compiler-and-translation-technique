@@ -22,12 +22,12 @@ n5 -> n11
 n4 -> n5
 n1 -> n4
 n0 -> n1
-n12 [label="ClassDeclaration:"];
+n12 [label="ClassDeclaration:Fac"];
 n13 [label="Identifier:Fac"];
 n12 -> n13
 n14 [label="Empty:"];
 n12 -> n14
-n15 [label="MethodDeclaration:"];
+n15 [label="MethodDeclaration:ComputeFac"];
 n16 [label="Public:"];
 n15 -> n16
 n17 [label="Int:"];
@@ -41,7 +41,7 @@ n21 [label="Identifier:num"];
 n19 -> n21
 n15 -> n19
 n22 [label="LRVarOrStatementDec:"];
-n23 [label="VarDeclaration:"];
+n23 [label="VarDeclaration:num_aux"];
 n24 [label="Int:"];
 n23 -> n24
 n25 [label="ID:num_aux"];
