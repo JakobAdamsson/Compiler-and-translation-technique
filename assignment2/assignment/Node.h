@@ -25,6 +25,7 @@ public:
 	std::string vardec = "VarDeclaration";
 	std::string midentify = "MethodDeclaration";
 	std::string lrecvarordec = "LRVarOrStatementDec";
+	std::string identify = "Identifier";
 	std::string sment = "LRStatement";
 	std::string ifstate = "If statement";
 	std::string methoddec = "MethodDec";
@@ -105,7 +106,7 @@ public:
 			}
 			else if ((*i)->type == this->ifstate)
 			{
-				StateMent(symboltable, (*i));
+				IfStateMent(symboltable, (*i));
 			}
 			else if ((*i)->type == this->vardec)
 			{
@@ -114,9 +115,9 @@ public:
 		}
 	}
 
-	void StateMent(SymbolTable *symboltable, Node *i)
+	void IfStateMent(SymbolTable *symboltable, Node *i)
 	{
-		Statement statement_test;
+		IfStatement statement_test;
 
 		// Fill data
 		statement_test.id = i->value;
@@ -138,6 +139,9 @@ public:
 	void VarDec(SymbolTable *symboltable, Node *i)
 	{
 		Variable vardec_test;
+
+		// Assing a variable the current scope
+		// Add to current scope
 
 		// Fill data
 		vardec_test.id = i->value;
@@ -195,15 +199,59 @@ public:
 		symboltable->exitScope();
 	}
 
+	void getMethodData(Node *i, Method *new_method)
+	{
+		new_method->id = (i)->value;
+		new_method->type = (i)->type;
+		// std::cout << "NAMNET PÅ METHOD: " << new_method->id << new_method->type << std::endl;
+
+		for (auto itr = i->children.begin(); itr != i->children.end(); itr++)
+		{
+			if ((*itr)->type == this->vardec)
+			{
+				Variable new_variable;
+				new_variable.id = (*itr)->value;
+				new_variable.type = (*itr)->type;
+				new_method->addVariable((*itr)->value, new_variable);
+			}
+			else if ((*itr)->value == this->ifstate)
+			{
+			}
+			else if ((*itr)->type == this->lrecvarordec)
+			{
+				// We know for a fact that this will contain more nodes, so we can only call upon create_symboltable again to traverse further.
+				(*itr)->getMethodData(*itr, new_method);
+			}
+		}
+	}
 	void ClassDec(SymbolTable *symboltable, Node *i)
 	{
 
 		// Create a new record
 		Class classdec_test;
-
+		printf("NU ÄR VI I CLASSDEC\n");
 		// Fill the data
 		classdec_test.id = i->value;
 		classdec_test.type = i->type;
+
+		for (auto itr = i->children.begin(); itr != i->children.end(); itr++)
+		{
+			if ((*itr)->type == this->midentify)
+			{
+				Method new_method;
+				getMethodData((*itr), &new_method);
+				new_method.printVariables();
+				classdec_test.addMethod((*itr)->value, new_method);
+				// Make new mehtod that calls itr recursively then returns the new Method instace
+			}
+			else if ((*itr)->type == this->vardec)
+			{
+				Variable new_var;
+				new_var.id = (*itr)->value;
+				new_var.type = (*itr)->type;
+				classdec_test.addVariable((*itr)->value, new_var);
+			}
+		}
 
 		// Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
 		symboltable->put(classdec_test.id, classdec_test);

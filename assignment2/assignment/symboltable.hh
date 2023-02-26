@@ -25,12 +25,8 @@ class Variable : public Record
 {
 };
 
-class Statement : public Record
+class IfStatement : public Record
 {
-};
-class Method : public Record
-{
-    std::map<std::string, std::string> Parameters;
     std::map<std::string, std::string> Variables;
 
     // Methods
@@ -38,10 +34,38 @@ class Method : public Record
     {
         Variables.insert(std::pair<std::string, std::string>(key, type));
     };
+};
+class Method : public Record
+{
+public:
+    std::map<std::string, std::string> Parameters;
+    std::map<std::string, Variable> Variables;
+    std::map<std::string, IfStatement> Statement;
+
+    // Methods
+    void addVariable(std::string key, Variable type)
+    {
+        Variables.insert(std::pair<std::string, Variable>(key, type));
+    };
     void addParameter(std::string key, std::string type)
     {
         Parameters.insert(std::pair<std::string, std::string>(key, type));
     };
+
+    // Kanske type måste vara av en annan typ, dvs IfStatement kanske
+    void addStatement(std::string key, IfStatement type)
+    {
+        Statement.insert(std::pair<std::string, IfStatement>(key, type));
+    };
+
+    void printVariables()
+    {
+        std::cout << "NU SKA VI PRINTA LITE VARIABLER :)" << std::endl;
+        for (auto i = Variables.begin(); i != Variables.end(); i++)
+        {
+            std::cout << "Variable: " << i->first << " type: " << i->second.type << std::endl;
+        }
+    }
 };
 
 class Class : public Record
