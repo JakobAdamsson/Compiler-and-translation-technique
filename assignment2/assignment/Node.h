@@ -127,7 +127,7 @@ public:
     void addMethodParameters(SymbolTable *symboltable, Node* i)
     {   
         symboltable->current_method->addParameter(symboltable->variable_type, i->type);
-        std::cout << "Adding method parameters" << symboltable->variable_type << i->type<<std::endl;
+        symboltable->current_method->printParameters();
     }
     void VarDec_method(SymbolTable *symboltable, Node *i)
     {

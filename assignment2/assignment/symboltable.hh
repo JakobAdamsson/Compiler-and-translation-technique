@@ -64,10 +64,18 @@ public:
 
     void printVariables()
     {
-        std::cout << "NU SKA VI PRINTA LITE VARIABLER I METHOD:)" << std::endl;
+        std::cout << "NU SKA VI PRINTA LITE VARIABLER I: " << this->id << std::endl;
         for (auto i = Variables.begin(); i != Variables.end(); i++)
         {
             std::cout << "Variable: " << i->first << " type: " << i->second.type << std::endl;
+        }
+    }
+    void printParameters()
+    {
+        std::cout << "NU SKA VI PRINTA LITE PARAMETERS I: " << this->id << std::endl;
+        for (auto i = Parameters.begin(); i != Parameters.end(); i++)
+        {
+            std::cout << "Parameter: " << i->first << " type: " << i->second << std::endl;
         }
     }
 };
