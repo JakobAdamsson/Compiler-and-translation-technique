@@ -81,7 +81,7 @@ public:
     void create_symboltable(SymbolTable *symboltable)
     {
         // Please keep in mind that it only iteratetes through one level of the tree(e.g root only has mainclass and class dec).
-        symboltable -> variable_type = this-> type;
+        symboltable->variable_type = this->type;
         for (auto i = children.begin(); i != children.end(); i++)
         {
 
@@ -111,7 +111,7 @@ public:
                 else
                 {
                     VarDec_method(symboltable, (*i));
-                }   
+                }
             }
             else if ((*i)->type == this->parameter)
             {
@@ -124,9 +124,9 @@ public:
         }
     }
 
-    void addMethodParameters(SymbolTable *symboltable, Node* i)
-    {   
-        symboltable->current_method->addParameter(symboltable->variable_type, i->type);
+    void addMethodParameters(SymbolTable *symboltable, Node *i)
+    {
+        symboltable->current_method->addParameter(i->value, symboltable->variable_type);
         symboltable->current_method->printParameters();
     }
     void VarDec_method(SymbolTable *symboltable, Node *i)
@@ -139,7 +139,7 @@ public:
         // Fill data
         vardec_test.id = i->value;
         vardec_test.type = i->type;
-        symboltable->current_method->addVariable(vardec_test.id,vardec_test);
+        symboltable->current_method->addVariable(vardec_test.id, vardec_test);
         symboltable->current_method->printVariables();
 
         // Add the record to the current scope record
@@ -156,9 +156,8 @@ public:
         // Fill data
         vardec_test.id = i->value;
         vardec_test.type = i->type;
-        symboltable->current_class->addVariable(vardec_test.id,vardec_test);
+        symboltable->current_class->addVariable(vardec_test.id, vardec_test);
         symboltable->current_class->printVariables();
-
 
         // Add the record to the current scope record
         symboltable->put(vardec_test.id, vardec_test);
@@ -183,7 +182,7 @@ public:
         // symboltable.printCurrent();
 
         // std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
-        symboltable->current_class->addMethod(methoddec_test.id,methoddec_test);
+        symboltable->current_class->addMethod(methoddec_test.id, methoddec_test);
         symboltable->current_class->printMethods();
         symboltable->exitScope();
     }
@@ -218,11 +217,9 @@ public:
         // Create a new record
         Class classdec_test;
         // Fill the data
-        symboltable-> current_class = &classdec_test;
+        symboltable->current_class = &classdec_test;
         classdec_test.id = i->value;
         classdec_test.type = i->type;
-        
-        
 
         // Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
 
@@ -239,6 +236,5 @@ public:
         symboltable->exitScope();
     }
 };
-
 
 #endif
