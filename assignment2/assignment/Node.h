@@ -26,11 +26,12 @@ public:
     std::string midentify = "MethodDeclaration";
     std::string identify = "Identifier";
     std::string sment = "LRStatement";
+    std::string parameter = "Parameter";
     std::string ifstate = "If statement";
     std::string elsestate = "ELSE";
     std::string methoddec = "MethodDec";
-    std::string parameter = "Parameter";
     std::string expression = "Expression";
+    std::string fcall = "FCall";
 
     // Constructor
     Node(string t, string v, int l) : type(t), value(v), lineno(l) {}
@@ -80,6 +81,7 @@ public:
     void create_symboltable(SymbolTable *symboltable)
     {
         // Please keep in mind that it only iteratetes through one level of the tree(e.g root only has mainclass and class dec).
+        symboltable -> variable_type = this-> type;
         for (auto i = children.begin(); i != children.end(); i++)
         {
 
@@ -99,18 +101,21 @@ public:
             {
                 MethDec(symboltable, (*i));
             }
-            else if ((*i)->type == this->ifstate)
-            {
-                IfStateMent(symboltable, (*i));
-            }
-            else if ((*i)->type == this->elsestate)
-            {
-                ElseStateMent(symboltable, (*i));
-            }
             else if ((*i)->type == this->vardec)
             {
                 // När vi är här så är vi i method-scope
-                VarDec(symboltable, (*i));
+                if (symboltable->current->scopeName == this->classdec)
+                {
+                    VarDec_class(symboltable, (*i));
+                }
+                else
+                {
+                    VarDec_method(symboltable, (*i));
+                }   
+            }
+            else if ((*i)->type == this->parameter)
+            {
+                addMethodParameters(symboltable, (*i));
             }
             else
             {
@@ -118,49 +123,13 @@ public:
             }
         }
     }
-    void ElseStateMent(SymbolTable *symboltable, Node *i)
-    {
-        ElseStatement statement_test;
 
-        // Fill data
-        statement_test.id = i->value;
-        statement_test.type = i->type;
-        // Add the record to the current scope record
-        symboltable->put(statement_test.id, statement_test);
-
-        // Enter new scope
-        symboltable->enterScope(this->elsestate);
-
-        i->create_symboltable(symboltable);
-
-        // symboltable.printCurrent();
-
-        // std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
-
-        symboltable->exitScope();
+    void addMethodParameters(SymbolTable *symboltable, Node* i)
+    {   
+        symboltable->current_method->addParameter(symboltable->variable_type, i->type);
+        std::cout << "Adding method parameters" << symboltable->variable_type << i->type<<std::endl;
     }
-    void IfStateMent(SymbolTable *symboltable, Node *i)
-    {
-        IfStatement statement_test;
-
-        // Fill data
-        statement_test.id = i->value;
-        statement_test.type = i->type;
-        // Add the record to the current scope record
-        symboltable->put(statement_test.id, statement_test);
-
-        // Enter new scope
-        symboltable->enterScope(this->ifstate);
-
-        i->create_symboltable(symboltable);
-
-        // symboltable.printCurrent();
-
-        // std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
-
-        symboltable->exitScope();
-    }
-    void VarDec(SymbolTable *symboltable, Node *i)
+    void VarDec_method(SymbolTable *symboltable, Node *i)
     {
         Variable vardec_test;
 
@@ -170,6 +139,26 @@ public:
         // Fill data
         vardec_test.id = i->value;
         vardec_test.type = i->type;
+        symboltable->current_method->addVariable(vardec_test.id,vardec_test);
+        symboltable->current_method->printVariables();
+
+        // Add the record to the current scope record
+        symboltable->put(vardec_test.id, vardec_test);
+    }
+
+    void VarDec_class(SymbolTable *symboltable, Node *i)
+    {
+        Variable vardec_test;
+
+        // Assing a variable the current scope
+        // Add to current scope
+
+        // Fill data
+        vardec_test.id = i->value;
+        vardec_test.type = i->type;
+        symboltable->current_class->addVariable(vardec_test.id,vardec_test);
+        symboltable->current_class->printVariables();
+
 
         // Add the record to the current scope record
         symboltable->put(vardec_test.id, vardec_test);
@@ -178,8 +167,8 @@ public:
     {
         // Create a new record
         Method methoddec_test;
-
         // Fill the data
+        symboltable->current_method = &methoddec_test;
         methoddec_test.id = i->value;
         methoddec_test.type = i->type;
 
@@ -194,7 +183,8 @@ public:
         // symboltable.printCurrent();
 
         // std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
-
+        symboltable->current_class->addMethod(methoddec_test.id,methoddec_test);
+        symboltable->current_class->printMethods();
         symboltable->exitScope();
     }
 
@@ -203,7 +193,6 @@ public:
     {
         // Create a new record
         Class mainclass_test;
-
         // Fill the data
         mainclass_test.id = i->value;
         mainclass_test.type = i->type;
@@ -228,15 +217,17 @@ public:
 
         // Create a new record
         Class classdec_test;
-        printf("NU ÄR VI I CLASSDEC\n");
         // Fill the data
+        symboltable-> current_class = &classdec_test;
         classdec_test.id = i->value;
         classdec_test.type = i->type;
+        
+        
 
         // Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
-        symboltable->put(classdec_test.id, classdec_test);
 
         // Enter new scope
+        symboltable->put(classdec_test.id, classdec_test);
         symboltable->enterScope(this->classdec);
 
         i->create_symboltable(symboltable);
@@ -248,5 +239,6 @@ public:
         symboltable->exitScope();
     }
 };
+
 
 #endif

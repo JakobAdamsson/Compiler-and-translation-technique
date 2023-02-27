@@ -44,18 +44,8 @@ public:
 
 int main()
 {
-    Node n("Program", "Program");
-    Node child1("class","hej");
-    Node child2("child2","child2");
-    n.add_child(&child1);
-    n.add_child(&child2);
-
-    Node grandchild1("grandchild1","grandchild1");
-    Node grandchild2("grandchild2","grandchild2");
-    child1.add_child(&grandchild1);
-    child2.add_child(&grandchild2);
-
-    n.print_tree();
+    SymbolTable root;
+    
 
 
     return 0;

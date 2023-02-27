@@ -1290,7 +1290,7 @@ namespace yy {
               {
                 yylhs.value.as < Node * > () = new Node("LRParamater", "", yylineno);
                 yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
-                yylhs.value.as < Node * > ()->children.push_back(new Node("Identifier", yystack_[0].value.as < std::string > (), yylineno));
+                yylhs.value.as < Node * > ()->children.push_back(new Node("Parameter", yystack_[0].value.as < std::string > (), yylineno));
               }
 #line 1296 "parser.tab.cc"
     break;
@@ -1302,7 +1302,7 @@ namespace yy {
                 yylhs.value.as < Node * > ()->children.push_back(yystack_[3].value.as < Node * > ());
                 yylhs.value.as < Node * > ()->children.push_back(new Node("Comma", "", yylineno));
                 yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
-                yylhs.value.as < Node * > ()->children.push_back(new Node("Identifier", yystack_[0].value.as < std::string > (), yylineno));
+                yylhs.value.as < Node * > ()->children.push_back(new Node("Parameter", yystack_[0].value.as < std::string > (), yylineno));
               }
 #line 1308 "parser.tab.cc"
     break;

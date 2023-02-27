@@ -50,7 +50,6 @@ class Method : public Record
 public:
     std::map<std::string, std::string> Parameters;
     std::map<std::string, Variable> Variables;
-    std::map<std::string, IfStatement> Statement;
 
     // Methods
     void addVariable(std::string key, Variable type)
@@ -62,15 +61,10 @@ public:
         Parameters.insert(std::pair<std::string, std::string>(key, type));
     };
 
-    // Kanske type måste vara av en annan typ, dvs IfStatement kanske
-    void addStatement(std::string key, IfStatement type)
-    {
-        Statement.insert(std::pair<std::string, IfStatement>(key, type));
-    };
 
     void printVariables()
     {
-        std::cout << "NU SKA VI PRINTA LITE VARIABLER :)" << std::endl;
+        std::cout << "NU SKA VI PRINTA LITE VARIABLER I METHOD:)" << std::endl;
         for (auto i = Variables.begin(); i != Variables.end(); i++)
         {
             std::cout << "Variable: " << i->first << " type: " << i->second.type << std::endl;
@@ -97,6 +91,23 @@ public:
 
     };
     void lookupMethod(){};
+    void printVariables()
+    {
+        std::cout << "NU SKA VI PRINTA LITE VARIABLER I CLASS :)" << std::endl;
+        for (auto i = Variables.begin(); i != Variables.end(); i++)
+        {
+            std::cout << "Variable: " << i->first << " type: " << i->second.type << std::endl;
+        }
+    }
+    void printMethods()
+    {
+        std::cout << "NU SKA VI PRINTA LITE METHODS I CLASS :)" << std::endl;
+        for (auto i = Methods.begin(); i != Methods.end(); i++)
+        {
+            std::cout << "Method: " << i->first << " type: " << i->second.type << std::endl;
+        }
+    }
+
 };
 
 class Scope
@@ -191,6 +202,10 @@ class SymbolTable
 public:
     Scope *root;
     Scope *current;
+    Method* current_method;
+    Class* current_class;
+    std::string variable_type;
+
     SymbolTable()
     {
         root = new Scope();

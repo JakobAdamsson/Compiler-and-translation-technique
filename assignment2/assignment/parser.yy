@@ -359,7 +359,7 @@ LRParamater: %empty
               {
                 $$ = new Node("LRParamater", "", yylineno);
                 $$->children.push_back($1);
-                $$->children.push_back(new Node("Identifier", $2, yylineno));
+                $$->children.push_back(new Node("Parameter", $2, yylineno));
               }
               | LRParamater COMMA Type ID
               {
@@ -367,7 +367,7 @@ LRParamater: %empty
                 $$->children.push_back($1);
                 $$->children.push_back(new Node("Comma", "", yylineno));
                 $$->children.push_back($3);
-                $$->children.push_back(new Node("Identifier", $4, yylineno));
+                $$->children.push_back(new Node("Parameter", $4, yylineno));
               };
   
 /*
