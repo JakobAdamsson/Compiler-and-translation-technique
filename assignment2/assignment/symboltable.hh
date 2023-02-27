@@ -35,6 +35,16 @@ class IfStatement : public Record
         Variables.insert(std::pair<std::string, std::string>(key, type));
     };
 };
+class ElseStatement : public Record
+{
+    std::map<std::string, std::string> Variables;
+
+    // Methods
+    void addVariable(std::string key, std::string type)
+    {
+        Variables.insert(std::pair<std::string, std::string>(key, type));
+    };
+};
 class Method : public Record
 {
 public:
@@ -83,7 +93,9 @@ public:
     {
         Methods.insert(std::pair<std::string, Method>(key, type));
     };
-    void lookupVariable(){};
+    Variable lookupVariable(std::string key){
+
+    };
     void lookupMethod(){};
 };
 

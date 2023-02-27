@@ -54,46 +54,76 @@ n27 -> n28
 n29 [label="Num:"];
 n27 -> n29
 n26 -> n27
-n30 [label="Assignment:"];
-n31 [label="Identifier:num_aux"];
+n30 [label="LRStatement:"];
+n31 [label="Assignment:"];
+n32 [label="Identifier:num_aux"];
+n31 -> n32
+n33 [label="Equal:"];
+n31 -> n33
+n34 [label="Num:"];
+n31 -> n34
 n30 -> n31
-n32 [label="Equal:"];
-n30 -> n32
-n33 [label="Num:"];
-n30 -> n33
-n26 -> n30
-n34 [label="ELSE:"];
-n35 [label="Assignment:"];
-n36 [label="Identifier:num_aux"];
+n35 [label="If statement:"];
+n36 [label="==:"];
+n37 [label="Identifier:num_aux"];
+n36 -> n37
+n38 [label="Num:"];
+n36 -> n38
 n35 -> n36
-n37 [label="Equal:"];
-n35 -> n37
-n38 [label="Mult:"];
-n39 [label="Identifier:num"];
-n38 -> n39
-n40 [label="(Expression):"];
-n41 [label="FCall:"];
-n42 [label="This:"];
-n41 -> n42
-n43 [label="Dot:"];
-n41 -> n43
-n44 [label="Identifier:ComputeFac"];
-n41 -> n44
-n45 [label="Minus:"];
-n46 [label="Identifier:num"];
-n45 -> n46
-n47 [label="Num:"];
-n45 -> n47
-n41 -> n45
+n39 [label="LRStatement:"];
+n40 [label="Assignment:"];
+n41 [label="Identifier:num_aux"];
 n40 -> n41
-n38 -> n40
-n35 -> n38
-n34 -> n35
-n26 -> n34
+n42 [label="Equal:"];
+n40 -> n42
+n43 [label="Num:"];
+n40 -> n43
+n39 -> n40
+n44 [label="Assignment:"];
+n45 [label="Identifier:hej"];
+n44 -> n45
+n46 [label="Equal:"];
+n44 -> n46
+n47 [label="Num:"];
+n44 -> n47
+n39 -> n44
+n35 -> n39
+n48 [label="EMPTY:"];
+n35 -> n48
+n30 -> n35
+n26 -> n30
+n49 [label="ELSE:"];
+n50 [label="Assignment:"];
+n51 [label="Identifier:num_aux"];
+n50 -> n51
+n52 [label="Equal:"];
+n50 -> n52
+n53 [label="Mult:"];
+n54 [label="Identifier:num"];
+n53 -> n54
+n55 [label="(Expression):"];
+n56 [label="FCall:"];
+n57 [label="This:"];
+n56 -> n57
+n58 [label="Dot:"];
+n56 -> n58
+n59 [label="Identifier:ComputeFac"];
+n56 -> n59
+n60 [label="Minus:"];
+n61 [label="Identifier:num"];
+n60 -> n61
+n62 [label="Num:"];
+n60 -> n62
+n56 -> n60
+n55 -> n56
+n53 -> n55
+n50 -> n53
+n49 -> n50
+n26 -> n49
 n22 -> n26
 n15 -> n22
-n48 [label="Identifier:num_aux"];
-n15 -> n48
+n63 [label="Identifier:num_aux"];
+n15 -> n63
 n12 -> n15
 n0 -> n12
 }
