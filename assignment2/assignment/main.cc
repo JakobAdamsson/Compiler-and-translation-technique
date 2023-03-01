@@ -37,7 +37,8 @@ int main(int argc, char **argv)
     // root->print_tree();
     root->generate_tree();
     root->create_symboltable(&symboltable);
-    symboltable.printTable();
+    // symboltable.printTable();
+    root->semantic_analysis(&symboltable);
     // root->generate_symboltable(&symboltable);
   }
 

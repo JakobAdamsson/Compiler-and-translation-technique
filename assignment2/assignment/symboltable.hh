@@ -142,6 +142,7 @@ public:
         }
         else
         {
+            printf("NU ÄR VI I ELSE! \n");
             // This code is retrieving a pointer to the next child Scope object from the list of child Scope objects stored in the current Scope object.
             auto l_front = childrenScopes.begin();
             std::advance(l_front, next);
@@ -185,6 +186,12 @@ public:
     }
     Record lookup(std::string key)
     {
+        // contains
+        /*
+            m.count(key) > 0
+            m.count(key) == 1
+            m.count(key) != 0
+        */
         if (records.count(key)) // does it exist in the current scope?
         {
             return records[key];

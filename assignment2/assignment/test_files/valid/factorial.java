@@ -1,24 +1,19 @@
 public class Factorial{
     public static void main(String[] a){
-	System.out.println(new Fac().ComputeFac(10,5));
+	System.out.println(new Fac().ComputeFac(10));
     }
 }
 
 class Fac {
-	int x;
-    public int ComputeFac(int num,int hej){
+
+    public int ComputeFac(int num){
 	int num_aux ;
-	if (num < 1) 
-	{
+	int x;
+	if (num < 1){
 	    num_aux = 1 ;
-		if (num_aux == 1)
-		{
-			num_aux = 2;
-			hej = 5;
-		}
-	}
+		x = 5;}
 	else 
-	    num_aux = num * (this.ComputeFac(num-1,2)) ;
+	    num_aux = num * (this.ComputeFac(num-1)) ;
 	return num_aux ;
     }
 

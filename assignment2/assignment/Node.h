@@ -235,6 +235,57 @@ public:
 
         symboltable->exitScope();
     }
+
+    // Steg 1
+    // int x;
+    // x =5;
+
+    // if node.type == "Assignment"
+    //      kolla om den vänstra barnnoden är deklarerad.
+
+    void semantic_analysis(SymbolTable *symboltable)
+    {
+        symboltable->resetTable();
+        for (auto i = children.begin(); i != children.end(); i++)
+        {
+
+            if ((*i)->type == this->mclass)
+            {
+                symboltable->enterScope();
+            }
+            else if ((*i)->type == this->midentify)
+            {
+                symboltable->enterScope();
+            }
+            else if ((*i)->type == this->identify)
+            {
+            }
+            else
+            {
+            }
+        }
+
+        for (auto i = children.begin(); i != children.end(); i++)
+        {
+            (*i)->semantic_analysis(symboltable);
+        }
+        if (this->type == this->identify)
+        {
+            printf("Här har vi en identifier %s\n", this->value.c_str());
+            symboltable->printCurrent();
+        }
+        printf("SEMANTIC ANALYSYS \n");
+        symboltable->resetTable();
+        symboltable->enterScope();
+        printf("%d \n", symboltable->current->childrenScopes.size());
+        symboltable->exitScope();
+        symboltable->enterScope();
+        printf("%s \n", symboltable->current->scopeName.c_str());
+        printf("%d \n", symboltable->current->childrenScopes.size());
+        symboltable->enterScope();
+        printf("%s \n", symboltable->current->scopeName.c_str());
+        printf("%d \n", symboltable->current->records.size());
+    }
 };
 
 #endif
