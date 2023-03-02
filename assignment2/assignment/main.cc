@@ -38,7 +38,8 @@ int main(int argc, char **argv)
     root->generate_tree();
     root->create_symboltable(&symboltable);
     // symboltable.printTable();
-    root->semantic_analysis(&symboltable);
+    // root->semantic_analysis(&symboltable);
+    symboltable.root->generate_tree_st();
     // root->generate_symboltable(&symboltable);
   }
 

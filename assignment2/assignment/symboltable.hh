@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <map>
-#include <vector>
 
 class Record
 {
@@ -63,7 +62,7 @@ public:
 
     void printVariables()
     {
-        std::cout << "NU SKA VI PRINTA LITE VARIABLER I: " << this->id << std::endl;
+        // std::cout << "NU SKA VI PRINTA LITE VARIABLER I: " << this->id << std::endl;
         for (auto i = Variables.begin(); i != Variables.end(); i++)
         {
             std::cout << "Variable: " << i->first << " type: " << i->second.type << std::endl;
@@ -71,7 +70,7 @@ public:
     }
     void printParameters()
     {
-        std::cout << "NU SKA VI PRINTA LITE PARAMETERS I: " << this->id << std::endl;
+        // std::cout << "NU SKA VI PRINTA LITE PARAMETERS I: " << this->id << std::endl;
         for (auto i = Parameters.begin(); i != Parameters.end(); i++)
         {
             std::cout << "Parameter: " << i->first << " type: " << i->second << std::endl;
@@ -100,7 +99,7 @@ public:
     void lookupMethod(){};
     void printVariables()
     {
-        std::cout << "NU SKA VI PRINTA LITE VARIABLER I: " << this->id << std::endl;
+        // std::cout << "NU SKA VI PRINTA LITE VARIABLER I: " << this->id << std::endl;
         for (auto i = Variables.begin(); i != Variables.end(); i++)
         {
             std::cout << "Variable: " << i->first << " type: " << i->second.type << std::endl;
@@ -108,7 +107,7 @@ public:
     }
     void printMethods()
     {
-        std::cout << "NU SKA VI PRINTA LITE METHODS I: " << this->id << std::endl;
+        // std::cout << "NU SKA VI PRINTA LITE METHODS I: " << this->id << std::endl;
         for (auto i = Methods.begin(); i != Methods.end(); i++)
         {
             std::cout << "Method: " << i->first << " type: " << i->second.type << std::endl;
@@ -124,6 +123,7 @@ public:
     std::list<Scope *> childrenScopes;
     std::map<std::string, Record> records;
     std::string scopeName;
+    int id;
 
     void putRecord(std::string key, Record item)
     {
@@ -131,6 +131,7 @@ public:
     }
     Scope *nextChild(std::string name)
     {
+
         Scope *next_Child;
         if (next == childrenScopes.size()) // If false it means that current scope has no children scope and a new scope will be crea
         {
@@ -208,6 +209,49 @@ public:
             }
         }
     }
+
+    void generate_tree_st()
+    {
+        std::ofstream outStream;
+        char *filename = "st.dot";
+        outStream.open(filename);
+
+        int count = 0;
+        outStream << "digraph {" << std::endl;
+        generate_semantic_tree_content(count, &outStream);
+        outStream << "}" << std::endl;
+        outStream.close();
+
+        printf("\nBuilt a parse-tree at %s. Use 'make tree' to generate the pdf version.", filename);
+        printf("eyy\n");
+    }
+
+    void generate_semantic_tree_content(int &count, std::ofstream *outStream)
+    {
+
+        id = count++;
+        std::string buffer = "\n";
+
+        for (auto &kvp : this->records)
+        {
+            *outStream << "n" << id << " -> " << kvp.second.id << std::endl;
+            buffer += kvp.second.id + "\n";
+            // std::cout << kvp.first << " KOLLA HÄR MOFAKAS" << kvp.second.type << std::endl;
+        }
+        std::cout << buffer << std::endl;
+        *outStream << "n" << id << " [label=\""
+                   << "Scope"
+                   << ":" << scopeName
+                   << buffer
+                   << "\"];"
+                   << std::endl;
+
+        for (auto i = childrenScopes.begin(); i != childrenScopes.end(); i++)
+        {
+            (*i)->generate_semantic_tree_content(count, outStream);
+            *outStream << "n" << id << " -> n" << (*i)->id << std::endl;
+        }
+    }
 };
 
 class SymbolTable
@@ -218,7 +262,7 @@ public:
     Method *current_method;
     Class *current_class;
     std::string variable_type;
-
+    int id;
     SymbolTable()
     {
         root = new Scope();

@@ -1,0 +1,8 @@
+digraph {
+n0 -> Fac
+n0 -> Factorial
+n0 [label="Scope:root
+Fac
+Factorial
+"];
+}

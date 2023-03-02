@@ -87,7 +87,6 @@ public:
 
             if ((*i)->type == this->mclass)
             {
-
                 Mainclass(symboltable, (*i));
             }
 
@@ -104,7 +103,7 @@ public:
             else if ((*i)->type == this->vardec)
             {
                 // När vi är här så är vi i method-scope
-                if (symboltable->current->scopeName == this->classdec)
+                if (symboltable->current->scopeName.substr(0, 5) == "Class")
                 {
                     VarDec_class(symboltable, (*i));
                 }
@@ -175,7 +174,7 @@ public:
         symboltable->put(methoddec_test.id, methoddec_test);
 
         // Enter new scope
-        symboltable->enterScope(this->midentify);
+        symboltable->enterScope(this->midentify + "(" + i->value + ")");
 
         i->create_symboltable(symboltable);
 
@@ -200,7 +199,7 @@ public:
         symboltable->put(mainclass_test.id, mainclass_test);
 
         // Enter new scope
-        symboltable->enterScope(this->mclass);
+        symboltable->enterScope(this->mclass + "(" + i->value + ")");
 
         i->create_symboltable(symboltable);
 
@@ -225,8 +224,9 @@ public:
 
         // Enter new scope
         symboltable->put(classdec_test.id, classdec_test);
-        symboltable->enterScope(this->classdec);
+        // symboltable->enterScope("hello");
 
+        symboltable->enterScope(this->classdec + "(" + i->value + ")");
         i->create_symboltable(symboltable);
 
         // symboltable.printCurrent();
@@ -235,13 +235,6 @@ public:
 
         symboltable->exitScope();
     }
-
-    // Steg 1
-    // int x;
-    // x =5;
-
-    // if node.type == "Assignment"
-    //      kolla om den vänstra barnnoden är deklarerad.
 
     void semantic_analysis(SymbolTable *symboltable)
     {
