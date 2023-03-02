@@ -1,8 +1,19 @@
 digraph {
-n0 -> Fac
-n0 -> Factorial
 n0 [label="Scope:root
 Fac
 Factorial
 "];
+n1 [label="Scope:MainClass(Factorial)
+"];
+n0 -> n1
+n2 [label="Scope:ClassDeclaration(Fac)
+Int Method ComputeFac
+Int y
+"];
+n3 [label="Scope:MethodDeclaration(Int Method ComputeFac)
+Int num_aux
+Int x
+"];
+n2 -> n3
+n0 -> n2
 }

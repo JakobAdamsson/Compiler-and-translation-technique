@@ -27,12 +27,11 @@ public:
     std::string identify = "Identifier";
     std::string sment = "LRStatement";
     std::string parameter = "Parameter";
-    std::string ifstate = "If statement";
     std::string elsestate = "ELSE";
     std::string methoddec = "MethodDec";
     std::string expression = "Expression";
     std::string fcall = "FCall";
-
+    std::string assignment = "Assignment";
     // Constructor
     Node(string t, string v, int l) : type(t), value(v), lineno(l) {}
     Node()
@@ -98,6 +97,7 @@ public:
 
             else if ((*i)->type == this->midentify)
             {
+                std::cout << "ÄR VI HÄR?" << std::endl;
                 MethDec(symboltable, (*i));
             }
             else if ((*i)->type == this->vardec)
@@ -126,7 +126,7 @@ public:
     void addMethodParameters(SymbolTable *symboltable, Node *i)
     {
         symboltable->current_method->addParameter(i->value, symboltable->variable_type);
-        symboltable->current_method->printParameters();
+        // symboltable->current_method->printParameters();
     }
     void VarDec_method(SymbolTable *symboltable, Node *i)
     {
@@ -138,8 +138,10 @@ public:
         // Fill data
         vardec_test.id = i->value;
         vardec_test.type = i->type;
+        // std::cout << "vardec_test.type: " << vardec_test.type << "ID: " << vardec_test.id << std::endl;
+        vardec_test.dtype = symboltable->variable_type;
         symboltable->current_method->addVariable(vardec_test.id, vardec_test);
-        symboltable->current_method->printVariables();
+        // symboltable->current_method->printVariables();
 
         // Add the record to the current scope record
         symboltable->put(vardec_test.id, vardec_test);
@@ -156,7 +158,7 @@ public:
         vardec_test.id = i->value;
         vardec_test.type = i->type;
         symboltable->current_class->addVariable(vardec_test.id, vardec_test);
-        symboltable->current_class->printVariables();
+        // symboltable->current_class->printVariables();
 
         // Add the record to the current scope record
         symboltable->put(vardec_test.id, vardec_test);
@@ -182,7 +184,7 @@ public:
 
         // std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
         symboltable->current_class->addMethod(methoddec_test.id, methoddec_test);
-        symboltable->current_class->printMethods();
+        // symboltable->current_class->printMethods();
         symboltable->exitScope();
     }
 
@@ -238,46 +240,51 @@ public:
 
     void semantic_analysis(SymbolTable *symboltable)
     {
-        symboltable->resetTable();
         for (auto i = children.begin(); i != children.end(); i++)
         {
 
             if ((*i)->type == this->mclass)
             {
                 symboltable->enterScope();
+                (*i)->semantic_analysis(symboltable);
+                symboltable->exitScope();
             }
             else if ((*i)->type == this->midentify)
             {
+                // Now we are in method scope
                 symboltable->enterScope();
+                (*i)->semantic_analysis(symboltable);
+
+                // Record *res = symboltable->lookup((*i)->value);
+                // std::cout << symboltable->current->scopeName << "EYYYYYYY" << std::endl;
+                // res->printRecord();
+                symboltable->exitScope();
+
+                // Method meth = (Method)res;
             }
-            else if ((*i)->type == this->identify)
+            else if ((*i)->type == this->classdec)
             {
+                symboltable->enterScope();
+                (*i)->semantic_analysis(symboltable);
+                symboltable->exitScope();
+            }
+            else if ((*i)->type == this->assignment)
+            {
+                // std::cout << symboltable->current->scopeName << std::endl;
+                for (auto ii = (*i)->children.begin(); ii != (*i)->children.end(); ii++)
+                {
+                    // std::cout << (*ii)->value << " : " << (*ii)->type << std::endl;
+                    Record *hej = symboltable->lookup("Int " + (*ii)->value);
+                    if (hej != NULL)
+                        std::cout << hej->id << hej->type << std::endl;
+                }
+                // symboltable->current->printScope();
             }
             else
             {
+                (*i)->semantic_analysis(symboltable);
             }
         }
-
-        for (auto i = children.begin(); i != children.end(); i++)
-        {
-            (*i)->semantic_analysis(symboltable);
-        }
-        if (this->type == this->identify)
-        {
-            printf("Här har vi en identifier %s\n", this->value.c_str());
-            symboltable->printCurrent();
-        }
-        printf("SEMANTIC ANALYSYS \n");
-        symboltable->resetTable();
-        symboltable->enterScope();
-        printf("%d \n", symboltable->current->childrenScopes.size());
-        symboltable->exitScope();
-        symboltable->enterScope();
-        printf("%s \n", symboltable->current->scopeName.c_str());
-        printf("%d \n", symboltable->current->childrenScopes.size());
-        symboltable->enterScope();
-        printf("%s \n", symboltable->current->scopeName.c_str());
-        printf("%d \n", symboltable->current->records.size());
     }
 };
 

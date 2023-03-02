@@ -87,7 +87,10 @@ Type:       INT
             };
 VarDeclaration: Type ID SEMICOLON
             {
-              $$ = new Node("VarDeclaration", $2, yylineno);
+              // CHANGED THIS MIGHT DESTROY SOMETHING ELSE
+              std::string dtype = $1->type;
+              // CHANGE TO $2 IF THIS BUGS!
+              $$ = new Node("VarDeclaration", dtype+ " " + $2, yylineno);
               $$->children.push_back($1);
               $$->children.push_back(new Node("ID", $2, yylineno));
             };
@@ -266,7 +269,9 @@ MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET
             };
 MethodDeclaration: PUBLIC Type ID LPAREN LRParamater RPAREN LBRACE LRVarOrStatementDec RETURN Expression SEMICOLON RBRACE
             {
-              $$ = new Node("MethodDeclaration", $3, yylineno);
+              std::string dtype = $2->type;
+              // CHANGE TO $2 HERE IF IT BUGS!
+              $$ = new Node("MethodDeclaration", dtype + " Method " + $3, yylineno);
               $$->children.push_back(new Node("Public", "", yylineno));
               $$->children.push_back($2);
               $$->children.push_back(new Node("Identifier", $3, yylineno));

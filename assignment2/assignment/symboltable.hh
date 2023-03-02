@@ -13,6 +13,7 @@ class Record
 public:
     std::string id;
     std::string type;
+    std::string dtype;
 
     // Getters and Setters
     void printRecord()
@@ -143,7 +144,6 @@ public:
         }
         else
         {
-            printf("NU ÄR VI I ELSE! \n");
             // This code is retrieving a pointer to the next child Scope object from the list of child Scope objects stored in the current Scope object.
             auto l_front = childrenScopes.begin();
             std::advance(l_front, next);
@@ -185,7 +185,7 @@ public:
             (*it)->resetScope();
         }
     }
-    Record lookup(std::string key)
+    Record *lookup(std::string key)
     {
         // contains
         /*
@@ -193,15 +193,17 @@ public:
             m.count(key) == 1
             m.count(key) != 0
         */
+        // std::cout << "I LOOKUP: " << key << ": " << records[key].id << std::endl;
         if (records.count(key)) // does it exist in the current scope?
         {
-            return records[key];
+            return &records[key];
         }
         else
         {
             if (parentScope == NULL)
             {
-                std::cout << "IN ROOT SCOPE" << std::endl; // Identifier not in the symbol table
+                // std::cout << "IN ROOT SCOPE" << std::endl; // Identifier not in the symbol table
+                return NULL;
             }
             else
             {
@@ -231,11 +233,11 @@ public:
 
         id = count++;
         std::string buffer = "\n";
-
         for (auto &kvp : this->records)
         {
-            *outStream << "n" << id << " -> " << kvp.second.id << std::endl;
-            buffer += kvp.second.id + "\n";
+            // *outStream << "n" << id << " -> " << kvp.second.id << std::endl;
+
+            buffer += kvp.first + "\n";
             // std::cout << kvp.first << " KOLLA HÄR MOFAKAS" << kvp.second.type << std::endl;
         }
         std::cout << buffer << std::endl;
@@ -281,7 +283,7 @@ public:
     {
         current->putRecord(key, item); // I current scope, ska den använda records, som är en map med string,record par och använda functionen add variabeln på det record med motsvarande key;
     }
-    Record lookup(std::string key)
+    Record *lookup(std::string key)
     {
         return current->lookup(key);
     }
