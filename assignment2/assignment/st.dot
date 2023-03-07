@@ -1,16 +1,16 @@
 digraph {
 n0 [label="Scope:root
-Fac
-Factorial
+ Fac
+ Factorial
 "];
 n1 [label="Scope:MainClass(Factorial)
 "];
 n0 -> n1
 n2 [label="Scope:ClassDeclaration(Fac)
-Int Method ComputeFac
+Int ComputeFac
 Int y
 "];
-n3 [label="Scope:MethodDeclaration(Int Method ComputeFac)
+n3 [label="Scope:MethodDeclaration(ComputeFac)
 Int num_aux
 Int x
 "];

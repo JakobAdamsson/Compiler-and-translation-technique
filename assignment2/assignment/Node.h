@@ -16,7 +16,7 @@ class Node
 public:
     // Node attributes
     int id, lineno;
-    string type, value;
+    string type, value, dtype;
     list<Node *> children;
 
     // Identifiers
@@ -33,7 +33,7 @@ public:
     std::string fcall = "FCall";
     std::string assignment = "Assignment";
     // Constructor
-    Node(string t, string v, int l) : type(t), value(v), lineno(l) {}
+    Node(string t, string v, int l, string data_type = "") : type(t), value(v), lineno(l), dtype(data_type) {}
     Node()
     {
         type = "uninitialised";
@@ -86,6 +86,7 @@ public:
 
             if ((*i)->type == this->mclass)
             {
+
                 Mainclass(symboltable, (*i));
             }
 
@@ -130,50 +131,53 @@ public:
     }
     void VarDec_method(SymbolTable *symboltable, Node *i)
     {
-        Variable vardec_test;
+        Variable *vardec_test = new Variable();
 
         // Assing a variable the current scope
         // Add to current scope
 
         // Fill data
-        vardec_test.id = i->value;
-        vardec_test.type = i->type;
-        // std::cout << "vardec_test.type: " << vardec_test.type << "ID: " << vardec_test.id << std::endl;
-        vardec_test.dtype = symboltable->variable_type;
-        symboltable->current_method->addVariable(vardec_test.id, vardec_test);
+        vardec_test->id = i->value;
+        vardec_test->type = i->type;
+        vardec_test->dtype = i->dtype;
+        // vardec_test.dtype = symboltable->variable_type;
+        symboltable->current_method->addVariable(vardec_test->id, vardec_test);
         // symboltable->current_method->printVariables();
 
         // Add the record to the current scope record
-        symboltable->put(vardec_test.id, vardec_test);
+        symboltable->put(vardec_test->id, vardec_test);
     }
 
     void VarDec_class(SymbolTable *symboltable, Node *i)
     {
-        Variable vardec_test;
+        Variable *vardec_test = new Variable();
 
         // Assing a variable the current scope
         // Add to current scope
 
         // Fill data
-        vardec_test.id = i->value;
-        vardec_test.type = i->type;
-        symboltable->current_class->addVariable(vardec_test.id, vardec_test);
+        vardec_test->id = i->value;
+        vardec_test->type = i->type;
+        vardec_test->dtype = i->dtype;
+        symboltable->current_class->addVariable(vardec_test->id, vardec_test);
         // symboltable->current_class->printVariables();
 
         // Add the record to the current scope record
-        symboltable->put(vardec_test.id, vardec_test);
+        symboltable->put(vardec_test->id, vardec_test);
     }
     void MethDec(SymbolTable *symboltable, Node *i)
     {
         // Create a new record
-        Method methoddec_test;
+
+        Method *methoddec_test = new Method();
         // Fill the data
-        symboltable->current_method = &methoddec_test;
-        methoddec_test.id = i->value;
-        methoddec_test.type = i->type;
+        symboltable->current_method = methoddec_test;
+        methoddec_test->id = i->value;
+        methoddec_test->type = i->type;
+        methoddec_test->dtype = i->dtype;
 
         // Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
-        symboltable->put(methoddec_test.id, methoddec_test);
+        symboltable->put(methoddec_test->id, methoddec_test);
 
         // Enter new scope
         symboltable->enterScope(this->midentify + "(" + i->value + ")");
@@ -183,7 +187,7 @@ public:
         // symboltable.printCurrent();
 
         // std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
-        symboltable->current_class->addMethod(methoddec_test.id, methoddec_test);
+        symboltable->current_class->addMethod(methoddec_test->id, methoddec_test);
         // symboltable->current_class->printMethods();
         symboltable->exitScope();
     }
@@ -192,14 +196,15 @@ public:
     void Mainclass(SymbolTable *symboltable, Node *i)
     {
         // Create a new record
-        Class mainclass_test;
+        Class *mainclass_test = new Class();
         // Fill the data
-        mainclass_test.id = i->value;
-        mainclass_test.type = i->type;
+
+        mainclass_test->id = i->value;
+        mainclass_test->type = i->type;
 
         // Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
-        symboltable->put(mainclass_test.id, mainclass_test);
 
+        symboltable->put(mainclass_test->id, mainclass_test);
         // Enter new scope
         symboltable->enterScope(this->mclass + "(" + i->value + ")");
 
@@ -216,16 +221,16 @@ public:
     {
 
         // Create a new record
-        Class classdec_test;
+        Class *classdec_test = new Class();
         // Fill the data
-        symboltable->current_class = &classdec_test;
-        classdec_test.id = i->value;
-        classdec_test.type = i->type;
+        symboltable->current_class = classdec_test;
+        classdec_test->id = i->value;
+        classdec_test->type = i->type;
 
         // Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
 
         // Enter new scope
-        symboltable->put(classdec_test.id, classdec_test);
+        symboltable->put(classdec_test->id, classdec_test);
         // symboltable->enterScope("hello");
 
         symboltable->enterScope(this->classdec + "(" + i->value + ")");
@@ -238,7 +243,7 @@ public:
         symboltable->exitScope();
     }
 
-    void semantic_analysis(SymbolTable *symboltable)
+    void semantic_analysis_variables(SymbolTable *symboltable)
     {
         for (auto i = children.begin(); i != children.end(); i++)
         {
@@ -246,14 +251,14 @@ public:
             if ((*i)->type == this->mclass)
             {
                 symboltable->enterScope();
-                (*i)->semantic_analysis(symboltable);
+                (*i)->semantic_analysis_variables(symboltable);
                 symboltable->exitScope();
             }
             else if ((*i)->type == this->midentify)
             {
                 // Now we are in method scope
                 symboltable->enterScope();
-                (*i)->semantic_analysis(symboltable);
+                (*i)->semantic_analysis_variables(symboltable);
 
                 // Record *res = symboltable->lookup((*i)->value);
                 // std::cout << symboltable->current->scopeName << "EYYYYYYY" << std::endl;
@@ -265,7 +270,7 @@ public:
             else if ((*i)->type == this->classdec)
             {
                 symboltable->enterScope();
-                (*i)->semantic_analysis(symboltable);
+                (*i)->semantic_analysis_variables(symboltable);
                 symboltable->exitScope();
             }
             else if ((*i)->type == this->assignment)
@@ -273,17 +278,100 @@ public:
                 // std::cout << symboltable->current->scopeName << std::endl;
                 for (auto ii = (*i)->children.begin(); ii != (*i)->children.end(); ii++)
                 {
-                    // std::cout << (*ii)->value << " : " << (*ii)->type << std::endl;
-                    Record *hej = symboltable->lookup("Int " + (*ii)->value);
-                    if (hej != NULL)
-                        std::cout << hej->id << hej->type << std::endl;
+                    // std::cout << (*ii)->value << " : " << (*ii)->type << " DTYPE: " << (*ii)->dtype << std::endl;
+                    Record *hej = symboltable->lookup((*ii)->value);
+                    if ((*ii)->type == this->identify)
+                    {
+                        if (hej == NULL)
+                        {
+                            std::cout << "NO RECORD FOUND FOR-> "
+                                      << "ID: " << (*ii)->value << " TYPE: " << (*ii)->type << std::endl;
+                            return;
+                        }
+                        else
+                            std::cout << "RECORD FOUND FOR-> "
+                                      << "ID: " << (*ii)->value << " TYPE: " << (*ii)->type << std::endl;
+                    }
                 }
-                // symboltable->current->printScope();
             }
             else
             {
-                (*i)->semantic_analysis(symboltable);
+                (*i)->semantic_analysis_variables(symboltable);
             }
+        }
+    }
+    void semantic_analysis_methods(SymbolTable *symboltable)
+    {
+        for (auto i = children.begin(); i != children.end(); i++)
+        {
+            if ((*i)->type == classdec)
+            {
+                Record *rec = symboltable->lookup((*i)->value);
+                if (rec == NULL)
+                {
+                    std::cout << "NO RECORD FOUND FOR-> "
+                              << "ID: " << (*i)->value << " TYPE: " << (*i)->type << std::endl;
+                    return;
+                }
+                Class *cls = dynamic_cast<Class *>(rec);
+                if (cls == nullptr)
+                {
+                    std::cout << "CAST FAILED FOR-> "
+                              << "ID: " << (*i)->value << " TYPE: " << (*i)->type << std::endl;
+                }
+                symboltable->this_fcall_current_class = cls;
+            }
+            else if ((*i)->type == fcall)
+            {
+                (*i)->fcall_post_order(symboltable, *i);
+                symboltable->fcall_current_class = nullptr;
+            }
+
+            else
+            {
+                (*i)->semantic_analysis_methods(symboltable);
+            }
+        }
+    };
+    void fcall_post_order(SymbolTable *symboltable, Node *i)
+    {
+        for (auto ii = i->children.begin(); ii != i->children.end(); ii++)
+        {
+            (*ii)->fcall_post_order(symboltable, *(ii));
+        }
+        if (i->dtype == "Class" && i->type == identify)
+        {
+            Record *rec = symboltable->lookup(i->value);
+            if (rec == NULL)
+            {
+                std::cout << "NO RECORD FOUND FOR-> "
+                          << "ID: " << i->value << " TYPE: " << i->type << std::endl;
+                return;
+            }
+            Class *cls = dynamic_cast<Class *>(rec);
+            if (cls == nullptr)
+            {
+                std::cout << "CAST FAILED FOR-> "
+                          << "ID: " << i->value << " TYPE: " << i->type << std::endl;
+            }
+            symboltable->fcall_current_class = cls;
+        }
+        else if (i->dtype == "Method" && i->type == identify)
+        {
+            if (symboltable->fcall_current_class->lookupMethod(i->value) == 0)
+            {
+                std::cout << "NO RECORD FOUND FOR-> "
+                          << "ID: " << i->value << " TYPE: " << i->type << std::endl;
+                return;
+            }
+            else
+            {
+                std::cout << "RECORD FOUND FOR-> "
+                          << "ID: " << i->value << " TYPE: " << i->type << std::endl;
+            }
+        }
+        else if (i->dtype == "This")
+        {
         }
     }
 };

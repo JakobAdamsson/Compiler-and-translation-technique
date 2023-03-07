@@ -16,7 +16,7 @@ public:
     std::string dtype;
 
     // Getters and Setters
-    void printRecord()
+    virtual void printRecord()
     {
         std::cout << "id: " << id << " type: " << type << std::endl;
     };
@@ -25,36 +25,16 @@ class Variable : public Record
 {
 };
 
-class IfStatement : public Record
-{
-    std::map<std::string, std::string> Variables;
-
-    // Methods
-    void addVariable(std::string key, std::string type)
-    {
-        Variables.insert(std::pair<std::string, std::string>(key, type));
-    };
-};
-class ElseStatement : public Record
-{
-    std::map<std::string, std::string> Variables;
-
-    // Methods
-    void addVariable(std::string key, std::string type)
-    {
-        Variables.insert(std::pair<std::string, std::string>(key, type));
-    };
-};
 class Method : public Record
 {
 public:
     std::map<std::string, std::string> Parameters;
-    std::map<std::string, Variable> Variables;
+    std::map<std::string, Variable *> Variables;
 
     // Methods
-    void addVariable(std::string key, Variable type)
+    void addVariable(std::string key, Variable *type)
     {
-        Variables.insert(std::pair<std::string, Variable>(key, type));
+        Variables.insert(std::pair<std::string, Variable *>(key, type));
     };
     void addParameter(std::string key, std::string type)
     {
@@ -66,7 +46,7 @@ public:
         // std::cout << "NU SKA VI PRINTA LITE VARIABLER I: " << this->id << std::endl;
         for (auto i = Variables.begin(); i != Variables.end(); i++)
         {
-            std::cout << "Variable: " << i->first << " type: " << i->second.type << std::endl;
+            std::cout << "Variable: " << i->first << " type: " << i->second->type << std::endl;
         }
     }
     void printParameters()
@@ -82,36 +62,48 @@ public:
 class Class : public Record
 {
 public:
-    std::map<std::string, Variable> Variables;
-    std::map<std::string, Method> Methods;
+    std::map<std::string, Variable *> Variables;
+    std::map<std::string, Method *> Methods;
 
     // Methods
-    void addVariable(std::string key, Variable type)
+    void addVariable(std::string key, Variable *type)
     {
-        Variables.insert(std::pair<std::string, Variable>(key, type));
+        Variables.insert(std::pair<std::string, Variable *>(key, type));
     };
-    void addMethod(std::string key, Method type) // borde
+    void addMethod(std::string key, Method *type) // borde
     {
-        Methods.insert(std::pair<std::string, Method>(key, type));
+        Methods.insert(std::pair<std::string, Method *>(key, type));
     };
     Variable lookupVariable(std::string key){
 
     };
-    void lookupMethod(){};
+    int lookupMethod(std::string method_name)
+    {
+        int x;
+        if (Methods.find(method_name) != Methods.end())
+        {
+            x = 1;
+        }
+        else
+        {
+            x = 0;
+        }
+
+        return x;
+    };
+
     void printVariables()
     {
-        // std::cout << "NU SKA VI PRINTA LITE VARIABLER I: " << this->id << std::endl;
         for (auto i = Variables.begin(); i != Variables.end(); i++)
         {
-            std::cout << "Variable: " << i->first << " type: " << i->second.type << std::endl;
+            std::cout << "Variable: " << i->first << " type: " << i->second->type << std::endl;
         }
     }
     void printMethods()
     {
-        // std::cout << "NU SKA VI PRINTA LITE METHODS I: " << this->id << std::endl;
         for (auto i = Methods.begin(); i != Methods.end(); i++)
         {
-            std::cout << "Method: " << i->first << " type: " << i->second.type << std::endl;
+            std::cout << "Method: " << i->first << " type: " << i->second->type << std::endl;
         }
     }
 };
@@ -122,11 +114,11 @@ public:
     int next = 0; // next child to visit
     Scope *parentScope;
     std::list<Scope *> childrenScopes;
-    std::map<std::string, Record> records;
+    std::map<std::string, Record *> records;
     std::string scopeName;
     int id;
 
-    void putRecord(std::string key, Record item)
+    void putRecord(std::string key, Record *item)
     {
         records.insert(std::make_pair(key, item));
     }
@@ -162,7 +154,7 @@ public:
         {
             for (int i = 0; i < depth + 1; i++)
                 std::cout << "  ";
-            std::cout << itr->second.type << ": " << itr->first << std::endl;
+            std::cout << itr->second->type << ": " << itr->first << std::endl;
         }
         if (records.empty())
         {
@@ -196,7 +188,7 @@ public:
         // std::cout << "I LOOKUP: " << key << ": " << records[key].id << std::endl;
         if (records.count(key)) // does it exist in the current scope?
         {
-            return &records[key];
+            return records[key];
         }
         else
         {
@@ -224,7 +216,7 @@ public:
         outStream << "}" << std::endl;
         outStream.close();
 
-        printf("\nBuilt a parse-tree at %s. Use 'make tree' to generate the pdf version.", filename);
+        printf("\nBuilt a parse-tree at %s. Use 'make st' to generate the pdf version.", filename);
         printf("eyy\n");
     }
 
@@ -237,7 +229,7 @@ public:
         {
             // *outStream << "n" << id << " -> " << kvp.second.id << std::endl;
 
-            buffer += kvp.first + "\n";
+            buffer += kvp.second->dtype + " " + kvp.first + "\n";
             // std::cout << kvp.first << " KOLLA HÄR MOFAKAS" << kvp.second.type << std::endl;
         }
         std::cout << buffer << std::endl;
@@ -263,6 +255,9 @@ public:
     Scope *current;
     Method *current_method;
     Class *current_class;
+
+    Class *fcall_current_class;
+    Class *this_fcall_current_class;
     std::string variable_type;
     int id;
     SymbolTable()
@@ -279,7 +274,7 @@ public:
     {
         current = current->parentScope;
     }
-    void put(std::string key, Record item)
+    void put(std::string key, Record *item)
     {
         current->putRecord(key, item); // I current scope, ska den använda records, som är en map med string,record par och använda functionen add variabeln på det record med motsvarande key;
     }

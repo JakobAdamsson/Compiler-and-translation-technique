@@ -38,9 +38,13 @@ int main(int argc, char **argv)
     root->generate_tree();
     root->create_symboltable(&symboltable);
     // symboltable.printTable();
+    symboltable.root->generate_tree_st();
     symboltable.resetTable();
-    root->semantic_analysis(&symboltable);
-    // symboltable.root->generate_tree_st();
+    // root->semantic_analysis_variables(&symboltable);
+    std::cout << "Starting Method analysis" << std::endl;
+    // root->semantic_analysis_variables(&symboltable);
+    root->semantic_analysis_methods(&symboltable);
+
     // root->generate_symboltable(&symboltable);
   }
 

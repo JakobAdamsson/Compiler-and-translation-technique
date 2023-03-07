@@ -90,7 +90,7 @@ VarDeclaration: Type ID SEMICOLON
               // CHANGED THIS MIGHT DESTROY SOMETHING ELSE
               std::string dtype = $1->type;
               // CHANGE TO $2 IF THIS BUGS!
-              $$ = new Node("VarDeclaration", dtype+ " " + $2, yylineno);
+              $$ = new Node("VarDeclaration",$2, yylineno, dtype);
               $$->children.push_back($1);
               $$->children.push_back(new Node("ID", $2, yylineno));
             };
@@ -174,7 +174,7 @@ Expression: Term
               $$ = new Node("FCall", "", yylineno);
               $$->children.push_back($1);
               $$->children.push_back(new Node("Dot", "", yylineno));
-              $$->children.push_back(new Node("Identifier", $3, yylineno));
+              $$->children.push_back(new Node("Identifier", $3, yylineno,"Method"));
               $$->children.push_back($5);
             };
 
@@ -209,7 +209,7 @@ Term:       NUM
             {
               $$ = new Node("NewVar", "", yylineno);
               $$->children.push_back(new Node("New", "", yylineno));
-              $$->children.push_back(new Node("Identifier", $2, yylineno));
+              $$->children.push_back(new Node("Identifier", $2, yylineno, "Class"));
             } 
             | NOT Expression
             {
@@ -271,7 +271,7 @@ MethodDeclaration: PUBLIC Type ID LPAREN LRParamater RPAREN LBRACE LRVarOrStatem
             {
               std::string dtype = $2->type;
               // CHANGE TO $2 HERE IF IT BUGS!
-              $$ = new Node("MethodDeclaration", dtype + " Method " + $3, yylineno);
+              $$ = new Node("MethodDeclaration", $3, yylineno, dtype);
               $$->children.push_back(new Node("Public", "", yylineno));
               $$->children.push_back($2);
               $$->children.push_back(new Node("Identifier", $3, yylineno));

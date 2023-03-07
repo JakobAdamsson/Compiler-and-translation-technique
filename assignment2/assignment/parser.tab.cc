@@ -884,7 +884,7 @@ namespace yy {
               // CHANGED THIS MIGHT DESTROY SOMETHING ELSE
               std::string dtype = yystack_[2].value.as < Node * > ()->type;
               // CHANGE TO $2 IF THIS BUGS!
-              yylhs.value.as < Node * > () = new Node("VarDeclaration", dtype+ " " + yystack_[1].value.as < std::string > (), yylineno);
+              yylhs.value.as < Node * > () = new Node("VarDeclaration",yystack_[1].value.as < std::string > (), yylineno, dtype);
               yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
               yylhs.value.as < Node * > ()->children.push_back(new Node("ID", yystack_[1].value.as < std::string > (), yylineno));
             }
@@ -1016,7 +1016,7 @@ namespace yy {
               yylhs.value.as < Node * > () = new Node("FCall", "", yylineno);
               yylhs.value.as < Node * > ()->children.push_back(yystack_[5].value.as < Node * > ());
               yylhs.value.as < Node * > ()->children.push_back(new Node("Dot", "", yylineno));
-              yylhs.value.as < Node * > ()->children.push_back(new Node("Identifier", yystack_[3].value.as < std::string > (), yylineno));
+              yylhs.value.as < Node * > ()->children.push_back(new Node("Identifier", yystack_[3].value.as < std::string > (), yylineno,"Method"));
               yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
             }
 #line 1023 "parser.tab.cc"
@@ -1078,7 +1078,7 @@ namespace yy {
             {
               yylhs.value.as < Node * > () = new Node("NewVar", "", yylineno);
               yylhs.value.as < Node * > ()->children.push_back(new Node("New", "", yylineno));
-              yylhs.value.as < Node * > ()->children.push_back(new Node("Identifier", yystack_[2].value.as < std::string > (), yylineno));
+              yylhs.value.as < Node * > ()->children.push_back(new Node("Identifier", yystack_[2].value.as < std::string > (), yylineno, "Class"));
             }
 #line 1084 "parser.tab.cc"
     break;
@@ -1179,7 +1179,7 @@ namespace yy {
             {
               std::string dtype = yystack_[10].value.as < Node * > ()->type;
               // CHANGE TO $2 HERE IF IT BUGS!
-              yylhs.value.as < Node * > () = new Node("MethodDeclaration", dtype + " Method " + yystack_[9].value.as < std::string > (), yylineno);
+              yylhs.value.as < Node * > () = new Node("MethodDeclaration", yystack_[9].value.as < std::string > (), yylineno, dtype);
               yylhs.value.as < Node * > ()->children.push_back(new Node("Public", "", yylineno));
               yylhs.value.as < Node * > ()->children.push_back(yystack_[10].value.as < Node * > ());
               yylhs.value.as < Node * > ()->children.push_back(new Node("Identifier", yystack_[9].value.as < std::string > (), yylineno));

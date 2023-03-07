@@ -10,7 +10,7 @@ tree:
 		 dot -Tpdf tree.dot -otree.pdf
 
 clean:
-		rm -f parser.tab.* lex.yy.c* compiler stack.hh tree.dot tree.pdf
+		rm -f parser.tab.* lex.yy.c* compiler stack.hh tree.dot tree.pdf st.dot st.pdf
 		rm -R compiler.dSYM
 st:
 		 dot -Tpdf st.dot -ost.pdf
