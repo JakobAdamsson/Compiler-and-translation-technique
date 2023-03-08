@@ -199,6 +199,7 @@ public:
             }
             else
             {
+                std::cout << "hejsan" << std::endl;
                 return parentScope->lookup(key); // Delegate the request to the parent
             }
         }
@@ -259,6 +260,7 @@ public:
     Class *fcall_current_class;
     Class *this_fcall_current_class;
     std::string variable_type;
+    Variable *thiss;
     int id;
     SymbolTable()
     {

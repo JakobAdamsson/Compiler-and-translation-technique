@@ -207,9 +207,9 @@ Term:       NUM
             }
             | NEW ID LPAREN RPAREN
             {
-              $$ = new Node("NewVar", "", yylineno);
-              $$->children.push_back(new Node("New", "", yylineno));
-              $$->children.push_back(new Node("Identifier", $2, yylineno, "Class"));
+              $$ = new Node("NewVar", $2, yylineno, "Class");
+              //$$->children.push_back(new Node("New", "", yylineno));
+              //$$->children.push_back(new Node("Identifier", $2, yylineno, "Class"));
             } 
             | NOT Expression
             {

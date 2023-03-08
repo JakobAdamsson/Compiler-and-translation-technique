@@ -4,10 +4,12 @@ n0 [label="Scope:root
  Factorial
 "];
 n1 [label="Scope:MainClass(Factorial)
+Factorial this
 "];
 n0 -> n1
 n2 [label="Scope:ClassDeclaration(Fac)
 Int ComputeFac
+Fac this
 Int y
 "];
 n3 [label="Scope:MethodDeclaration(ComputeFac)

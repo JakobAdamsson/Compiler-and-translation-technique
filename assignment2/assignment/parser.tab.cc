@@ -1076,9 +1076,9 @@ namespace yy {
   case 29: // Term: NEW ID LPAREN RPAREN
 #line 209 "parser.yy"
             {
-              yylhs.value.as < Node * > () = new Node("NewVar", "", yylineno);
-              yylhs.value.as < Node * > ()->children.push_back(new Node("New", "", yylineno));
-              yylhs.value.as < Node * > ()->children.push_back(new Node("Identifier", yystack_[2].value.as < std::string > (), yylineno, "Class"));
+              yylhs.value.as < Node * > () = new Node("NewVar", yystack_[2].value.as < std::string > (), yylineno, "Class");
+              //$$->children.push_back(new Node("New", "", yylineno));
+              //$$->children.push_back(new Node("Identifier", $2, yylineno, "Class"));
             }
 #line 1084 "parser.tab.cc"
     break;

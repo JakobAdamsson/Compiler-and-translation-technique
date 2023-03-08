@@ -7,125 +7,121 @@ n3 [label="Method Identifier:a"];
 n1 -> n3
 n4 [label="Print:"];
 n5 [label="FCall:"];
-n6 [label="NewVar:"];
-n7 [label="New:"];
-n6 -> n7
-n8 [label="Identifier:Fac"];
-n6 -> n8
+n6 [label="NewVar:Fac"];
 n5 -> n6
-n9 [label="Dot:"];
+n7 [label="Dot:"];
+n5 -> n7
+n8 [label="Identifier:ComputeFac"];
+n5 -> n8
+n9 [label="Num:"];
 n5 -> n9
-n10 [label="Identifier:ComputeFac"];
-n5 -> n10
-n11 [label="Num:"];
-n5 -> n11
 n4 -> n5
 n1 -> n4
 n0 -> n1
-n12 [label="ClassDeclaration:Fac"];
-n13 [label="Identifier:Fac"];
+n10 [label="ClassDeclaration:Fac"];
+n11 [label="Identifier:Fac"];
+n10 -> n11
+n12 [label="VarDeclaration:y"];
+n13 [label="Int:"];
 n12 -> n13
-n14 [label="VarDeclaration:y"];
-n15 [label="Int:"];
-n14 -> n15
-n16 [label="ID:y"];
-n14 -> n16
+n14 [label="ID:y"];
 n12 -> n14
-n17 [label="MethodDeclaration:ComputeFac"];
-n18 [label="Public:"];
-n17 -> n18
-n19 [label="Int:"];
-n17 -> n19
-n20 [label="Identifier:ComputeFac"];
-n17 -> n20
-n21 [label="LRParamater:"];
-n22 [label="Int:"];
-n21 -> n22
-n23 [label="Parameter:num"];
-n21 -> n23
-n17 -> n21
-n24 [label="LRVarOrStatementDec:"];
-n25 [label="LRVarOrStatementDec:"];
-n26 [label="VarDeclaration:num_aux"];
-n27 [label="Int:"];
-n26 -> n27
-n28 [label="ID:num_aux"];
-n26 -> n28
-n25 -> n26
-n29 [label="VarDeclaration:x"];
-n30 [label="Int:"];
-n29 -> n30
-n31 [label="ID:x"];
-n29 -> n31
-n25 -> n29
+n10 -> n12
+n15 [label="MethodDeclaration:ComputeFac"];
+n16 [label="Public:"];
+n15 -> n16
+n17 [label="Int:"];
+n15 -> n17
+n18 [label="Identifier:ComputeFac"];
+n15 -> n18
+n19 [label="LRParamater:"];
+n20 [label="Int:"];
+n19 -> n20
+n21 [label="Parameter:num"];
+n19 -> n21
+n15 -> n19
+n22 [label="LRVarOrStatementDec:"];
+n23 [label="LRVarOrStatementDec:"];
+n24 [label="VarDeclaration:num_aux"];
+n25 [label="Int:"];
 n24 -> n25
-n32 [label="If statement:"];
-n33 [label="Lt:"];
-n34 [label="Identifier:num"];
-n33 -> n34
-n35 [label="Num:"];
-n33 -> n35
-n32 -> n33
-n36 [label="LRStatement:"];
-n37 [label="LRStatement:"];
-n38 [label="Assignment:"];
-n39 [label="Identifier:hej"];
-n38 -> n39
-n40 [label="Equal:"];
-n38 -> n40
-n41 [label="Num:"];
-n38 -> n41
-n37 -> n38
-n42 [label="Assignment:"];
-n43 [label="Identifier:num_aux"];
-n42 -> n43
-n44 [label="Equal:"];
-n42 -> n44
-n45 [label="Num:"];
-n42 -> n45
-n37 -> n42
+n26 [label="ID:num_aux"];
+n24 -> n26
+n23 -> n24
+n27 [label="VarDeclaration:x"];
+n28 [label="Int:"];
+n27 -> n28
+n29 [label="ID:x"];
+n27 -> n29
+n23 -> n27
+n22 -> n23
+n30 [label="If statement:"];
+n31 [label="Lt:"];
+n32 [label="Identifier:num"];
+n31 -> n32
+n33 [label="Num:"];
+n31 -> n33
+n30 -> n31
+n34 [label="LRStatement:"];
+n35 [label="LRStatement:"];
+n36 [label="Assignment:"];
+n37 [label="Identifier:hej"];
 n36 -> n37
-n46 [label="Assignment:"];
-n47 [label="Identifier:x"];
-n46 -> n47
-n48 [label="Equal:"];
-n46 -> n48
-n49 [label="Num:"];
-n46 -> n49
-n36 -> n46
-n32 -> n36
-n50 [label="ELSE:"];
-n51 [label="Assignment:"];
-n52 [label="Identifier:num_aux"];
-n51 -> n52
-n53 [label="Equal:"];
-n51 -> n53
-n54 [label="Mult:"];
-n55 [label="Identifier:num"];
+n38 [label="Equal:"];
+n36 -> n38
+n39 [label="Num:"];
+n36 -> n39
+n35 -> n36
+n40 [label="Assignment:"];
+n41 [label="Identifier:num_aux"];
+n40 -> n41
+n42 [label="Equal:"];
+n40 -> n42
+n43 [label="Num:"];
+n40 -> n43
+n35 -> n40
+n34 -> n35
+n44 [label="Assignment:"];
+n45 [label="Identifier:x"];
+n44 -> n45
+n46 [label="Equal:"];
+n44 -> n46
+n47 [label="Num:"];
+n44 -> n47
+n34 -> n44
+n30 -> n34
+n48 [label="ELSE:"];
+n49 [label="Assignment:"];
+n50 [label="Identifier:num_aux"];
+n49 -> n50
+n51 [label="Equal:"];
+n49 -> n51
+n52 [label="Mult:"];
+n53 [label="Identifier:num"];
+n52 -> n53
+n54 [label="(Expression):"];
+n55 [label="FCall:"];
+n56 [label="This:"];
+n55 -> n56
+n57 [label="Dot:"];
+n55 -> n57
+n58 [label="Identifier:ComputeFac"];
+n55 -> n58
+n59 [label="Minus:"];
+n60 [label="Identifier:num"];
+n59 -> n60
+n61 [label="Num:"];
+n59 -> n61
+n55 -> n59
 n54 -> n55
-n56 [label="(Expression):"];
-n57 [label="FCall:"];
-n58 [label="This:"];
-n57 -> n58
-n59 [label="Dot:"];
-n57 -> n59
-n60 [label="Identifier:ComputeFac"];
-n57 -> n60
-n61 [label="Minus:"];
-n62 [label="Identifier:num"];
-n61 -> n62
-n63 [label="Num:"];
-n61 -> n63
-n57 -> n61
-n56 -> n57
-n54 -> n56
-n51 -> n54
-n50 -> n51
-n32 -> n50
-n24 -> n32
-n17 -> n24
-n64 [label="Identifier:num_aux"];
-n17 -> n64
-n12 -> n17
-n0 -> n12
+n52 -> n54
+n49 -> n52
+n48 -> n49
+n30 -> n48
+n22 -> n30
+n15 -> n22
+n62 [label="Identifier:num_aux"];
+n15 -> n62
+n10 -> n15
+n0 -> n10
 }

@@ -28,11 +28,10 @@ public:
     std::string sment = "LRStatement";
     std::string parameter = "Parameter";
     std::string elsestate = "ELSE";
+    std::string methoddec = "MethodDec";
     std::string expression = "Expression";
     std::string fcall = "FCall";
     std::string assignment = "Assignment";
-    std::string newvar = "NewVar";
-    std::string thiss = "This";
     // Constructor
     Node(string t, string v, int l, string data_type = "") : type(t), value(v), lineno(l), dtype(data_type) {}
     Node()
@@ -203,17 +202,12 @@ public:
         mainclass_test->id = i->value;
         mainclass_test->type = i->type;
 
-        Variable *this_ = new Variable();
-        this_->id = "this";
-        this_->type = i->value;
-        this_->dtype = i->value;
-        mainclass_test->addVariable(this_->id, this_);
         // Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
 
         symboltable->put(mainclass_test->id, mainclass_test);
         // Enter new scope
         symboltable->enterScope(this->mclass + "(" + i->value + ")");
-        symboltable->put(this_->id, this_);
+
         i->create_symboltable(symboltable);
 
         // symboltable.printCurrent();
@@ -236,8 +230,8 @@ public:
         Variable *this_ = new Variable();
         this_->id = "this";
         this_->type = i->value;
-        this_->dtype = i->value;
-        classdec_test->addVariable(this_->id, this_);
+
+        classdec_test->addVariable("this", this_);
 
         // Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
 
@@ -246,7 +240,6 @@ public:
         // symboltable->enterScope("hello");
 
         symboltable->enterScope(this->classdec + "(" + i->value + ")");
-        symboltable->put(this_->id, this_);
         i->create_symboltable(symboltable);
 
         // symboltable.printCurrent();
@@ -292,10 +285,10 @@ public:
                 for (auto ii = (*i)->children.begin(); ii != (*i)->children.end(); ii++)
                 {
                     // std::cout << (*ii)->value << " : " << (*ii)->type << " DTYPE: " << (*ii)->dtype << std::endl;
-                    Record *rec = symboltable->lookup((*ii)->value);
+                    Record *hej = symboltable->lookup((*ii)->value);
                     if ((*ii)->type == this->identify)
                     {
-                        if (rec == NULL)
+                        if (hej == NULL)
                         {
                             std::cout << "NO RECORD FOUND FOR-> "
                                       << "ID: " << (*ii)->value << " TYPE: " << (*ii)->type << std::endl;
@@ -317,98 +310,76 @@ public:
     {
         for (auto i = children.begin(); i != children.end(); i++)
         {
-            if ((*i)->type == mclass)
+            if ((*i)->type == classdec)
             {
-                symboltable->enterScope();
-                (*i)->semantic_analysis_methods(symboltable);
-                symboltable->exitScope();
-            }
-            else if ((*i)->type == classdec)
-            {
-                symboltable->enterScope();
-                (*i)->semantic_analysis_methods(symboltable);
-                symboltable->exitScope();
-            }
-            else if ((*i)->type == midentify)
-            {
-                symboltable->enterScope();
-                (*i)->semantic_analysis_methods(symboltable);
-                symboltable->exitScope();
+                Record *rec = symboltable->lookup((*i)->value);
+                if (rec == NULL)
+                {
+                    std::cout << "NO RECORD FOUND FOR-> "
+                              << "ID: " << (*i)->value << " TYPE: " << (*i)->type << std::endl;
+                    return;
+                }
+                Class *cls = dynamic_cast<Class *>(rec);
+                if (cls == nullptr)
+                {
+                    std::cout << "CAST FAILED FOR-> "
+                              << "ID: " << (*i)->value << " TYPE: " << (*i)->type << std::endl;
+                }
+                symboltable->this_fcall_current_class = cls;
             }
             else if ((*i)->type == fcall)
             {
-                Class *cls = fcall_check_first_child(symboltable, (*i)->children.front());
-                auto third_child = std::next((*i)->children.begin(), 2);
-
-                int x = cls->lookupMethod((*third_child)->value);
-                if (x)
-                {
-                    std::cout << "SKITEN FINNS: " << (*third_child)->value << std::endl;
-                }
-                else
-                {
-                    std::cout << "SKITEN FINNS INTE: " << (*third_child)->value << std::endl;
-                    return;
-                }
+                (*i)->fcall_post_order(symboltable, *i);
+                symboltable->fcall_current_class = nullptr;
             }
+
             else
             {
                 (*i)->semantic_analysis_methods(symboltable);
             }
         }
-    }
-
-    Class *fcall_check_first_child(SymbolTable *symboltable, Node *i)
+    };
+    void fcall_post_order(SymbolTable *symboltable, Node *i)
     {
-        std::cout << "I check first child: " << i->type << std::endl;
-        if (i->type == newvar)
+        for (auto ii = i->children.begin(); ii != i->children.end(); ii++)
+        {
+            (*ii)->fcall_post_order(symboltable, *(ii));
+        }
+        if (i->dtype == "Class" && i->type == identify)
         {
             Record *rec = symboltable->lookup(i->value);
             if (rec == NULL)
             {
                 std::cout << "NO RECORD FOUND FOR-> "
                           << "ID: " << i->value << " TYPE: " << i->type << std::endl;
-                return NULL;
+                return;
             }
             Class *cls = dynamic_cast<Class *>(rec);
             if (cls == nullptr)
             {
-                std::cout << "NO CLASS FOUND FOR-> "
+                std::cout << "CAST FAILED FOR-> "
                           << "ID: " << i->value << " TYPE: " << i->type << std::endl;
-                return NULL;
             }
-            return cls;
+            symboltable->fcall_current_class = cls;
         }
-        else if (i->type == thiss)
+        else if (i->dtype == "Method" && i->type == identify)
         {
-            // symboltable->current->parentScope->printScope();
-            Record *rec = symboltable->lookup("this");
-
-            if (rec == NULL)
+            if (symboltable->fcall_current_class->lookupMethod(i->value) == 0)
             {
-                // symboltable->current->parentScope->printScope();
                 std::cout << "NO RECORD FOUND FOR-> "
                           << "ID: " << i->value << " TYPE: " << i->type << std::endl;
-                return NULL;
+                return;
             }
-            Record *rec2 = symboltable->lookup(rec->type);
-            Class *cls = dynamic_cast<Class *>(rec2);
-            if (cls == nullptr)
+            else
             {
-                std::cout << "NO CLASS FOUND FOR-> "
+                std::cout << "RECORD FOUND FOR-> "
                           << "ID: " << i->value << " TYPE: " << i->type << std::endl;
-                return NULL;
             }
-            return cls;
-
-            // Det kan också vara en identifier och det kan vara ett fcall.
         }
-        return NULL;
+        else if (i->dtype == "This")
+        {
+        }
     }
 };
 
 #endif
-// create function that return the class
-// check if the method name is in the class.
-// do it have the right number of parameter
-// do the type of parameters correspoing to the type in the method decalaration.
