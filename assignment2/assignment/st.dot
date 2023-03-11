@@ -1,21 +1,30 @@
 digraph {
 n0 [label="Scope:root
- Fac
- Factorial
+ OP
+ OperatorPriority
 "];
-n1 [label="Scope:MainClass(Factorial)
-Factorial this
+n1 [label="Scope:MainClass(OperatorPriority)
+OperatorPriority this
 "];
 n0 -> n1
-n2 [label="Scope:ClassDeclaration(Fac)
-Int ComputeFac
-Fac this
-Int y
+n2 [label="Scope:ClassDeclaration(OP)
+Int arithmetic
+Boolean relational
+OP this
 "];
-n3 [label="Scope:MethodDeclaration(ComputeFac)
-Int num_aux
-Int x
+n3 [label="Scope:MethodDeclaration(arithmetic)
+Int b
+Int c
+Int ret
 "];
 n2 -> n3
+n4 [label="Scope:MethodDeclaration(relational)
+Int a
+Int b
+Boolean c
+Boolean d
+booleat ret
+"];
+n2 -> n4
 n0 -> n2
 }

@@ -1,5 +1,5 @@
-#ifndef NODE_H
-#define NODE_H
+#ifndef NODE_H SYMBOLTABLE_HH
+#define NODE_H SYMBOLTABLE_HH
 
 #include <list>
 #include <iostream>
@@ -33,6 +33,7 @@ public:
     std::string assignment = "Assignment";
     std::string newvar = "NewVar";
     std::string thiss = "This";
+
     // Constructor
     Node(string t, string v, int l, string data_type = "") : type(t), value(v), lineno(l), dtype(data_type) {}
     Node()
@@ -99,7 +100,6 @@ public:
 
             else if ((*i)->type == this->midentify)
             {
-                std::cout << "ÄR VI HÄR?" << std::endl;
                 MethDec(symboltable, (*i));
             }
             else if ((*i)->type == this->vardec)
@@ -127,7 +127,12 @@ public:
 
     void addMethodParameters(SymbolTable *symboltable, Node *i)
     {
-        symboltable->current_method->addParameter(i->value, symboltable->variable_type);
+        Variable *new_param = new Variable();
+        new_param->id = i->value;
+        new_param->type = i->type;
+        new_param->dtype = i->dtype;
+        symboltable->current_method->addParameter(i->value, symboltable->variable_type, i->dtype);
+        symboltable->current_method->addToStruct(i->value, i->type, i->dtype);
         // symboltable->current_method->printParameters();
     }
     void VarDec_method(SymbolTable *symboltable, Node *i)
@@ -140,6 +145,7 @@ public:
         // Fill data
         vardec_test->id = i->value;
         vardec_test->type = i->type;
+        vardec_test->dtype = i->dtype;
         vardec_test->dtype = i->dtype;
         // vardec_test.dtype = symboltable->variable_type;
         symboltable->current_method->addVariable(vardec_test->id, vardec_test);
@@ -339,17 +345,55 @@ public:
             {
                 Class *cls = fcall_check_first_child(symboltable, (*i)->children.front());
                 auto third_child = std::next((*i)->children.begin(), 2);
-
-                int x = cls->lookupMethod((*third_child)->value);
-                if (x)
+                Method *rec = cls->lookupMethod((*third_child)->value);
+                if (rec == nullptr)
                 {
-                    std::cout << "SKITEN FINNS: " << (*third_child)->value << std::endl;
+                    std::cout << "NO RECORD FOUND FOR-> "
+                              << "ID: " << (*third_child)->value << " TYPE: " << (*third_child)->type << std::endl;
+                    return;
+                }
+                int no_param = rec->Parameters.size();
+                // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa
+
+                auto fourth_child = std::next((*i)->children.begin(), 3);
+                int y;
+                if ((*fourth_child)->type == "LRExp")
+                {
+                    y = 1 + check_parameters(symboltable, *fourth_child);
+                }
+                else if ((*fourth_child)->type == "Empty")
+                {
+                    y = 0;
                 }
                 else
                 {
-                    std::cout << "SKITEN FINNS INTE: " << (*third_child)->value << std::endl;
+                    y = 1;
+                }
+                if (no_param != y)
+                {
+                    std::cout << "NÅGOT ÄR JÄVLIGT FEL" << std::endl;
                     return;
                 }
+
+                type_check_parameters(symboltable, *fourth_child, rec, no_param);
+
+                if (symboltable->method_params == rec->Parameters2)
+                {
+                    std::cout << "The vectors are equal" << std::endl;
+                }
+                else
+                {
+                    std::cout << "The vectors are not equal" << std::endl;
+                }
+
+                rec->printParameters2();
+                for (auto str : symboltable->method_params)
+                {
+                    std::cout << "symboltabbleapsd io   " << str << std::endl;
+                }
+
+                symboltable->method_params.clear();
+                symboltable->method_params.shrink_to_fit();
             }
             else
             {
@@ -358,9 +402,107 @@ public:
         }
     }
 
+    bool isLeaf() const
+    {
+        return children.empty();
+    }
+
+    std::string checkAllLeavesHaveSameHej(const Node *node)
+    {
+        if (node->isLeaf())
+        {
+            // Return the node's 'hej' value
+            return node->dtype;
+        }
+        else
+        {
+            // Recursively check all child nodes
+            std::string commonHej = "";
+            for (auto child : node->children)
+            {
+                std::string childHej = checkAllLeavesHaveSameHej(child);
+                if (commonHej.empty())
+                {
+                    commonHej = childHej;
+                }
+                else if (childHej != commonHej)
+                {
+                    return "";
+                }
+            }
+            return commonHej;
+        }
+    }
+    int check_parameters(SymbolTable *symboltable, Node *i)
+    {
+        int x = 0;
+        if (i->type == "LRExp")
+        {
+            x++;
+        }
+        else if (i->type == "Empty")
+        {
+            return x;
+        }
+
+        for (auto itr = i->children.begin(); itr != i->children.end(); itr++)
+        {
+            x += check_parameters(symboltable, *itr);
+        }
+        return x;
+    }
+    std::string check_expression(SymbolTable *symboltable, Node *i)
+    {
+    }
+
+    void type_check_parameters(SymbolTable *symboltable, Node *i, Method *method, int no_param)
+    {
+
+        std::vector<std::string> params;
+
+        // std::cout << "Value: " << i->value << " Type: " << i->type << " Dtype: " << i->dtype << std::endl;
+        if (i->type == "Plus" || i->type == "Minus" || i->type == "Mult" || i->type == "(Expression)" || i->type == "Divide")
+        {
+            symboltable->method_params.push_back(i->checkAllLeavesHaveSameHej(i));
+            return;
+        }
+
+        for (auto itr = i->children.begin(); itr != i->children.end(); itr++)
+        {
+            (*itr)->type_check_parameters(symboltable, *itr, method, no_param);
+        }
+        if (i->type != "LRExp")
+        {
+
+            if (i->type == identify)
+            {
+                Record *hejsan = symboltable->lookup(i->value);
+                symboltable->method_params.push_back(hejsan->dtype);
+            }
+            else if (i->type == "Num")
+            {
+                symboltable->method_params.push_back(i->dtype);
+            }
+
+            std::cout << "TYPE: " << i->type << " VALUE: " << i->value << " DTYPE: " << i->dtype << std::endl;
+        }
+
+        // högraste noden med parameterar lrexp
+        // Vi måste veta vilken metod vi är i
+        // iterera igenom parametrarna, num eller id eller (exp)
+        // vi hittar en id
+        // value of type -> x int <- strings
+        // str1 = x str2 = int
+        // metod.findparams(str1, str2);
+    }
+    std::string check_something(Node *i)
+    {
+        if (i->type == "LRExp")
+        {
+        }
+    }
     Class *fcall_check_first_child(SymbolTable *symboltable, Node *i)
     {
-        std::cout << "I check first child: " << i->type << std::endl;
         if (i->type == newvar)
         {
             Record *rec = symboltable->lookup(i->value);
@@ -403,6 +545,33 @@ public:
 
             // Det kan också vara en identifier och det kan vara ett fcall.
         }
+        else if (i->type == identify)
+        {
+            Record *rec = symboltable->lookup(i->value);
+            if (rec == NULL)
+            {
+                std::cout << "(FCall identifier)NO RECORD FOUND FOR-> "
+                          << "ID: " << i->value << " TYPE: " << i->dtype << std::endl;
+                return NULL;
+            }
+            Record *rec2 = symboltable->lookup(rec->dtype);
+            if (rec2 == NULL)
+            {
+                std::cout << "(FCall identifier)NO RECORD2 FOUND FOR-> "
+                          << "ID: " << i->value << " TYPE: " << i->dtype << std::endl;
+                return NULL;
+            }
+            std::cout << "EYYY type:" << rec2->type << " id: " << rec2->id << " dtype: " << rec2->dtype << std::endl;
+            Class *cls = dynamic_cast<Class *>(rec2);
+            if (cls == nullptr)
+            {
+                std::cout << "(FCall identifier)NO CLASS FOUND FOR-> "
+                          << "ID: " << i->value << " TYPE: " << i->type << std::endl;
+                return NULL;
+            }
+            return cls;
+        }
+
         return NULL;
     }
 };

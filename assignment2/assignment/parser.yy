@@ -17,6 +17,7 @@ This file is a part of the course DV1655 Compiler and translation techniques at 
   #include "Node.h"
   #include <vector>
   #include <iostream>
+  #define USE_LEX_ONLY false //change this macro to true if you want to isolate the lexer from the parser.
 }
 %code{
   #define YY_DECL yy::parser::symbol_type yylex()
@@ -50,7 +51,7 @@ This file is a part of the course DV1655 Compiler and translation techniques at 
 %type <Node *> Type VarDeclaration Term Expression LRExp Statement 
 %type <Node *> Program LRStatement MainClass StateEpsilon 
 %type <Node *> MethodDeclaration LRVarDec LRParamater LRVarOrStatementDec LRMethodDec
-%type <Node *> ClassDeclaration Goal LRClassDec 
+%type <Node *> ClassDeclaration Goal LRClassDec LRArguments
 
 %%
 root: Program{root = $1;};
@@ -79,7 +80,7 @@ Type:       INT
             }
             | ID
             {
-              $$ = new Node("Identifier", $1, yylineno);
+              $$ = new Node($1, $1, yylineno);
             }
             | INT LBRACKET RBRACKET
             {
@@ -90,9 +91,11 @@ VarDeclaration: Type ID SEMICOLON
               // CHANGED THIS MIGHT DESTROY SOMETHING ELSE
               std::string dtype = $1->type;
               // CHANGE TO $2 IF THIS BUGS!
+              std::cout << "aLSdjLAnfraskdlnä " << $1->value<<std::endl;
               $$ = new Node("VarDeclaration",$2, yylineno, dtype);
               $$->children.push_back($1);
-              $$->children.push_back(new Node("ID", $2, yylineno));
+
+              //$$->children.push_back(new Node("ID", $2, yylineno,dtype));
             };
 
 
@@ -100,7 +103,14 @@ Expression: Term
             {
               $$ = $1;
             }
-
+            | Expression DOT ID LPAREN LRArguments RPAREN
+            {
+              $$ = new Node("FCall", "", yylineno);
+              $$->children.push_back($1);
+              $$->children.push_back(new Node("Dot", "", yylineno));
+              $$->children.push_back(new Node("Identifier", $3, yylineno,"Method"));
+              $$->children.push_back($5);
+            }
             | Expression AND Expression
             {
               $$ = new Node("And", "", yylineno);
@@ -135,7 +145,7 @@ Expression: Term
             {
               $$ = new Node("Plus", "", yylineno);
               $$->children.push_back($1);
-              $$->children.push_back(new Node("PLUS", "", yylineno));
+              //$$->children.push_back(new Node("PLUS", "", yylineno));
               $$->children.push_back($3);
             }
             | Expression MINUS Expression
@@ -167,20 +177,11 @@ Expression: Term
               $$ = $1;
               $$->children.push_back(new Node("Dot", "", yylineno));
               $$->children.push_back(new Node("Lenght", "", yylineno));
-            }
-
-            | Expression DOT ID LPAREN LRExp RPAREN
-            {
-              $$ = new Node("FCall", "", yylineno);
-              $$->children.push_back($1);
-              $$->children.push_back(new Node("Dot", "", yylineno));
-              $$->children.push_back(new Node("Identifier", $3, yylineno,"Method"));
-              $$->children.push_back($5);
             };
 
 Term:       NUM
             {
-              $$ = new Node("Num", "", yylineno);
+              $$ = new Node("Num", "", yylineno, "Int");
             }
             | TRUE
             {
@@ -190,9 +191,10 @@ Term:       NUM
             {
               $$ = new Node("False", "", yylineno);
             }
-            | ID
+            |ID
             {
               $$ = new Node("Identifier", $1, yylineno);
+
             }
             | THIS
             {
@@ -218,8 +220,11 @@ Term:       NUM
             }
             | LPAREN Expression RPAREN
             {
-              $$ = new Node("(Expression)", "", yylineno);
-              $$->children.push_back($2);
+              $$ = $2;
+            }
+            | CLASS
+            {
+              $$ = new Node("Class", "", yylineno);
             };
 Statement: ID LBRACKET Expression RBRACKET EQUALSIGN Expression SEMICOLON
             {
@@ -311,14 +316,13 @@ LRExp: %empty
             }
             | Expression
             {
-              $$ = $1;
+              $$ = new Node("Expression", "", yylineno);
+              $$->children.push_back($1);
             }
             | LRExp COMMA Expression   
             {
-              $$ = new Node("LRExp", "", yylineno);
-              $$->children.push_back($1);
-              $$->children.push_back(new Node("Comma", "", yylineno));
-              $$->children.push_back($3);
+              $1->children.push_back($3);
+              $$ = $1;
             };
 /*
 Left recursive statement. It may either be empty, have one statement or multiple. If multiple statements are given,
@@ -358,21 +362,33 @@ Then it calls upon itself untill no more parameters are being read.
 */
 LRParamater: %empty
               {
-                $$ = new Node("Empty", "", yylineno);
+                $$ = new Node("Parameters", "", yylineno);
               }
               | Type ID
               {
-                $$ = new Node("LRParamater", "", yylineno);
-                $$->children.push_back($1);
-                $$->children.push_back(new Node("Parameter", $2, yylineno));
+                $$ = new Node("Parameters", "", yylineno);
+                $$->children.push_back(new Node("Identifier", $2, yylineno, $1->type));
+                //$$ = $1;
               }
               | LRParamater COMMA Type ID
               {
-                $$ = new Node("LRParamater", "", yylineno);
+                $1->children.push_back(new Node("Identifer", $4, yylineno, $3->type));
+                $$ = $1;
+
+              };
+LRArguments: %empty
+              {
+                $$ = new Node("Arguments", "", yylineno);
+              }
+              | Expression
+              {
+                $$ = new Node("Arguments", "", yylineno);
                 $$->children.push_back($1);
-                $$->children.push_back(new Node("Comma", "", yylineno));
-                $$->children.push_back($3);
-                $$->children.push_back(new Node("Parameter", $4, yylineno));
+              }
+              | LRArguments COMMA Expression
+              {
+                $1->children.push_back($3);
+                $$ = $1;
               };
   
 /*
@@ -383,25 +399,28 @@ LRVarOrStatementDec: %empty
               {
                 $$ = new Node("Empty", "", yylineno);
               }
-              | VarDeclaration
-              {
-                $$ = $1;
-              }
               | Statement
               {
-                $$ = $1;
-              }
-              | LRVarOrStatementDec VarDeclaration
-              {
-                $$ = new Node("LRVarOrStatementDec", "", yylineno);
+                $$ = new Node("Statement", "", yylineno);
                 $$->children.push_back($1);
-                $$->children.push_back($2);
+              }
+              | VarDeclaration
+              {
+                $$ = new Node("Statement", "", yylineno);
+                $$->children.push_back($1);
+
+                //$$->children.push_back($1);
               }
               | LRVarOrStatementDec Statement
               {
-                $$ = new Node("LRVarOrStatementDec", "", yylineno);
-                $$->children.push_back($1);
+                $$ = $1;
                 $$->children.push_back($2);
+              }
+              | LRVarOrStatementDec VarDeclaration
+              {
+                $$ = $1;
+                $$->children.push_back($2);
+
               };
 
 
@@ -411,13 +430,14 @@ It stops when no more method declarations are being read.
 */
 LRMethodDec: MethodDeclaration
               {
-                $$ = $1;
+                $$ = new Node("MethodDeclarations", "", yylineno);
+                $$->children.push_back($1);
               }
               | LRMethodDec MethodDeclaration
               {
-                $$ = new Node("LRMethodDec", "", yylineno);
-                $$->children.push_back($1);
-                $$->children.push_back($2);
+                $$ = $1;
+                $1->children.push_back($2);
+                
               };    
 
 /*Statement Epsilon Handles the question mark operator, optional else statement*/

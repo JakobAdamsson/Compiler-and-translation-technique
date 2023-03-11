@@ -48,8 +48,8 @@ int lexical_errors = 0;
 "//".*                  {/* DO NOTHING */ }
 0|[1-9][0-9]*           {return yy::parser::make_NUM(yytext);}
 [ \t\r]+                {}
-.                       { if(!lexical_errors) fprintf(stderr, "Lexical errors found! See the logs below: \n"); printf("Character %s is not recognized\n", yytext); lexical_errors = 1;}
-<<EOF>>                 {return yy::parser::make_END();}
+.                       { if(!lexical_errors) printf("Lexical errors found! See the logs below: \n"); printf("\t@error at line %d. Character %s is not recognized\n", yylineno, yytext); lexical_errors = 1;}
+<<EOF>>                  {if(lexical_errors) printf("End of lexical errors\n"); return yy::parser::make_END();}
 %%
 
 

@@ -1063,11 +1063,11 @@ YY_RULE_SETUP
 case 43:
 YY_RULE_SETUP
 #line 51 "lexer.flex"
-{ if(!lexical_errors) fprintf(stderr, "Lexical errors found! See the logs below: \n"); printf("Character %s is not recognized\n", yytext); lexical_errors = 1;}
+{ if(!lexical_errors) printf("Lexical errors found! See the logs below: \n"); printf("\t@error at line %d. Character %s is not recognized\n", yylineno, yytext); lexical_errors = 1;}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 #line 52 "lexer.flex"
-{return yy::parser::make_END();}
+{if(lexical_errors) printf("End of lexical errors\n"); return yy::parser::make_END();}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP

@@ -24,22 +24,41 @@ public:
 class Variable : public Record
 {
 };
-
+typedef struct _Parameters3
+{
+    std::string type;
+    std::string id;
+    std::string dtype;
+    int x;
+} _Parameters3;
 class Method : public Record
 {
 public:
     std::map<std::string, std::string> Parameters;
+    std::vector<std::string> Parameters2;
     std::map<std::string, Variable *> Variables;
+    std::map<std::string, _Parameters3 *> Parameters3;
+    int param_number = 0;
 
     // Methods
     void addVariable(std::string key, Variable *type)
     {
         Variables.insert(std::pair<std::string, Variable *>(key, type));
     };
-    void addParameter(std::string key, std::string type)
+    void addParameter(std::string key, std::string type, std::string param_dtype)
     {
         Parameters.insert(std::pair<std::string, std::string>(key, type));
+        Parameters2.push_back(param_dtype);
     };
+    void addToStruct(std::string type, std::string id, std::string dtype)
+    {
+        _Parameters3 *p3 = new _Parameters3;
+        p3->type = type;
+        p3->id = id;
+        p3->dtype = dtype;
+        p3->x = param_number++;
+        Parameters3.insert(std::pair<std::string, _Parameters3 *>(type, p3));
+    }
 
     void printVariables()
     {
@@ -47,6 +66,15 @@ public:
         for (auto i = Variables.begin(); i != Variables.end(); i++)
         {
             std::cout << "Variable: " << i->first << " type: " << i->second->type << std::endl;
+        }
+    }
+    void printParameters2()
+    {
+        // std::cout << "NU SKA VI PRINTA LITE VARIABLER I: " << this->id << std::endl;
+        std::cout << "PARAMETERS TVÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅ" << std::endl;
+        for (auto str : Parameters2)
+        {
+            std::cout << "Variable: " << str << std::endl;
         }
     }
     void printParameters()
@@ -77,7 +105,7 @@ public:
     Variable lookupVariable(std::string key){
 
     };
-    int lookupMethod(std::string method_name)
+    Method *lookupMethod(std::string method_name)
     {
         int x;
         if (Methods.find(method_name) != Methods.end())
@@ -88,8 +116,11 @@ public:
         {
             x = 0;
         }
-
-        return x;
+        if (x)
+        {
+            return Methods[method_name];
+        }
+        return nullptr;
     };
 
     void printVariables()
@@ -199,7 +230,6 @@ public:
             }
             else
             {
-                std::cout << "hejsan" << std::endl;
                 return parentScope->lookup(key); // Delegate the request to the parent
             }
         }
@@ -233,7 +263,7 @@ public:
             buffer += kvp.second->dtype + " " + kvp.first + "\n";
             // std::cout << kvp.first << " KOLLA HÄR MOFAKAS" << kvp.second.type << std::endl;
         }
-        std::cout << buffer << std::endl;
+        // std::cout << buffer << std::endl;
         *outStream << "n" << id << " [label=\""
                    << "Scope"
                    << ":" << scopeName
@@ -256,6 +286,7 @@ public:
     Scope *current;
     Method *current_method;
     Class *current_class;
+    std::vector<std::string> method_params;
 
     Class *fcall_current_class;
     Class *this_fcall_current_class;

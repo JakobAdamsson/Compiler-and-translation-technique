@@ -1,22 +1,40 @@
 #include <iostream>
 #include "parser.tab.hh"
-// #include "symboltable.hh"
 
 extern Node *root;
 extern FILE *yyin;
 extern int yylineno;
 extern int lexical_errors;
+extern yy::parser::symbol_type yylex();
+
+enum errCodes
+{
+  SUCCESS = 0,
+  LEXICAL_ERROR = 1,
+  SYNTAX_ERROR = 2,
+  AST_ERROR = 3,
+  SEMANTIC_ERROR = 4,
+  ST_ERROR = 5,
+  SEGMENTATION_FAULT = 139
+};
+
+int errCode = errCodes::SUCCESS;
 
 void yy::parser::error(std::string const &err)
 {
-  printf("Syntax errors found! See the logs below: \n");
-  fprintf(stderr, "@error at line %d. Cannot generate a syntax for this input: %s\n", yylineno, err.c_str());
+  if (!lexical_errors)
+  {
+    std::cout << "Syntax errors found! See the logs below:" << std::endl;
+    std::cout << "\t@error at line " << yylineno << ". Cannot generate a syntax for this input:" << err.c_str() << std::endl;
+    std::cout << "End of syntax errors!" << std::endl;
+    errCode = errCodes::SYNTAX_ERROR;
+  }
 }
 
 int main(int argc, char **argv)
 {
   SymbolTable symboltable;
-  //  Reads from file if a file name is passed as an argument. Otherwise, reads from stdin.
+  // Reads from file if a file name is passed as an argument. Otherwise, reads from stdin.
   if (argc > 1)
   {
     if (!(yyin = fopen(argv[1], "r")))
@@ -25,28 +43,53 @@ int main(int argc, char **argv)
       return 1;
     }
   }
-
-  yy::parser parser;
-
-  if (!parser.parse() && !lexical_errors)
+  //
+  if (USE_LEX_ONLY)
+    yylex();
+  else
   {
+    yy::parser parser;
 
-    printf("\nThe compiler successfuly generated a syntax tree for the given input! \n");
+    bool parseSuccess = !parser.parse();
 
-    printf("\nPrint Tree:  \n");
-    // root->print_tree();
-    root->generate_tree();
-    root->create_symboltable(&symboltable);
-    // symboltable.printTable();
-    symboltable.root->generate_tree_st();
-    symboltable.resetTable();
-    // root->semantic_analysis_variables(&symboltable);
-    std::cout << "Starting Method analysis" << std::endl;
-    // root->semantic_analysis_variables(&symboltable);
-    root->semantic_analysis_methods(&symboltable);
+    if (lexical_errors)
+      errCode = errCodes::LEXICAL_ERROR;
 
-    // root->generate_symboltable(&symboltable);
+    if (parseSuccess && !lexical_errors)
+    {
+      printf("\nThe compiler successfuly generated a syntax tree for the given input! \n");
+
+      printf("\nPrint Tree:  \n");
+      try
+      {
+        // root->print_tree();
+        root->generate_tree();
+      }
+      catch (...)
+      {
+        errCode = errCodes::AST_ERROR;
+      }
+      try
+      {
+        root->create_symboltable(&symboltable);
+        symboltable.root->generate_tree_st();
+      }
+      catch (...)
+      {
+        errCode = errCodes::ST_ERROR;
+      }
+      try
+      {
+        symboltable.resetTable();
+        std::cout << "Starting Method analysis" << std::endl;
+        root->semantic_analysis_methods(&symboltable);
+      }
+      catch (...)
+      {
+        errCode = errCodes::SEMANTIC_ERROR;
+      }
+    }
   }
 
-  return 0;
+  return errCode;
 }

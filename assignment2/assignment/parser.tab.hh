@@ -51,8 +51,9 @@
   #include "Node.h"
   #include <vector>
   #include <iostream>
+  #define USE_LEX_ONLY false //change this macro to true if you want to isolate the lexer from the parser.
 
-#line 56 "parser.tab.hh"
+#line 57 "parser.tab.hh"
 
 
 # include <cstdlib> // std::abort
@@ -187,7 +188,7 @@
 #endif
 
 namespace yy {
-#line 191 "parser.tab.hh"
+#line 192 "parser.tab.hh"
 
 
 
@@ -393,10 +394,10 @@ namespace yy {
       // MethodDeclaration
       // ClassDeclaration
       // Goal
-      // LRExp
       // LRStatement
       // LRVarDec
       // LRParamater
+      // LRArguments
       // LRVarOrStatementDec
       // LRMethodDec
       // StateEpsilon
@@ -600,10 +601,10 @@ namespace yy {
         S_MethodDeclaration = 52,                // MethodDeclaration
         S_ClassDeclaration = 53,                 // ClassDeclaration
         S_Goal = 54,                             // Goal
-        S_LRExp = 55,                            // LRExp
-        S_LRStatement = 56,                      // LRStatement
-        S_LRVarDec = 57,                         // LRVarDec
-        S_LRParamater = 58,                      // LRParamater
+        S_LRStatement = 55,                      // LRStatement
+        S_LRVarDec = 56,                         // LRVarDec
+        S_LRParamater = 57,                      // LRParamater
+        S_LRArguments = 58,                      // LRArguments
         S_LRVarOrStatementDec = 59,              // LRVarOrStatementDec
         S_LRMethodDec = 60,                      // LRMethodDec
         S_StateEpsilon = 61,                     // StateEpsilon
@@ -652,10 +653,10 @@ namespace yy {
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_ClassDeclaration: // ClassDeclaration
       case symbol_kind::S_Goal: // Goal
-      case symbol_kind::S_LRExp: // LRExp
       case symbol_kind::S_LRStatement: // LRStatement
       case symbol_kind::S_LRVarDec: // LRVarDec
       case symbol_kind::S_LRParamater: // LRParamater
+      case symbol_kind::S_LRArguments: // LRArguments
       case symbol_kind::S_LRVarOrStatementDec: // LRVarOrStatementDec
       case symbol_kind::S_LRMethodDec: // LRMethodDec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
@@ -785,10 +786,10 @@ switch (yykind)
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_ClassDeclaration: // ClassDeclaration
       case symbol_kind::S_Goal: // Goal
-      case symbol_kind::S_LRExp: // LRExp
       case symbol_kind::S_LRStatement: // LRStatement
       case symbol_kind::S_LRVarDec: // LRVarDec
       case symbol_kind::S_LRParamater: // LRParamater
+      case symbol_kind::S_LRArguments: // LRArguments
       case symbol_kind::S_LRVarOrStatementDec: // LRVarOrStatementDec
       case symbol_kind::S_LRMethodDec: // LRMethodDec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
@@ -1960,7 +1961,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 333,     ///< Last index in yytable_.
+      yylast_ = 340,     ///< Last index in yytable_.
       yynnts_ = 20,  ///< Number of nonterminal symbols.
       yyfinal_ = 7 ///< Termination state number.
     };
@@ -2039,10 +2040,10 @@ switch (yykind)
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_ClassDeclaration: // ClassDeclaration
       case symbol_kind::S_Goal: // Goal
-      case symbol_kind::S_LRExp: // LRExp
       case symbol_kind::S_LRStatement: // LRStatement
       case symbol_kind::S_LRVarDec: // LRVarDec
       case symbol_kind::S_LRParamater: // LRParamater
+      case symbol_kind::S_LRArguments: // LRArguments
       case symbol_kind::S_LRVarOrStatementDec: // LRVarOrStatementDec
       case symbol_kind::S_LRMethodDec: // LRMethodDec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
@@ -2134,10 +2135,10 @@ switch (yykind)
       case symbol_kind::S_MethodDeclaration: // MethodDeclaration
       case symbol_kind::S_ClassDeclaration: // ClassDeclaration
       case symbol_kind::S_Goal: // Goal
-      case symbol_kind::S_LRExp: // LRExp
       case symbol_kind::S_LRStatement: // LRStatement
       case symbol_kind::S_LRVarDec: // LRVarDec
       case symbol_kind::S_LRParamater: // LRParamater
+      case symbol_kind::S_LRArguments: // LRArguments
       case symbol_kind::S_LRVarOrStatementDec: // LRVarOrStatementDec
       case symbol_kind::S_LRMethodDec: // LRMethodDec
       case symbol_kind::S_StateEpsilon: // StateEpsilon
@@ -2253,7 +2254,7 @@ switch (yykind)
 
 
 } // yy
-#line 2257 "parser.tab.hh"
+#line 2258 "parser.tab.hh"
 
 
 
