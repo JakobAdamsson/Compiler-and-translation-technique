@@ -82,7 +82,17 @@ int main(int argc, char **argv)
       {
         symboltable.resetTable();
         std::cout << "Starting Method analysis" << std::endl;
-        root->semantic_analysis_methods(&symboltable);
+        root->semantic_analysis_variables(&symboltable);
+      }
+      catch (...)
+      {
+        errCode = errCodes::SEMANTIC_ERROR;
+      }
+      try
+      {
+        symboltable.resetTable();
+        std::cout << "Starting assignment analysis" << std::endl;
+        root->check_assignment(&symboltable, root);
       }
       catch (...)
       {

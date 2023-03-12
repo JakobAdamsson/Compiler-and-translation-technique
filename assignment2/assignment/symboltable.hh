@@ -35,7 +35,7 @@ class Method : public Record
 {
 public:
     std::map<std::string, std::string> Parameters;
-    std::vector<std::string> Parameters2;
+    std::vector<Variable *> Parameters2;
     std::map<std::string, Variable *> Variables;
     std::map<std::string, _Parameters3 *> Parameters3;
     int param_number = 0;
@@ -45,10 +45,10 @@ public:
     {
         Variables.insert(std::pair<std::string, Variable *>(key, type));
     };
-    void addParameter(std::string key, std::string type, std::string param_dtype)
+    void addParameter(std::string key, std::string type, Variable *param)
     {
         Parameters.insert(std::pair<std::string, std::string>(key, type));
-        Parameters2.push_back(param_dtype);
+        Parameters2.push_back(param);
     };
     void addToStruct(std::string type, std::string id, std::string dtype)
     {
@@ -74,7 +74,7 @@ public:
         std::cout << "PARAMETERS TVÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅ" << std::endl;
         for (auto str : Parameters2)
         {
-            std::cout << "Variable: " << str << std::endl;
+            std::cout << "Paramters: " << str->id << " dtype: " << str->dtype << std::endl;
         }
     }
     void printParameters()
@@ -153,6 +153,7 @@ public:
     {
         records.insert(std::make_pair(key, item));
     }
+
     Scope *nextChild(std::string name)
     {
 

@@ -33,11 +33,7 @@ public:
     std::string fcall = "FCall";
     std::string assignment = "Assignment";
     std::string newvar = "NewVar";
-    std::string thiss = "this";
-    std::string minus = "Minus";
-    std::string plus = "Plus";
-    std::string mult = "Mult";
-    std::string divide = "Divide";
+    std::string thiss = "This";
 
     // Constructor
     Node(string t, string v, int l, string data_type = "") : type(t), value(v), lineno(l), dtype(data_type) {}
@@ -82,11 +78,6 @@ public:
             (*i)->generate_tree_content(count, outStream);
             *outStream << "n" << id << " -> n" << (*i)->id << endl;
         }
-    }
-
-    void print_node()
-    {
-        std::cout << "PRINT NODE Value: " << this->value << " Type: " << this->type << " Dtype: " << this->dtype << std::endl;
     }
 
     void create_symboltable(SymbolTable *symboltable)
@@ -138,16 +129,13 @@ public:
 
     void addMethodParameters(SymbolTable *symboltable, Node *i)
     {
-        for (auto child : i->children)
-        {
-            Variable *new_param = new Variable();
-            new_param->id = child->value;
-            new_param->type = child->type;
-            new_param->dtype = child->dtype;
-            symboltable->current_method->addParameter(child->value, symboltable->variable_type, new_param);
-            symboltable->put(child->value, new_param);
-            //  symboltable->current_method->printParameters();
-        }
+        Variable *new_param = new Variable();
+        new_param->id = i->value;
+        new_param->type = i->type;
+        new_param->dtype = i->dtype;
+        symboltable->current_method->addParameter(i->value, symboltable->variable_type, i->dtype);
+        symboltable->current_method->addToStruct(i->value, i->type, i->dtype);
+        // symboltable->current_method->printParameters();
     }
     void VarDec_method(SymbolTable *symboltable, Node *i)
     {
@@ -227,6 +215,10 @@ public:
         symboltable->put(this_->id, this_);
         i->create_symboltable(symboltable);
 
+        // symboltable.printCurrent();
+
+        // std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
+
         symboltable->exitScope();
     }
 
@@ -250,10 +242,15 @@ public:
 
         // Enter new scope
         symboltable->put(classdec_test->id, classdec_test);
+        // symboltable->enterScope("hello");
 
         symboltable->enterScope(this->classdec + "(" + i->value + ")");
         symboltable->put(this_->id, this_);
         i->create_symboltable(symboltable);
+
+        // symboltable.printCurrent();
+
+        // std::cout << "Found main class -> " << mainclass_test.id << mainclass_test.type << std::endl;
 
         symboltable->exitScope();
     }
@@ -301,8 +298,11 @@ public:
                         {
                             std::cout << "NO RECORD FOUND FOR-> "
                                       << "ID: " << (*ii)->value << " TYPE: " << (*ii)->type << std::endl;
-                            // return;
+                            return;
                         }
+                        else
+                            std::cout << "RECORD FOUND FOR-> "
+                                      << "ID: " << (*ii)->value << " TYPE: " << (*ii)->type << std::endl;
                     }
                 }
             }
@@ -312,110 +312,188 @@ public:
             }
         }
     }
+    void semantic_analysis_methods(SymbolTable *symboltable)
+    {
+        for (auto i = children.begin(); i != children.end(); i++)
+        {
+            if ((*i)->type == mclass)
+            {
+                symboltable->enterScope();
+                (*i)->semantic_analysis_methods(symboltable);
+                symboltable->exitScope();
+            }
+            else if ((*i)->type == classdec)
+            {
+                symboltable->enterScope();
+                (*i)->semantic_analysis_methods(symboltable);
+                symboltable->exitScope();
+            }
+            else if ((*i)->type == midentify)
+            {
+                symboltable->enterScope();
+                (*i)->semantic_analysis_methods(symboltable);
+                symboltable->exitScope();
+            }
+            else if ((*i)->type == fcall)
+            {
+                Class *cls = fcall_check_first_child(symboltable, (*i)->children.front());
+                auto third_child = std::next((*i)->children.begin(), 2);
+                Method *rec = cls->lookupMethod((*third_child)->value);
+                if (rec == nullptr)
+                {
+                    std::cout << "NO RECORD FOUND FOR-> "
+                              << "ID: " << (*third_child)->value << " TYPE: " << (*third_child)->type << std::endl;
+                    return;
+                }
+                int no_param = rec->Parameters.size();
+                // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa
+
+                auto fourth_child = std::next((*i)->children.begin(), 3);
+                int y;
+                if ((*fourth_child)->type == "LRExp")
+                {
+                    y = 1 + check_parameters(symboltable, *fourth_child);
+                }
+                else if ((*fourth_child)->type == "Empty")
+                {
+                    y = 0;
+                }
+                else
+                {
+                    y = 1;
+                }
+                if (no_param != y)
+                {
+                    std::cout << "NÅGOT ÄR JÄVLIGT FEL" << std::endl;
+                    return;
+                }
+
+                type_check_parameters(symboltable, *fourth_child, rec, no_param);
+
+                if (symboltable->method_params == rec->Parameters2)
+                {
+                    std::cout << "The vectors are equal" << std::endl;
+                }
+                else
+                {
+                    std::cout << "The vectors are not equal" << std::endl;
+                }
+
+                rec->printParameters2();
+                for (auto str : symboltable->method_params)
+                {
+                    std::cout << "symboltabbleapsd io   " << str << std::endl;
+                }
+
+                symboltable->method_params.clear();
+                symboltable->method_params.shrink_to_fit();
+            }
+            else
+            {
+                (*i)->semantic_analysis_methods(symboltable);
+            }
+        }
+    }
 
     bool isLeaf() const
     {
         return children.empty();
     }
 
-    std::string check_leafs(Node *node, SymbolTable *symboltable)
+    std::string checkAllLeavesHaveSameHej(const Node *node)
     {
         if (node->isLeaf())
         {
             // Return the node's 'hej' value
             return node->dtype;
         }
-        if (node->type == fcall)
-        {
-            node->print_node();
-            auto class_node = std::next(node->children.begin(), 0);
-            (*class_node)->print_node();
-            Class *hej = fcall_check_first_child(symboltable, (*class_node));
-            if (hej)
-            {
-                std::cout << "oasdhoashdiasd" << hej->id << hej->type << hej->dtype << std::endl;
-                hej->printRecord();
-            }
-            else
-            {
-                std::cout << "Fannsi nte ett skit" << (*class_node)->id << (*class_node)->value << (*class_node)->dtype << std::endl;
-
-                return "";
-            }
-            auto method_node = std::next(node->children.begin(), 2);
-            (*method_node)->print_node();
-            Method *tja = hej->lookupMethod((*method_node)->value);
-            if (tja)
-                return tja->dtype;
-            else
-                return "";
-        }
         else
         {
             // Recursively check all child nodes
-            std::string common = "";
+            std::string commonHej = "";
             for (auto child : node->children)
             {
-                std::string child_dtype = check_leafs(child, symboltable);
-                if (common.empty())
+                std::string childHej = checkAllLeavesHaveSameHej(child);
+                if (commonHej.empty())
                 {
-                    common = child_dtype;
+                    commonHej = childHej;
                 }
-                else if (child_dtype != common)
+                else if (childHej != commonHej)
                 {
                     return "";
                 }
             }
-            return common;
+            return commonHej;
         }
     }
-
-    void check_assignment(SymbolTable *symboltable, Node *i)
+    int check_parameters(SymbolTable *symboltable, Node *i)
     {
+        int x = 0;
+        if (i->type == "LRExp")
+        {
+            x++;
+        }
+        else if (i->type == "Empty")
+        {
+            return x;
+        }
 
         for (auto itr = i->children.begin(); itr != i->children.end(); itr++)
         {
-            if ((*itr)->type == minus || (*itr)->type == mult || (*itr)->type == divide || (*itr)->type == plus || (*itr)->type == assignment)
-            {
-                std::string temp = check_leafs(*itr, symboltable);
-
-                if (temp == "")
-                {
-                    std::cout << "NO RECORD FOUND FOR-> "
-                              << "ID: " << temp << " TYPE: " << i->type << std::endl;
-                }
-                else
-                {
-                    std::cout << "FOUND RECORD FOR-> "
-                              << "ID: " << temp << " TYPE: " << i->type << std::endl;
-                }
-            }
-            else if ((*itr)->type == this->mclass)
-            {
-                symboltable->enterScope();
-                check_assignment(symboltable, *itr);
-                symboltable->exitScope();
-            }
-
-            else if ((*itr)->type == this->classdec)
-            {
-                symboltable->enterScope();
-                check_assignment(symboltable, *itr);
-                symboltable->exitScope();
-            }
-            else if ((*itr)->type == this->midentify)
-            {
-                symboltable->enterScope();
-                check_assignment(symboltable, *itr);
-                symboltable->exitScope();
-            }
-            else
-            {
-                check_assignment(symboltable, *itr);
-            }
+            x += check_parameters(symboltable, *itr);
         }
+        return x;
+    }
+    std::string check_expression(SymbolTable *symboltable, Node *i)
+    {
     }
 
+    void type_check_parameters(SymbolTable *symboltable, Node *i, Method *method, int no_param)
+    {
+
+        std::vector<std::string> params;
+
+        // std::cout << "Value: " << i->value << " Type: " << i->type << " Dtype: " << i->dtype << std::endl;
+        if (i->type == "Plus" || i->type == "Minus" || i->type == "Mult" || i->type == "(Expression)" || i->type == "Divide")
+        {
+            symboltable->method_params.push_back(i->checkAllLeavesHaveSameHej(i));
+            return;
+        }
+
+        for (auto itr = i->children.begin(); itr != i->children.end(); itr++)
+        {
+            (*itr)->type_check_parameters(symboltable, *itr, method, no_param);
+        }
+        if (i->type != "LRExp")
+        {
+
+            if (i->type == identify)
+            {
+                Record *hejsan = symboltable->lookup(i->value);
+                symboltable->method_params.push_back(hejsan->dtype);
+            }
+            else if (i->type == "Num")
+            {
+                symboltable->method_params.push_back(i->dtype);
+            }
+
+            std::cout << "TYPE: " << i->type << " VALUE: " << i->value << " DTYPE: " << i->dtype << std::endl;
+        }
+
+        // högraste noden med parameterar lrexp
+        // Vi måste veta vilken metod vi är i
+        // iterera igenom parametrarna, num eller id eller (exp)
+        // vi hittar en id
+        // value of type -> x int <- strings
+        // str1 = x str2 = int
+        // metod.findparams(str1, str2);
+    }
+    std::string check_something(Node *i)
+    {
+        if (i->type == "LRExp")
+        {
+        }
+    }
     Class *fcall_check_first_child(SymbolTable *symboltable, Node *i)
     {
         if (i->type == newvar)
@@ -440,8 +518,6 @@ public:
         {
             // symboltable->current->parentScope->printScope();
             Record *rec = symboltable->lookup("this");
-            std::cout << "gigeg" << std::endl;
-            i->print_node();
 
             if (rec == NULL)
             {
@@ -498,9 +574,3 @@ public:
 // check if the method name is in the class.
 // do it have the right number of parameter
 // do the type of parameters correspoing to the type in the method decalaration.
-
-// Om vi hittar ett fcall
-// lista ut vilken class det är (Vi måste kolla en nod som är antingen en NewVar, this, en identifier eller eventuellt ännu ett fcall)
-// lista ut vilken metod det är
-// kolla om den klassen har den metoden
-// kolla om vad den metoden returnar

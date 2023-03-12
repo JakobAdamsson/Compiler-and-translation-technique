@@ -12,6 +12,9 @@ class BBS{
     
     int[] number ;
     int size ;
+	int hej;
+	int tja;
+
 
     // Invoke the Initialization, Sort and Printing
     // Methods

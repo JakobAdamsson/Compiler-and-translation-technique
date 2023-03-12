@@ -48,7 +48,7 @@ This file is a part of the course DV1655 Compiler and translation techniques at 
 %left LBRACKET RBRACKET LPAREN RPAREN
 
 // definition of the production rules. All production rules are of type Node
-%type <Node *> Type VarDeclaration Term Expression LRExp Statement 
+%type <Node *> Type VarDeclaration Term Expression Statement 
 %type <Node *> Program LRStatement MainClass StateEpsilon 
 %type <Node *> MethodDeclaration LRVarDec LRParamater LRVarOrStatementDec LRMethodDec
 %type <Node *> ClassDeclaration Goal LRClassDec LRArguments
@@ -181,7 +181,7 @@ Expression: Term
 
 Term:       NUM
             {
-              $$ = new Node("Num", "", yylineno, "Int");
+              $$ = new Node("Num", $1, yylineno, "Int");
             }
             | TRUE
             {
@@ -198,7 +198,7 @@ Term:       NUM
             }
             | THIS
             {
-              $$ = new Node("This", "", yylineno);
+              $$ = new Node("this", "", yylineno);
             }
             | NEW INT LBRACKET Expression RBRACKET
             {
@@ -310,33 +310,34 @@ Goal: MainClass LRClassDec END
 Left recursive expression. It may either be empty, have one expression or multiple. If multiple expressions are given,
 Then it calls upon itself untill no more expressions are being read.
 */
-LRExp: %empty
-            {
-              $$ = new Node("Empty", "", yylineno);
-            }
-            | Expression
-            {
-              $$ = new Node("Expression", "", yylineno);
-              $$->children.push_back($1);
-            }
-            | LRExp COMMA Expression   
-            {
-              $1->children.push_back($3);
-              $$ = $1;
-            };
+// LRExp: %empty
+//             {
+//               $$ = new Node("Empty", "", yylineno);
+//             }
+//             | Expression
+//             {
+//               $$ = new Node("Expression", "", yylineno);
+//               $$->children.push_back($1);
+//             }
+//             | LRExp COMMA Expression   
+//             {
+//               $1->children.push_back($3);
+//               $$ = $1;
+//             };
 /*
 Left recursive statement. It may either be empty, have one statement or multiple. If multiple statements are given,
 Then it calls upon itself untill no more statements are being read.
 */
 LRStatement: Statement
               {
-                $$ = $1;
+                $$ = new Node("Statement", "", yylineno);
+                $$->children.push_back($1);
               }
               | LRStatement Statement
               {
-                $$ = new Node("LRStatement", "", yylineno);
-                $$->children.push_back($1);
-                $$->children.push_back($2);
+                $1->children.push_back($2);
+                $$ = $1;
+
               };
 /*
 Left recursive var declarations. It may either be empty, have one var declaration or multiple. If multiple var declarations are given,
@@ -348,13 +349,15 @@ LRVarDec: %empty
               }
               | VarDeclaration
               {
-                $$ = $1;
+                $$ = new Node("VarDeclarations", "", yylineno);
+                $$->children.push_back($1);
+
               }
               | LRVarDec VarDeclaration
               {
-                $$ = new Node("LRVarDec", "", yylineno);
-                $$->children.push_back($1);
-                $$->children.push_back($2);
+                $1->children.push_back($2);
+                $$ = $1;
+          
               };
 /* 
 Left recursion on method parameters, it may either be empty, have one parameters or multiple. If multiple parameters are given,
@@ -366,7 +369,8 @@ LRParamater: %empty
               }
               | Type ID
               {
-                $$ = new Node("Parameters", "", yylineno);
+  
+                $$ = new Node("Parameters", "", yylineno, $1->type);
                 $$->children.push_back(new Node("Identifier", $2, yylineno, $1->type));
                 //$$ = $1;
               }
@@ -406,20 +410,22 @@ LRVarOrStatementDec: %empty
               }
               | VarDeclaration
               {
-                $$ = new Node("Statement", "", yylineno);
+                $$ = new Node("VarDeclarations", "", yylineno);
                 $$->children.push_back($1);
 
                 //$$->children.push_back($1);
               }
               | LRVarOrStatementDec Statement
               {
+                $1->children.push_back($2);
                 $$ = $1;
-                $$->children.push_back($2);
+                //$$->children.push_back($2);
               }
               | LRVarOrStatementDec VarDeclaration
               {
+                $1->children.push_back($2);
                 $$ = $1;
-                $$->children.push_back($2);
+                //$$->children.push_back($2);
 
               };
 
