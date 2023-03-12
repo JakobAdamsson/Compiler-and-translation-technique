@@ -231,7 +231,7 @@ Statement: ID LBRACKET Expression RBRACKET EQUALSIGN Expression SEMICOLON
               $$ = new Node("ArrModifier", "", yylineno);
               $$->children.push_back(new Node("Identifier", $1, yylineno));
               $$->children.push_back($3);
-              $$->children.push_back(new Node("Equal", "", yylineno));
+              //$$->children.push_back(new Node("Equal", "", yylineno));
               $$->children.push_back($6);
 
             }
@@ -239,7 +239,7 @@ Statement: ID LBRACKET Expression RBRACKET EQUALSIGN Expression SEMICOLON
             {
               $$ = new Node("Assignment", "", yylineno);
               $$->children.push_back(new Node("Identifier", $1, yylineno));
-              $$->children.push_back(new Node("Equal", "", yylineno));
+              //$$->children.push_back(new Node("Equal", "", yylineno));
               $$->children.push_back($3);
             }
             | PRINT LPAREN Expression RPAREN SEMICOLON

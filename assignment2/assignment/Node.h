@@ -327,23 +327,18 @@ public:
         }
         if (node->type == fcall)
         {
-            node->print_node();
+
             auto class_node = std::next(node->children.begin(), 0);
-            (*class_node)->print_node();
+
             Class *hej = fcall_check_first_child(symboltable, (*class_node));
-            if (hej)
+
+            if (!hej)
             {
-                std::cout << "oasdhoashdiasd" << hej->id << hej->type << hej->dtype << std::endl;
-                hej->printRecord();
-            }
-            else
-            {
-                std::cout << "Fannsi nte ett skit" << (*class_node)->id << (*class_node)->value << (*class_node)->dtype << std::endl;
 
                 return "";
             }
             auto method_node = std::next(node->children.begin(), 2);
-            (*method_node)->print_node();
+
             Method *tja = hej->lookupMethod((*method_node)->value);
             if (tja)
                 return tja->dtype;
@@ -440,8 +435,6 @@ public:
         {
             // symboltable->current->parentScope->printScope();
             Record *rec = symboltable->lookup("this");
-            std::cout << "gigeg" << std::endl;
-            i->print_node();
 
             if (rec == NULL)
             {
@@ -499,8 +492,5 @@ public:
 // do it have the right number of parameter
 // do the type of parameters correspoing to the type in the method decalaration.
 
-// Om vi hittar ett fcall
-// lista ut vilken class det är (Vi måste kolla en nod som är antingen en NewVar, this, en identifier eller eventuellt ännu ett fcall)
-// lista ut vilken metod det är
-// kolla om den klassen har den metoden
-// kolla om vad den metoden returnar
+// kolla så att parametrar och argument stämmer överens
+//

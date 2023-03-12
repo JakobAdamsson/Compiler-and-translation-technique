@@ -1117,7 +1117,7 @@ namespace yy {
               yylhs.value.as < Node * > () = new Node("ArrModifier", "", yylineno);
               yylhs.value.as < Node * > ()->children.push_back(new Node("Identifier", yystack_[6].value.as < std::string > (), yylineno));
               yylhs.value.as < Node * > ()->children.push_back(yystack_[4].value.as < Node * > ());
-              yylhs.value.as < Node * > ()->children.push_back(new Node("Equal", "", yylineno));
+              //$$->children.push_back(new Node("Equal", "", yylineno));
               yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
 
             }
@@ -1129,7 +1129,7 @@ namespace yy {
             {
               yylhs.value.as < Node * > () = new Node("Assignment", "", yylineno);
               yylhs.value.as < Node * > ()->children.push_back(new Node("Identifier", yystack_[3].value.as < std::string > (), yylineno));
-              yylhs.value.as < Node * > ()->children.push_back(new Node("Equal", "", yylineno));
+              //$$->children.push_back(new Node("Equal", "", yylineno));
               yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
             }
 #line 1136 "parser.tab.cc"

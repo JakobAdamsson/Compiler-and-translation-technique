@@ -15,7 +15,8 @@ n3 [label="Scope:MethodDeclaration(ComputeFac)
 Int Walla
 Int a
 Int b
-bool hej
+Int hej
+Boolean hej2
 Int num_aux
 Int sum
 Int x

@@ -7,12 +7,14 @@ public class Factorial{
 class Fac {
     public int ComputeFac(int Walla, int x,int a, int b){
 	int num_aux ;
-	bool hej;
+	int hej;
+	boolean hej2;
 	num_aux = 23-5*10/(10-9);
 	int sum;
 	if (num < 1)
 	{
-		hej = 1+2+3/4*5;
+		hej2 = 1+3;
+		hej = false;
 	    num_aux = 1 ;
 	}
 	else 
