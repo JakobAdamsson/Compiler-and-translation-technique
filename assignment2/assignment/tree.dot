@@ -12,164 +12,262 @@ n7 [label="NewVar:Fac"];
 n6 -> n7
 n8 [label="Dot:"];
 n6 -> n8
-n9 [label="Identifier:ComputeFac"];
+n9 [label="Identifier:Insert"];
 n6 -> n9
 n10 [label="Arguments:"];
-n11 [label="Num:5"];
+n11 [label="Num:1"];
 n10 -> n11
-n12 [label="Num:5"];
-n10 -> n12
-n13 [label="Num:2"];
-n10 -> n13
-n14 [label="Num:1"];
-n10 -> n14
 n6 -> n10
 n5 -> n6
 n4 -> n5
 n1 -> n4
 n0 -> n1
-n15 [label="ClassDeclaration:Fac"];
-n16 [label="Identifier:Fac"];
-n15 -> n16
-n17 [label="Empty:"];
-n15 -> n17
-n18 [label="MethodDeclarations:"];
-n19 [label="MethodDeclaration:ComputeFac"];
-n20 [label="Public:"];
-n19 -> n20
-n21 [label="Int:"];
-n19 -> n21
-n22 [label="Identifier:ComputeFac"];
-n19 -> n22
-n23 [label="Parameters:"];
-n24 [label="Identifier:Walla"];
+n12 [label="ClassDeclaration:Fac"];
+n13 [label="Identifier:Fac"];
+n12 -> n13
+n14 [label="Empty:"];
+n12 -> n14
+n15 [label="MethodDeclarations:"];
+n16 [label="MethodDeclaration:Insert"];
+n17 [label="Public:"];
+n16 -> n17
+n18 [label="Boolean:"];
+n16 -> n18
+n19 [label="Identifier:Insert"];
+n16 -> n19
+n20 [label="Parameters:"];
+n21 [label="Identifier:v_key"];
+n20 -> n21
+n16 -> n20
+n22 [label="VarDeclarations:"];
+n23 [label="VarDeclaration:new_node"];
+n24 [label="Tree:Tree"];
 n23 -> n24
-n25 [label="Identifer:x"];
-n23 -> n25
-n26 [label="Identifer:a"];
-n23 -> n26
-n27 [label="Identifer:b"];
-n23 -> n27
-n19 -> n23
-n28 [label="VarDeclarations:"];
-n29 [label="VarDeclaration:num_aux"];
-n30 [label="Int:"];
-n29 -> n30
+n22 -> n23
+n25 [label="Assignment:"];
+n26 [label="Identifier:new_node"];
+n25 -> n26
+n27 [label="NewVar:Tree"];
+n25 -> n27
+n22 -> n25
+n28 [label="VarDeclaration:ntb"];
+n29 [label="Boolean:"];
 n28 -> n29
-n31 [label="VarDeclaration:hej"];
-n32 [label="Int:"];
-n31 -> n32
-n28 -> n31
-n33 [label="VarDeclaration:hej2"];
-n34 [label="Boolean:"];
-n33 -> n34
-n28 -> n33
-n35 [label="Assignment:"];
-n36 [label="Identifier:num_aux"];
-n35 -> n36
-n37 [label="Minus:"];
-n38 [label="Num:23"];
-n37 -> n38
-n39 [label="Divide:"];
-n40 [label="Mult:"];
-n41 [label="Num:5"];
+n22 -> n28
+n30 [label="Assignment:"];
+n31 [label="Identifier:ntb"];
+n30 -> n31
+n32 [label="FCall:"];
+n33 [label="Identifier:new_node"];
+n32 -> n33
+n34 [label="Dot:"];
+n32 -> n34
+n35 [label="Identifier:Init"];
+n32 -> n35
+n36 [label="Arguments:"];
+n37 [label="Identifier:v_key"];
+n36 -> n37
+n32 -> n36
+n30 -> n32
+n22 -> n30
+n38 [label="VarDeclaration:cont"];
+n39 [label="Boolean:"];
+n38 -> n39
+n22 -> n38
+n40 [label="Assignment:"];
+n41 [label="Identifier:cont"];
 n40 -> n41
-n42 [label="Num:10"];
+n42 [label="True:"];
 n40 -> n42
-n39 -> n40
-n43 [label="Minus:"];
-n44 [label="Num:10"];
+n22 -> n40
+n43 [label="VarDeclaration:key_aux"];
+n44 [label="Int:"];
 n43 -> n44
-n45 [label="Num:9"];
-n43 -> n45
-n39 -> n43
-n37 -> n39
-n35 -> n37
-n28 -> n35
-n46 [label="VarDeclaration:sum"];
-n47 [label="Int:"];
-n46 -> n47
-n28 -> n46
-n48 [label="If statement:"];
-n49 [label="Lt:"];
-n50 [label="Identifier:num"];
-n49 -> n50
-n51 [label="Num:1"];
-n49 -> n51
-n48 -> n49
+n22 -> n43
+n45 [label="VarDeclaration:current_node"];
+n46 [label="Tree:Tree"];
+n45 -> n46
+n22 -> n45
+n47 [label="Assignment:"];
+n48 [label="Identifier:current_node"];
+n47 -> n48
+n49 [label="this:"];
+n47 -> n49
+n22 -> n47
+n50 [label="While:"];
+n51 [label="Identifier:cont"];
+n50 -> n51
 n52 [label="Statement:"];
 n53 [label="Assignment:"];
-n54 [label="Identifier:hej2"];
+n54 [label="Identifier:key_aux"];
 n53 -> n54
-n55 [label="Plus:"];
-n56 [label="Num:1"];
+n55 [label="FCall:"];
+n56 [label="Identifier:current_node"];
 n55 -> n56
-n57 [label="Num:3"];
+n57 [label="Dot:"];
 n55 -> n57
+n58 [label="Identifier:GetKey"];
+n55 -> n58
+n59 [label="Arguments:"];
+n55 -> n59
 n53 -> n55
 n52 -> n53
-n58 [label="Assignment:"];
-n59 [label="Identifier:hej"];
-n58 -> n59
-n60 [label="False:"];
-n58 -> n60
-n52 -> n58
-n61 [label="Assignment:"];
-n62 [label="Identifier:num_aux"];
+n60 [label="If statement:"];
+n61 [label="Lt:"];
+n62 [label="Identifier:v_key"];
 n61 -> n62
-n63 [label="Num:1"];
+n63 [label="Identifier:key_aux"];
 n61 -> n63
-n52 -> n61
-n48 -> n52
-n64 [label="ELSE:"];
-n65 [label="Assignment:"];
-n66 [label="Identifier:num_aux"];
+n60 -> n61
+n64 [label="Statement:"];
+n65 [label="If statement:"];
+n66 [label="FCall:"];
+n67 [label="Identifier:current_node"];
+n66 -> n67
+n68 [label="Dot:"];
+n66 -> n68
+n69 [label="Identifier:GetHas_Left"];
+n66 -> n69
+n70 [label="Arguments:"];
+n66 -> n70
 n65 -> n66
-n67 [label="Mult:"];
-n68 [label="Identifier:Walla"];
-n67 -> n68
-n69 [label="FCall:"];
-n70 [label="this:"];
-n69 -> n70
-n71 [label="Dot:"];
-n69 -> n71
-n72 [label="Identifier:ComputeFac"];
-n69 -> n72
-n73 [label="Arguments:"];
-n74 [label="Minus:"];
-n75 [label="Num:23"];
-n74 -> n75
-n76 [label="Divide:"];
-n77 [label="Mult:"];
-n78 [label="Num:5"];
-n77 -> n78
-n79 [label="Num:10"];
-n77 -> n79
-n76 -> n77
-n80 [label="Minus:"];
-n81 [label="Num:10"];
-n80 -> n81
-n82 [label="Num:9"];
-n80 -> n82
-n76 -> n80
-n74 -> n76
+n71 [label="Assignment:"];
+n72 [label="Identifier:current_node"];
+n71 -> n72
+n73 [label="FCall:"];
+n74 [label="Identifier:current_node"];
 n73 -> n74
-n83 [label="Identifier:num_aux"];
-n73 -> n83
-n84 [label="Num:5"];
-n73 -> n84
-n85 [label="Num:1"];
-n73 -> n85
-n69 -> n73
-n67 -> n69
-n65 -> n67
+n75 [label="Dot:"];
+n73 -> n75
+n76 [label="Identifier:GetLeft"];
+n73 -> n76
+n77 [label="Arguments:"];
+n73 -> n77
+n71 -> n73
+n65 -> n71
+n78 [label="ELSE:"];
+n79 [label="Statement:"];
+n80 [label="Assignment:"];
+n81 [label="Identifier:cont"];
+n80 -> n81
+n82 [label="False:"];
+n80 -> n82
+n79 -> n80
+n83 [label="Assignment:"];
+n84 [label="Identifier:ntb"];
+n83 -> n84
+n85 [label="FCall:"];
+n86 [label="Identifier:current_node"];
+n85 -> n86
+n87 [label="Dot:"];
+n85 -> n87
+n88 [label="Identifier:SetHas_Left"];
+n85 -> n88
+n89 [label="Arguments:"];
+n90 [label="True:"];
+n89 -> n90
+n85 -> n89
+n83 -> n85
+n79 -> n83
+n91 [label="Assignment:"];
+n92 [label="Identifier:ntb"];
+n91 -> n92
+n93 [label="FCall:"];
+n94 [label="Identifier:current_node"];
+n93 -> n94
+n95 [label="Dot:"];
+n93 -> n95
+n96 [label="Identifier:SetLeft"];
+n93 -> n96
+n97 [label="Arguments:"];
+n98 [label="Identifier:new_node"];
+n97 -> n98
+n93 -> n97
+n91 -> n93
+n79 -> n91
+n78 -> n79
+n65 -> n78
 n64 -> n65
-n48 -> n64
-n28 -> n48
-n19 -> n28
-n86 [label="Identifier:num_aux"];
-n19 -> n86
-n18 -> n19
-n15 -> n18
-n0 -> n15
+n60 -> n64
+n99 [label="ELSE:"];
+n100 [label="Statement:"];
+n101 [label="If statement:"];
+n102 [label="FCall:"];
+n103 [label="Identifier:current_node"];
+n102 -> n103
+n104 [label="Dot:"];
+n102 -> n104
+n105 [label="Identifier:GetHas_Right"];
+n102 -> n105
+n106 [label="Arguments:"];
+n102 -> n106
+n101 -> n102
+n107 [label="Assignment:"];
+n108 [label="Identifier:current_node"];
+n107 -> n108
+n109 [label="FCall:"];
+n110 [label="Identifier:current_node"];
+n109 -> n110
+n111 [label="Dot:"];
+n109 -> n111
+n112 [label="Identifier:GetRight"];
+n109 -> n112
+n113 [label="Arguments:"];
+n109 -> n113
+n107 -> n109
+n101 -> n107
+n114 [label="ELSE:"];
+n115 [label="Statement:"];
+n116 [label="Assignment:"];
+n117 [label="Identifier:cont"];
+n116 -> n117
+n118 [label="False:"];
+n116 -> n118
+n115 -> n116
+n119 [label="Assignment:"];
+n120 [label="Identifier:ntb"];
+n119 -> n120
+n121 [label="FCall:"];
+n122 [label="Identifier:current_node"];
+n121 -> n122
+n123 [label="Dot:"];
+n121 -> n123
+n124 [label="Identifier:SetHas_Right"];
+n121 -> n124
+n125 [label="Arguments:"];
+n126 [label="True:"];
+n125 -> n126
+n121 -> n125
+n119 -> n121
+n115 -> n119
+n127 [label="Assignment:"];
+n128 [label="Identifier:ntb"];
+n127 -> n128
+n129 [label="FCall:"];
+n130 [label="Identifier:current_node"];
+n129 -> n130
+n131 [label="Dot:"];
+n129 -> n131
+n132 [label="Identifier:SetRight"];
+n129 -> n132
+n133 [label="Arguments:"];
+n134 [label="Identifier:new_node"];
+n133 -> n134
+n129 -> n133
+n127 -> n129
+n115 -> n127
+n114 -> n115
+n101 -> n114
+n100 -> n101
+n99 -> n100
+n60 -> n99
+n52 -> n60
+n50 -> n52
+n22 -> n50
+n16 -> n22
+n135 [label="True:"];
+n16 -> n135
+n15 -> n16
+n12 -> n15
+n0 -> n12
 }

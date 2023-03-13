@@ -8,10 +8,8 @@ lex.yy.c: lexer.flex parser.tab.cc
 		flex lexer.flex
 tree: 
 		 dot -Tpdf tree.dot -otree.pdf
-
-clean:
-		rm -f parser.tab.* lex.yy.c* compiler stack.hh tree.dot tree.pdf st.dot st.pdf
-		rm -R compiler.dSYM
 st:
-		 dot -Tpdf st.dot -ost.pdf
-
+		dot -Tpdf st.dot -ost.pdf
+clean:
+		rm -f parser.tab.* lex.yy.c* compiler stack.hh position.hh location.hh tree.dot tree.pdf st.dot st.pdf
+		rm -R compiler.dSYM

@@ -24,6 +24,7 @@ This file is a part of the course DV1655 Compiler and translation techniques at 
 
   YY_DECL;
   
+  
   Node* root;
   extern int yylineno;
   
@@ -33,7 +34,7 @@ This file is a part of the course DV1655 Compiler and translation techniques at 
 %token <std::string> INT LBRACKET RBRACKET BOOLEAN ID SEMICOLON NUM TRUE 
 %token <std::string> FALSE THIS NEW NOT LPAREN RPAREN AND OR LT GT EQ PLUS
 %token <std::string> MINUS TIMES DIVIDE DOT LENGTH LBRACE RBRACE COMMA IF RETURN 
-%token <std::string> ELSE WHILE PRINT EQUALSIGN PUBLIC STATIC VOID MAIN STRING CLASS 
+%token <std::string> ELSE WHILE PRINT EQUALSIGN PUBLIC STATIC VOID MAIN STRING CLASS
 %token END 0 "end of file"
 
 //defition of operator precedence
@@ -76,7 +77,7 @@ Type:       INT
 
             | BOOLEAN
             {
-              $$ = new Node("Boolean", "", yylineno);
+              $$ = new Node("Boolean", "", yylineno,"Boole");
             }
             | ID
             {
@@ -91,7 +92,6 @@ VarDeclaration: Type ID SEMICOLON
               // CHANGED THIS MIGHT DESTROY SOMETHING ELSE
               std::string dtype = $1->type;
               // CHANGE TO $2 IF THIS BUGS!
-              std::cout << "aLSdjLAnfraskdlnä " << $1->value<<std::endl;
               $$ = new Node("VarDeclaration",$2, yylineno, dtype);
               $$->children.push_back($1);
 
@@ -185,11 +185,11 @@ Term:       NUM
             }
             | TRUE
             {
-              $$ = new Node("True", "", yylineno);
+              $$ = new Node("True", "", yylineno, "Boolean");
             }
             | FALSE
             {
-              $$ = new Node("False", "", yylineno);
+              $$ = new Node("False", "", yylineno, "Boolean");
             }
             |ID
             {
@@ -282,6 +282,8 @@ MethodDeclaration: PUBLIC Type ID LPAREN LRParamater RPAREN LBRACE LRVarOrStatem
               $$->children.push_back(new Node("Identifier", $3, yylineno));
               $$->children.push_back($5);
               $$->children.push_back($8);
+              //$10->type = "Return";
+
               $$->children.push_back($10);
             };
 ClassDeclaration: CLASS ID LBRACE LRVarDec LRMethodDec RBRACE

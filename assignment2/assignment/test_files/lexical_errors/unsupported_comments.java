@@ -5,7 +5,7 @@ public class BinaryTree{
 }
 
 
-/* This class invokes the methods to create a tree,
+/* #%This class invokes the methods to create a tree,
 insert, delete and serach for  elements on it */
 class BT {
 

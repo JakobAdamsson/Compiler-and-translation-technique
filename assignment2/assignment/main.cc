@@ -83,6 +83,7 @@ int main(int argc, char **argv)
         symboltable.resetTable();
         std::cout << "Starting Method analysis" << std::endl;
         root->semantic_analysis_variables(&symboltable);
+        std::cout << "Method analysis done" << std::endl;
       }
       catch (...)
       {
@@ -93,6 +94,29 @@ int main(int argc, char **argv)
         symboltable.resetTable();
         std::cout << "Starting assignment analysis" << std::endl;
         root->check_assignment(&symboltable, root);
+        std::cout << "assignment analysis done" << std::endl;
+      }
+      catch (...)
+      {
+        errCode = errCodes::SEMANTIC_ERROR;
+      }
+      try
+      {
+        symboltable.resetTable();
+        std::cout << "Starting method analysis" << std::endl;
+        root->semantic_analysis_methods(&symboltable, root);
+        std::cout << "Method analysis done" << std::endl;
+      }
+      catch (...)
+      {
+        errCode = errCodes::SEMANTIC_ERROR;
+      }
+      try
+      {
+        symboltable.resetTable();
+        std::cout << "Starting array analysis" << std::endl;
+        root->check_int_arrs(&symboltable, root);
+        std::cout << "array analysis done" << std::endl;
       }
       catch (...)
       {

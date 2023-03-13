@@ -8,18 +8,16 @@ Factorial this
 "];
 n0 -> n1
 n2 [label="Scope:ClassDeclaration(Fac)
-Int ComputeFac
+Boolean Insert()
 Fac this
 "];
-n3 [label="Scope:MethodDeclaration(ComputeFac)
-Int Walla
-Int a
-Int b
-Int hej
-Boolean hej2
-Int num_aux
-Int sum
-Int x
+n3 [label="Scope:MethodDeclaration(Insert)
+Boolean cont
+Tree current_node
+Int key_aux
+Tree new_node
+Boolean ntb
+Int v_key
 "];
 n2 -> n3
 n0 -> n2

@@ -62,7 +62,6 @@ public:
 
     void printVariables()
     {
-        // std::cout << "NU SKA VI PRINTA LITE VARIABLER I: " << this->id << std::endl;
         for (auto i = Variables.begin(); i != Variables.end(); i++)
         {
             std::cout << "Variable: " << i->first << " type: " << i->second->type << std::endl;
@@ -70,8 +69,6 @@ public:
     }
     void printParameters2()
     {
-        // std::cout << "NU SKA VI PRINTA LITE VARIABLER I: " << this->id << std::endl;
-        std::cout << "PARAMETERS TVÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅ" << std::endl;
         for (auto str : Parameters2)
         {
             std::cout << "Paramters: " << str->id << " dtype: " << str->dtype << std::endl;
@@ -79,7 +76,6 @@ public:
     }
     void printParameters()
     {
-        // std::cout << "NU SKA VI PRINTA LITE PARAMETERS I: " << this->id << std::endl;
         for (auto i = Parameters.begin(); i != Parameters.end(); i++)
         {
             std::cout << "Parameter: " << i->first << " type: " << i->second << std::endl;
@@ -217,7 +213,6 @@ public:
             m.count(key) == 1
             m.count(key) != 0
         */
-        // std::cout << "I LOOKUP: " << key << ": " << records[key].id << std::endl;
         if (records.count(key)) // does it exist in the current scope?
         {
             return records[key];
@@ -226,7 +221,6 @@ public:
         {
             if (parentScope == NULL)
             {
-                // std::cout << "IN ROOT SCOPE" << std::endl; // Identifier not in the symbol table
                 return NULL;
             }
             else
@@ -259,12 +253,15 @@ public:
         std::string buffer = "\n";
         for (auto &kvp : this->records)
         {
-            // *outStream << "n" << id << " -> " << kvp.second.id << std::endl;
-
-            buffer += kvp.second->dtype + " " + kvp.first + "\n";
-            // std::cout << kvp.first << " KOLLA HÄR MOFAKAS" << kvp.second.type << std::endl;
+            if (kvp.second->type == "MethodDeclaration")
+            {
+                buffer += kvp.second->dtype + " " + kvp.first + "()" + "\n";
+            }
+            else
+            {
+                buffer += kvp.second->dtype + " " + kvp.first + "\n";
+            }
         }
-        // std::cout << buffer << std::endl;
         *outStream << "n" << id << " [label=\""
                    << "Scope"
                    << ":" << scopeName
