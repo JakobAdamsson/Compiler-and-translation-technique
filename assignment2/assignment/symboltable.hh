@@ -18,7 +18,7 @@ public:
     // Getters and Setters
     virtual void printRecord()
     {
-        std::cout << "id: " << id << " type: " << type << std::endl;
+        std::cout << "id: " << id << " type: " << type <<" dtype: " <<dtype<<std::endl;
     };
 };
 class Variable : public Record

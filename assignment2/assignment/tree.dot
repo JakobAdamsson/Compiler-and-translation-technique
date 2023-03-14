@@ -1,273 +1,1855 @@
 digraph {
 n0 [label="Goal:"];
-n1 [label="MainClass:Factorial"];
-n2 [label="Identifier:Factorial"];
+n1 [label="MainClass:BinaryTree"];
+n2 [label="Identifier:BinaryTree"];
 n1 -> n2
 n3 [label="Method Identifier:a"];
 n1 -> n3
 n4 [label="Statement:"];
 n5 [label="Print:"];
 n6 [label="FCall:"];
-n7 [label="NewVar:Fac"];
+n7 [label="NewVar:BT"];
 n6 -> n7
-n8 [label="Dot:"];
+n8 [label="Identifier:Start"];
 n6 -> n8
-n9 [label="Identifier:Insert"];
+n9 [label="Arguments:"];
 n6 -> n9
-n10 [label="Arguments:"];
-n11 [label="Num:1"];
-n10 -> n11
-n6 -> n10
 n5 -> n6
 n4 -> n5
 n1 -> n4
 n0 -> n1
-n12 [label="ClassDeclaration:Fac"];
-n13 [label="Identifier:Fac"];
-n12 -> n13
-n14 [label="Empty:"];
-n12 -> n14
-n15 [label="MethodDeclarations:"];
-n16 [label="MethodDeclaration:Insert"];
-n17 [label="Public:"];
-n16 -> n17
-n18 [label="Boolean:"];
-n16 -> n18
-n19 [label="Identifier:Insert"];
-n16 -> n19
-n20 [label="Parameters:"];
-n21 [label="Identifier:v_key"];
+n10 [label="LRClassDec:"];
+n11 [label="ClassDeclaration:BT"];
+n12 [label="Identifier:BT"];
+n11 -> n12
+n13 [label="Empty:"];
+n11 -> n13
+n14 [label="MethodDeclarations:"];
+n15 [label="MethodDeclaration:Start"];
+n16 [label="Public:"];
+n15 -> n16
+n17 [label="Int:"];
+n15 -> n17
+n18 [label="Identifier:Start"];
+n15 -> n18
+n19 [label="Parameters:"];
+n15 -> n19
+n20 [label="VarDeclarations:"];
+n21 [label="VarDeclaration:root"];
+n22 [label="Tree:Tree"];
+n21 -> n22
 n20 -> n21
-n16 -> n20
-n22 [label="VarDeclarations:"];
-n23 [label="VarDeclaration:new_node"];
-n24 [label="Tree:Tree"];
+n23 [label="Assignment:"];
+n24 [label="Identifier:root"];
 n23 -> n24
-n22 -> n23
-n25 [label="Assignment:"];
-n26 [label="Identifier:new_node"];
-n25 -> n26
-n27 [label="NewVar:Tree"];
-n25 -> n27
-n22 -> n25
-n28 [label="VarDeclaration:ntb"];
-n29 [label="Boolean:"];
+n25 [label="NewVar:Tree"];
+n23 -> n25
+n20 -> n23
+n26 [label="VarDeclaration:ntb"];
+n27 [label="Boolean:"];
+n26 -> n27
+n20 -> n26
+n28 [label="Assignment:"];
+n29 [label="Identifier:ntb"];
 n28 -> n29
-n22 -> n28
-n30 [label="Assignment:"];
-n31 [label="Identifier:ntb"];
+n30 [label="FCall:"];
+n31 [label="Identifier:root"];
 n30 -> n31
-n32 [label="FCall:"];
-n33 [label="Identifier:new_node"];
-n32 -> n33
-n34 [label="Dot:"];
-n32 -> n34
-n35 [label="Identifier:Init"];
-n32 -> n35
-n36 [label="Arguments:"];
-n37 [label="Identifier:v_key"];
-n36 -> n37
-n32 -> n36
+n32 [label="Identifier:Init"];
 n30 -> n32
-n22 -> n30
-n38 [label="VarDeclaration:cont"];
-n39 [label="Boolean:"];
-n38 -> n39
-n22 -> n38
-n40 [label="Assignment:"];
-n41 [label="Identifier:cont"];
-n40 -> n41
-n42 [label="True:"];
-n40 -> n42
-n22 -> n40
-n43 [label="VarDeclaration:key_aux"];
-n44 [label="Int:"];
+n33 [label="Arguments:"];
+n34 [label="Num:16"];
+n33 -> n34
+n30 -> n33
+n28 -> n30
+n20 -> n28
+n35 [label="Assignment:"];
+n36 [label="Identifier:ntb"];
+n35 -> n36
+n37 [label="FCall:"];
+n38 [label="Identifier:root"];
+n37 -> n38
+n39 [label="Identifier:Print"];
+n37 -> n39
+n40 [label="Arguments:"];
+n37 -> n40
+n35 -> n37
+n20 -> n35
+n41 [label="Print:"];
+n42 [label="Num:100000000"];
+n41 -> n42
+n20 -> n41
+n43 [label="Assignment:"];
+n44 [label="Identifier:ntb"];
 n43 -> n44
-n22 -> n43
-n45 [label="VarDeclaration:current_node"];
-n46 [label="Tree:Tree"];
+n45 [label="FCall:"];
+n46 [label="Identifier:root"];
 n45 -> n46
-n22 -> n45
-n47 [label="Assignment:"];
-n48 [label="Identifier:current_node"];
-n47 -> n48
-n49 [label="this:"];
-n47 -> n49
-n22 -> n47
-n50 [label="While:"];
-n51 [label="Identifier:cont"];
+n47 [label="Identifier:Insert"];
+n45 -> n47
+n48 [label="Arguments:"];
+n49 [label="Num:8"];
+n48 -> n49
+n45 -> n48
+n43 -> n45
+n20 -> n43
+n50 [label="Assignment:"];
+n51 [label="Identifier:ntb"];
 n50 -> n51
-n52 [label="Statement:"];
-n53 [label="Assignment:"];
-n54 [label="Identifier:key_aux"];
-n53 -> n54
-n55 [label="FCall:"];
-n56 [label="Identifier:current_node"];
-n55 -> n56
-n57 [label="Dot:"];
-n55 -> n57
-n58 [label="Identifier:GetKey"];
-n55 -> n58
-n59 [label="Arguments:"];
-n55 -> n59
-n53 -> n55
+n52 [label="FCall:"];
+n53 [label="Identifier:root"];
 n52 -> n53
-n60 [label="If statement:"];
-n61 [label="Lt:"];
-n62 [label="Identifier:v_key"];
+n54 [label="Identifier:Print"];
+n52 -> n54
+n55 [label="Arguments:"];
+n52 -> n55
+n50 -> n52
+n20 -> n50
+n56 [label="Assignment:"];
+n57 [label="Identifier:ntb"];
+n56 -> n57
+n58 [label="FCall:"];
+n59 [label="Identifier:root"];
+n58 -> n59
+n60 [label="Identifier:Insert"];
+n58 -> n60
+n61 [label="Arguments:"];
+n62 [label="Num:24"];
 n61 -> n62
-n63 [label="Identifier:key_aux"];
-n61 -> n63
-n60 -> n61
-n64 [label="Statement:"];
-n65 [label="If statement:"];
-n66 [label="FCall:"];
-n67 [label="Identifier:current_node"];
-n66 -> n67
-n68 [label="Dot:"];
-n66 -> n68
-n69 [label="Identifier:GetHas_Left"];
-n66 -> n69
-n70 [label="Arguments:"];
-n66 -> n70
+n58 -> n61
+n56 -> n58
+n20 -> n56
+n63 [label="Assignment:"];
+n64 [label="Identifier:ntb"];
+n63 -> n64
+n65 [label="FCall:"];
+n66 [label="Identifier:root"];
 n65 -> n66
-n71 [label="Assignment:"];
-n72 [label="Identifier:current_node"];
-n71 -> n72
-n73 [label="FCall:"];
-n74 [label="Identifier:current_node"];
-n73 -> n74
-n75 [label="Dot:"];
-n73 -> n75
-n76 [label="Identifier:GetLeft"];
-n73 -> n76
-n77 [label="Arguments:"];
-n73 -> n77
-n71 -> n73
-n65 -> n71
-n78 [label="ELSE:"];
-n79 [label="Statement:"];
-n80 [label="Assignment:"];
-n81 [label="Identifier:cont"];
-n80 -> n81
-n82 [label="False:"];
-n80 -> n82
+n67 [label="Identifier:Insert"];
+n65 -> n67
+n68 [label="Arguments:"];
+n69 [label="Num:4"];
+n68 -> n69
+n65 -> n68
+n63 -> n65
+n20 -> n63
+n70 [label="Assignment:"];
+n71 [label="Identifier:ntb"];
+n70 -> n71
+n72 [label="FCall:"];
+n73 [label="Identifier:root"];
+n72 -> n73
+n74 [label="Identifier:Insert"];
+n72 -> n74
+n75 [label="Arguments:"];
+n76 [label="Num:12"];
+n75 -> n76
+n72 -> n75
+n70 -> n72
+n20 -> n70
+n77 [label="Assignment:"];
+n78 [label="Identifier:ntb"];
+n77 -> n78
+n79 [label="FCall:"];
+n80 [label="Identifier:root"];
 n79 -> n80
-n83 [label="Assignment:"];
-n84 [label="Identifier:ntb"];
-n83 -> n84
-n85 [label="FCall:"];
-n86 [label="Identifier:current_node"];
-n85 -> n86
-n87 [label="Dot:"];
-n85 -> n87
-n88 [label="Identifier:SetHas_Left"];
-n85 -> n88
+n81 [label="Identifier:Insert"];
+n79 -> n81
+n82 [label="Arguments:"];
+n83 [label="Num:20"];
+n82 -> n83
+n79 -> n82
+n77 -> n79
+n20 -> n77
+n84 [label="Assignment:"];
+n85 [label="Identifier:ntb"];
+n84 -> n85
+n86 [label="FCall:"];
+n87 [label="Identifier:root"];
+n86 -> n87
+n88 [label="Identifier:Insert"];
+n86 -> n88
 n89 [label="Arguments:"];
-n90 [label="True:"];
+n90 [label="Num:28"];
 n89 -> n90
-n85 -> n89
-n83 -> n85
-n79 -> n83
+n86 -> n89
+n84 -> n86
+n20 -> n84
 n91 [label="Assignment:"];
 n92 [label="Identifier:ntb"];
 n91 -> n92
 n93 [label="FCall:"];
-n94 [label="Identifier:current_node"];
+n94 [label="Identifier:root"];
 n93 -> n94
-n95 [label="Dot:"];
+n95 [label="Identifier:Insert"];
 n93 -> n95
-n96 [label="Identifier:SetLeft"];
+n96 [label="Arguments:"];
+n97 [label="Num:14"];
+n96 -> n97
 n93 -> n96
-n97 [label="Arguments:"];
-n98 [label="Identifier:new_node"];
-n97 -> n98
-n93 -> n97
 n91 -> n93
-n79 -> n91
-n78 -> n79
-n65 -> n78
-n64 -> n65
-n60 -> n64
-n99 [label="ELSE:"];
-n100 [label="Statement:"];
-n101 [label="If statement:"];
-n102 [label="FCall:"];
-n103 [label="Identifier:current_node"];
-n102 -> n103
-n104 [label="Dot:"];
-n102 -> n104
-n105 [label="Identifier:GetHas_Right"];
-n102 -> n105
-n106 [label="Arguments:"];
-n102 -> n106
-n101 -> n102
-n107 [label="Assignment:"];
-n108 [label="Identifier:current_node"];
-n107 -> n108
-n109 [label="FCall:"];
-n110 [label="Identifier:current_node"];
-n109 -> n110
-n111 [label="Dot:"];
-n109 -> n111
-n112 [label="Identifier:GetRight"];
-n109 -> n112
-n113 [label="Arguments:"];
-n109 -> n113
-n107 -> n109
-n101 -> n107
-n114 [label="ELSE:"];
-n115 [label="Statement:"];
-n116 [label="Assignment:"];
-n117 [label="Identifier:cont"];
-n116 -> n117
-n118 [label="False:"];
-n116 -> n118
-n115 -> n116
-n119 [label="Assignment:"];
-n120 [label="Identifier:ntb"];
-n119 -> n120
-n121 [label="FCall:"];
-n122 [label="Identifier:current_node"];
-n121 -> n122
-n123 [label="Dot:"];
-n121 -> n123
-n124 [label="Identifier:SetHas_Right"];
-n121 -> n124
-n125 [label="Arguments:"];
-n126 [label="True:"];
-n125 -> n126
-n121 -> n125
-n119 -> n121
-n115 -> n119
-n127 [label="Assignment:"];
-n128 [label="Identifier:ntb"];
-n127 -> n128
-n129 [label="FCall:"];
-n130 [label="Identifier:current_node"];
-n129 -> n130
-n131 [label="Dot:"];
-n129 -> n131
-n132 [label="Identifier:SetRight"];
-n129 -> n132
-n133 [label="Arguments:"];
-n134 [label="Identifier:new_node"];
-n133 -> n134
-n129 -> n133
-n127 -> n129
-n115 -> n127
-n114 -> n115
-n101 -> n114
+n20 -> n91
+n98 [label="Assignment:"];
+n99 [label="Identifier:ntb"];
+n98 -> n99
+n100 [label="FCall:"];
+n101 [label="Identifier:root"];
 n100 -> n101
-n99 -> n100
-n60 -> n99
-n52 -> n60
-n50 -> n52
-n22 -> n50
-n16 -> n22
-n135 [label="True:"];
-n16 -> n135
-n15 -> n16
-n12 -> n15
-n0 -> n12
+n102 [label="Identifier:Print"];
+n100 -> n102
+n103 [label="Arguments:"];
+n100 -> n103
+n98 -> n100
+n20 -> n98
+n104 [label="Print:"];
+n105 [label="FCall:"];
+n106 [label="Identifier:root"];
+n105 -> n106
+n107 [label="Identifier:Search"];
+n105 -> n107
+n108 [label="Arguments:"];
+n109 [label="Num:24"];
+n108 -> n109
+n105 -> n108
+n104 -> n105
+n20 -> n104
+n110 [label="Print:"];
+n111 [label="FCall:"];
+n112 [label="Identifier:root"];
+n111 -> n112
+n113 [label="Identifier:Search"];
+n111 -> n113
+n114 [label="Arguments:"];
+n115 [label="Num:12"];
+n114 -> n115
+n111 -> n114
+n110 -> n111
+n20 -> n110
+n116 [label="Print:"];
+n117 [label="FCall:"];
+n118 [label="Identifier:root"];
+n117 -> n118
+n119 [label="Identifier:Search"];
+n117 -> n119
+n120 [label="Arguments:"];
+n121 [label="Num:16"];
+n120 -> n121
+n117 -> n120
+n116 -> n117
+n20 -> n116
+n122 [label="Print:"];
+n123 [label="FCall:"];
+n124 [label="Identifier:root"];
+n123 -> n124
+n125 [label="Identifier:Search"];
+n123 -> n125
+n126 [label="Arguments:"];
+n127 [label="Num:50"];
+n126 -> n127
+n123 -> n126
+n122 -> n123
+n20 -> n122
+n128 [label="Print:"];
+n129 [label="FCall:"];
+n130 [label="Identifier:root"];
+n129 -> n130
+n131 [label="Identifier:Search"];
+n129 -> n131
+n132 [label="Arguments:"];
+n133 [label="Num:12"];
+n132 -> n133
+n129 -> n132
+n128 -> n129
+n20 -> n128
+n134 [label="Assignment:"];
+n135 [label="Identifier:ntb"];
+n134 -> n135
+n136 [label="FCall:"];
+n137 [label="Identifier:root"];
+n136 -> n137
+n138 [label="Identifier:Delete"];
+n136 -> n138
+n139 [label="Arguments:"];
+n140 [label="Num:12"];
+n139 -> n140
+n136 -> n139
+n134 -> n136
+n20 -> n134
+n141 [label="Assignment:"];
+n142 [label="Identifier:ntb"];
+n141 -> n142
+n143 [label="FCall:"];
+n144 [label="Identifier:root"];
+n143 -> n144
+n145 [label="Identifier:Print"];
+n143 -> n145
+n146 [label="Arguments:"];
+n143 -> n146
+n141 -> n143
+n20 -> n141
+n147 [label="Print:"];
+n148 [label="FCall:"];
+n149 [label="Identifier:root"];
+n148 -> n149
+n150 [label="Identifier:Search"];
+n148 -> n150
+n151 [label="Arguments:"];
+n152 [label="Num:12"];
+n151 -> n152
+n148 -> n151
+n147 -> n148
+n20 -> n147
+n15 -> n20
+n153 [label="Num:0"];
+n15 -> n153
+n14 -> n15
+n11 -> n14
+n10 -> n11
+n154 [label="ClassDeclaration:Tree"];
+n155 [label="Identifier:Tree"];
+n154 -> n155
+n156 [label="VarDeclarations:"];
+n157 [label="VarDeclaration:left"];
+n158 [label="Tree:Tree"];
+n157 -> n158
+n156 -> n157
+n159 [label="VarDeclaration:right"];
+n160 [label="Tree:Tree"];
+n159 -> n160
+n156 -> n159
+n161 [label="VarDeclaration:key"];
+n162 [label="Int:"];
+n161 -> n162
+n156 -> n161
+n163 [label="VarDeclaration:has_left"];
+n164 [label="Boolean:"];
+n163 -> n164
+n156 -> n163
+n165 [label="VarDeclaration:has_right"];
+n166 [label="Boolean:"];
+n165 -> n166
+n156 -> n165
+n167 [label="VarDeclaration:my_null"];
+n168 [label="Tree:Tree"];
+n167 -> n168
+n156 -> n167
+n154 -> n156
+n169 [label="MethodDeclarations:"];
+n170 [label="MethodDeclaration:Init"];
+n171 [label="Public:"];
+n170 -> n171
+n172 [label="Boolean:"];
+n170 -> n172
+n173 [label="Identifier:Init"];
+n170 -> n173
+n174 [label="Parameters:"];
+n175 [label="Identifier:v_key"];
+n174 -> n175
+n170 -> n174
+n176 [label="Statement:"];
+n177 [label="Assignment:"];
+n178 [label="Identifier:key"];
+n177 -> n178
+n179 [label="Identifier:v_key"];
+n177 -> n179
+n176 -> n177
+n180 [label="Assignment:"];
+n181 [label="Identifier:has_left"];
+n180 -> n181
+n182 [label="False:"];
+n180 -> n182
+n176 -> n180
+n183 [label="Assignment:"];
+n184 [label="Identifier:has_right"];
+n183 -> n184
+n185 [label="False:"];
+n183 -> n185
+n176 -> n183
+n170 -> n176
+n186 [label="True:"];
+n170 -> n186
+n169 -> n170
+n187 [label="MethodDeclaration:SetRight"];
+n188 [label="Public:"];
+n187 -> n188
+n189 [label="Boolean:"];
+n187 -> n189
+n190 [label="Identifier:SetRight"];
+n187 -> n190
+n191 [label="Parameters:"];
+n192 [label="Identifier:rn"];
+n191 -> n192
+n187 -> n191
+n193 [label="Statement:"];
+n194 [label="Assignment:"];
+n195 [label="Identifier:right"];
+n194 -> n195
+n196 [label="Identifier:rn"];
+n194 -> n196
+n193 -> n194
+n187 -> n193
+n197 [label="True:"];
+n187 -> n197
+n169 -> n187
+n198 [label="MethodDeclaration:SetLeft"];
+n199 [label="Public:"];
+n198 -> n199
+n200 [label="Boolean:"];
+n198 -> n200
+n201 [label="Identifier:SetLeft"];
+n198 -> n201
+n202 [label="Parameters:"];
+n203 [label="Identifier:ln"];
+n202 -> n203
+n198 -> n202
+n204 [label="Statement:"];
+n205 [label="Assignment:"];
+n206 [label="Identifier:left"];
+n205 -> n206
+n207 [label="Identifier:ln"];
+n205 -> n207
+n204 -> n205
+n198 -> n204
+n208 [label="True:"];
+n198 -> n208
+n169 -> n198
+n209 [label="MethodDeclaration:GetRight"];
+n210 [label="Public:"];
+n209 -> n210
+n211 [label="Tree:Tree"];
+n209 -> n211
+n212 [label="Identifier:GetRight"];
+n209 -> n212
+n213 [label="Parameters:"];
+n209 -> n213
+n214 [label="Empty:"];
+n209 -> n214
+n215 [label="Identifier:right"];
+n209 -> n215
+n169 -> n209
+n216 [label="MethodDeclaration:GetLeft"];
+n217 [label="Public:"];
+n216 -> n217
+n218 [label="Tree:Tree"];
+n216 -> n218
+n219 [label="Identifier:GetLeft"];
+n216 -> n219
+n220 [label="Parameters:"];
+n216 -> n220
+n221 [label="Empty:"];
+n216 -> n221
+n222 [label="Identifier:left"];
+n216 -> n222
+n169 -> n216
+n223 [label="MethodDeclaration:GetKey"];
+n224 [label="Public:"];
+n223 -> n224
+n225 [label="Int:"];
+n223 -> n225
+n226 [label="Identifier:GetKey"];
+n223 -> n226
+n227 [label="Parameters:"];
+n223 -> n227
+n228 [label="Empty:"];
+n223 -> n228
+n229 [label="Identifier:key"];
+n223 -> n229
+n169 -> n223
+n230 [label="MethodDeclaration:SetKey"];
+n231 [label="Public:"];
+n230 -> n231
+n232 [label="Boolean:"];
+n230 -> n232
+n233 [label="Identifier:SetKey"];
+n230 -> n233
+n234 [label="Parameters:"];
+n235 [label="Identifier:v_key"];
+n234 -> n235
+n230 -> n234
+n236 [label="Statement:"];
+n237 [label="Assignment:"];
+n238 [label="Identifier:key"];
+n237 -> n238
+n239 [label="Identifier:v_key"];
+n237 -> n239
+n236 -> n237
+n230 -> n236
+n240 [label="True:"];
+n230 -> n240
+n169 -> n230
+n241 [label="MethodDeclaration:GetHas_Right"];
+n242 [label="Public:"];
+n241 -> n242
+n243 [label="Boolean:"];
+n241 -> n243
+n244 [label="Identifier:GetHas_Right"];
+n241 -> n244
+n245 [label="Parameters:"];
+n241 -> n245
+n246 [label="Empty:"];
+n241 -> n246
+n247 [label="Identifier:has_right"];
+n241 -> n247
+n169 -> n241
+n248 [label="MethodDeclaration:GetHas_Left"];
+n249 [label="Public:"];
+n248 -> n249
+n250 [label="Boolean:"];
+n248 -> n250
+n251 [label="Identifier:GetHas_Left"];
+n248 -> n251
+n252 [label="Parameters:"];
+n248 -> n252
+n253 [label="Empty:"];
+n248 -> n253
+n254 [label="Identifier:has_left"];
+n248 -> n254
+n169 -> n248
+n255 [label="MethodDeclaration:SetHas_Left"];
+n256 [label="Public:"];
+n255 -> n256
+n257 [label="Boolean:"];
+n255 -> n257
+n258 [label="Identifier:SetHas_Left"];
+n255 -> n258
+n259 [label="Parameters:"];
+n260 [label="Identifier:val"];
+n259 -> n260
+n255 -> n259
+n261 [label="Statement:"];
+n262 [label="Assignment:"];
+n263 [label="Identifier:has_left"];
+n262 -> n263
+n264 [label="Identifier:val"];
+n262 -> n264
+n261 -> n262
+n255 -> n261
+n265 [label="True:"];
+n255 -> n265
+n169 -> n255
+n266 [label="MethodDeclaration:SetHas_Right"];
+n267 [label="Public:"];
+n266 -> n267
+n268 [label="Boolean:"];
+n266 -> n268
+n269 [label="Identifier:SetHas_Right"];
+n266 -> n269
+n270 [label="Parameters:"];
+n271 [label="Identifier:val"];
+n270 -> n271
+n266 -> n270
+n272 [label="Statement:"];
+n273 [label="Assignment:"];
+n274 [label="Identifier:has_right"];
+n273 -> n274
+n275 [label="Identifier:val"];
+n273 -> n275
+n272 -> n273
+n266 -> n272
+n276 [label="True:"];
+n266 -> n276
+n169 -> n266
+n277 [label="MethodDeclaration:Compare"];
+n278 [label="Public:"];
+n277 -> n278
+n279 [label="Boolean:"];
+n277 -> n279
+n280 [label="Identifier:Compare"];
+n277 -> n280
+n281 [label="Parameters:"];
+n282 [label="Identifier:num1"];
+n281 -> n282
+n283 [label="Identifer:num2"];
+n281 -> n283
+n277 -> n281
+n284 [label="VarDeclarations:"];
+n285 [label="VarDeclaration:ntb"];
+n286 [label="Boolean:"];
+n285 -> n286
+n284 -> n285
+n287 [label="Assignment:"];
+n288 [label="Identifier:ntb"];
+n287 -> n288
+n289 [label="False:"];
+n287 -> n289
+n284 -> n287
+n290 [label="VarDeclaration:nti"];
+n291 [label="Int:"];
+n290 -> n291
+n284 -> n290
+n292 [label="Assignment:"];
+n293 [label="Identifier:nti"];
+n292 -> n293
+n294 [label="Plus:"];
+n295 [label="Identifier:num2"];
+n294 -> n295
+n296 [label="Num:1"];
+n294 -> n296
+n292 -> n294
+n284 -> n292
+n297 [label="If statement:"];
+n298 [label="Lt:"];
+n299 [label="Identifier:num1"];
+n298 -> n299
+n300 [label="Identifier:num2"];
+n298 -> n300
+n297 -> n298
+n301 [label="Assignment:"];
+n302 [label="Identifier:ntb"];
+n301 -> n302
+n303 [label="False:"];
+n301 -> n303
+n297 -> n301
+n304 [label="ELSE:"];
+n305 [label="If statement:"];
+n306 [label="Not:"];
+n307 [label="Lt:"];
+n308 [label="Identifier:num1"];
+n307 -> n308
+n309 [label="Identifier:nti"];
+n307 -> n309
+n306 -> n307
+n305 -> n306
+n310 [label="Assignment:"];
+n311 [label="Identifier:ntb"];
+n310 -> n311
+n312 [label="False:"];
+n310 -> n312
+n305 -> n310
+n313 [label="ELSE:"];
+n314 [label="Assignment:"];
+n315 [label="Identifier:ntb"];
+n314 -> n315
+n316 [label="True:"];
+n314 -> n316
+n313 -> n314
+n305 -> n313
+n304 -> n305
+n297 -> n304
+n284 -> n297
+n277 -> n284
+n317 [label="Identifier:ntb"];
+n277 -> n317
+n169 -> n277
+n318 [label="MethodDeclaration:Insert"];
+n319 [label="Public:"];
+n318 -> n319
+n320 [label="Boolean:"];
+n318 -> n320
+n321 [label="Identifier:Insert"];
+n318 -> n321
+n322 [label="Parameters:"];
+n323 [label="Identifier:v_key"];
+n322 -> n323
+n318 -> n322
+n324 [label="VarDeclarations:"];
+n325 [label="VarDeclaration:new_node"];
+n326 [label="Tree:Tree"];
+n325 -> n326
+n324 -> n325
+n327 [label="Assignment:"];
+n328 [label="Identifier:new_node"];
+n327 -> n328
+n329 [label="NewVar:Tree"];
+n327 -> n329
+n324 -> n327
+n330 [label="VarDeclaration:ntb"];
+n331 [label="Boolean:"];
+n330 -> n331
+n324 -> n330
+n332 [label="Assignment:"];
+n333 [label="Identifier:ntb"];
+n332 -> n333
+n334 [label="FCall:"];
+n335 [label="Identifier:new_node"];
+n334 -> n335
+n336 [label="Identifier:Init"];
+n334 -> n336
+n337 [label="Arguments:"];
+n338 [label="Identifier:v_key"];
+n337 -> n338
+n334 -> n337
+n332 -> n334
+n324 -> n332
+n339 [label="VarDeclaration:cont"];
+n340 [label="Boolean:"];
+n339 -> n340
+n324 -> n339
+n341 [label="Assignment:"];
+n342 [label="Identifier:cont"];
+n341 -> n342
+n343 [label="True:"];
+n341 -> n343
+n324 -> n341
+n344 [label="VarDeclaration:key_aux"];
+n345 [label="Int:"];
+n344 -> n345
+n324 -> n344
+n346 [label="VarDeclaration:current_node"];
+n347 [label="Tree:Tree"];
+n346 -> n347
+n324 -> n346
+n348 [label="Assignment:"];
+n349 [label="Identifier:current_node"];
+n348 -> n349
+n350 [label="this:"];
+n348 -> n350
+n324 -> n348
+n351 [label="While:"];
+n352 [label="Identifier:cont"];
+n351 -> n352
+n353 [label="Statement:"];
+n354 [label="Assignment:"];
+n355 [label="Identifier:key_aux"];
+n354 -> n355
+n356 [label="FCall:"];
+n357 [label="Identifier:current_node"];
+n356 -> n357
+n358 [label="Identifier:GetKey"];
+n356 -> n358
+n359 [label="Arguments:"];
+n356 -> n359
+n354 -> n356
+n353 -> n354
+n360 [label="If statement:"];
+n361 [label="Lt:"];
+n362 [label="Identifier:v_key"];
+n361 -> n362
+n363 [label="Identifier:key_aux"];
+n361 -> n363
+n360 -> n361
+n364 [label="Statement:"];
+n365 [label="If statement:"];
+n366 [label="FCall:"];
+n367 [label="Identifier:current_node"];
+n366 -> n367
+n368 [label="Identifier:GetHas_Left"];
+n366 -> n368
+n369 [label="Arguments:"];
+n366 -> n369
+n365 -> n366
+n370 [label="Assignment:"];
+n371 [label="Identifier:current_node"];
+n370 -> n371
+n372 [label="FCall:"];
+n373 [label="Identifier:current_node"];
+n372 -> n373
+n374 [label="Identifier:GetLeft"];
+n372 -> n374
+n375 [label="Arguments:"];
+n372 -> n375
+n370 -> n372
+n365 -> n370
+n376 [label="ELSE:"];
+n377 [label="Statement:"];
+n378 [label="Assignment:"];
+n379 [label="Identifier:cont"];
+n378 -> n379
+n380 [label="False:"];
+n378 -> n380
+n377 -> n378
+n381 [label="Assignment:"];
+n382 [label="Identifier:ntb"];
+n381 -> n382
+n383 [label="FCall:"];
+n384 [label="Identifier:current_node"];
+n383 -> n384
+n385 [label="Identifier:SetHas_Left"];
+n383 -> n385
+n386 [label="Arguments:"];
+n387 [label="True:"];
+n386 -> n387
+n383 -> n386
+n381 -> n383
+n377 -> n381
+n388 [label="Assignment:"];
+n389 [label="Identifier:ntb"];
+n388 -> n389
+n390 [label="FCall:"];
+n391 [label="Identifier:current_node"];
+n390 -> n391
+n392 [label="Identifier:SetLeft"];
+n390 -> n392
+n393 [label="Arguments:"];
+n394 [label="Identifier:new_node"];
+n393 -> n394
+n390 -> n393
+n388 -> n390
+n377 -> n388
+n376 -> n377
+n365 -> n376
+n364 -> n365
+n360 -> n364
+n395 [label="ELSE:"];
+n396 [label="Statement:"];
+n397 [label="If statement:"];
+n398 [label="FCall:"];
+n399 [label="Identifier:current_node"];
+n398 -> n399
+n400 [label="Identifier:GetHas_Right"];
+n398 -> n400
+n401 [label="Arguments:"];
+n398 -> n401
+n397 -> n398
+n402 [label="Assignment:"];
+n403 [label="Identifier:current_node"];
+n402 -> n403
+n404 [label="FCall:"];
+n405 [label="Identifier:current_node"];
+n404 -> n405
+n406 [label="Identifier:GetRight"];
+n404 -> n406
+n407 [label="Arguments:"];
+n404 -> n407
+n402 -> n404
+n397 -> n402
+n408 [label="ELSE:"];
+n409 [label="Statement:"];
+n410 [label="Assignment:"];
+n411 [label="Identifier:cont"];
+n410 -> n411
+n412 [label="False:"];
+n410 -> n412
+n409 -> n410
+n413 [label="Assignment:"];
+n414 [label="Identifier:ntb"];
+n413 -> n414
+n415 [label="FCall:"];
+n416 [label="Identifier:current_node"];
+n415 -> n416
+n417 [label="Identifier:SetHas_Right"];
+n415 -> n417
+n418 [label="Arguments:"];
+n419 [label="True:"];
+n418 -> n419
+n415 -> n418
+n413 -> n415
+n409 -> n413
+n420 [label="Assignment:"];
+n421 [label="Identifier:ntb"];
+n420 -> n421
+n422 [label="FCall:"];
+n423 [label="Identifier:current_node"];
+n422 -> n423
+n424 [label="Identifier:SetRight"];
+n422 -> n424
+n425 [label="Arguments:"];
+n426 [label="Identifier:new_node"];
+n425 -> n426
+n422 -> n425
+n420 -> n422
+n409 -> n420
+n408 -> n409
+n397 -> n408
+n396 -> n397
+n395 -> n396
+n360 -> n395
+n353 -> n360
+n351 -> n353
+n324 -> n351
+n318 -> n324
+n427 [label="True:"];
+n318 -> n427
+n169 -> n318
+n428 [label="MethodDeclaration:Delete"];
+n429 [label="Public:"];
+n428 -> n429
+n430 [label="Boolean:"];
+n428 -> n430
+n431 [label="Identifier:Delete"];
+n428 -> n431
+n432 [label="Parameters:"];
+n433 [label="Identifier:v_key"];
+n432 -> n433
+n428 -> n432
+n434 [label="VarDeclarations:"];
+n435 [label="VarDeclaration:current_node"];
+n436 [label="Tree:Tree"];
+n435 -> n436
+n434 -> n435
+n437 [label="Assignment:"];
+n438 [label="Identifier:current_node"];
+n437 -> n438
+n439 [label="this:"];
+n437 -> n439
+n434 -> n437
+n440 [label="VarDeclaration:parent_node"];
+n441 [label="Tree:Tree"];
+n440 -> n441
+n434 -> n440
+n442 [label="Assignment:"];
+n443 [label="Identifier:parent_node"];
+n442 -> n443
+n444 [label="this:"];
+n442 -> n444
+n434 -> n442
+n445 [label="VarDeclaration:cont"];
+n446 [label="Boolean:"];
+n445 -> n446
+n434 -> n445
+n447 [label="Assignment:"];
+n448 [label="Identifier:cont"];
+n447 -> n448
+n449 [label="True:"];
+n447 -> n449
+n434 -> n447
+n450 [label="VarDeclaration:found"];
+n451 [label="Boolean:"];
+n450 -> n451
+n434 -> n450
+n452 [label="Assignment:"];
+n453 [label="Identifier:found"];
+n452 -> n453
+n454 [label="False:"];
+n452 -> n454
+n434 -> n452
+n455 [label="VarDeclaration:is_root"];
+n456 [label="Boolean:"];
+n455 -> n456
+n434 -> n455
+n457 [label="Assignment:"];
+n458 [label="Identifier:is_root"];
+n457 -> n458
+n459 [label="True:"];
+n457 -> n459
+n434 -> n457
+n460 [label="VarDeclaration:key_aux"];
+n461 [label="Int:"];
+n460 -> n461
+n434 -> n460
+n462 [label="VarDeclaration:ntb"];
+n463 [label="Boolean:"];
+n462 -> n463
+n434 -> n462
+n464 [label="While:"];
+n465 [label="Identifier:cont"];
+n464 -> n465
+n466 [label="Statement:"];
+n467 [label="Assignment:"];
+n468 [label="Identifier:key_aux"];
+n467 -> n468
+n469 [label="FCall:"];
+n470 [label="Identifier:current_node"];
+n469 -> n470
+n471 [label="Identifier:GetKey"];
+n469 -> n471
+n472 [label="Arguments:"];
+n469 -> n472
+n467 -> n469
+n466 -> n467
+n473 [label="If statement:"];
+n474 [label="Lt:"];
+n475 [label="Identifier:v_key"];
+n474 -> n475
+n476 [label="Identifier:key_aux"];
+n474 -> n476
+n473 -> n474
+n477 [label="If statement:"];
+n478 [label="FCall:"];
+n479 [label="Identifier:current_node"];
+n478 -> n479
+n480 [label="Identifier:GetHas_Left"];
+n478 -> n480
+n481 [label="Arguments:"];
+n478 -> n481
+n477 -> n478
+n482 [label="Statement:"];
+n483 [label="Assignment:"];
+n484 [label="Identifier:parent_node"];
+n483 -> n484
+n485 [label="Identifier:current_node"];
+n483 -> n485
+n482 -> n483
+n486 [label="Assignment:"];
+n487 [label="Identifier:current_node"];
+n486 -> n487
+n488 [label="FCall:"];
+n489 [label="Identifier:current_node"];
+n488 -> n489
+n490 [label="Identifier:GetLeft"];
+n488 -> n490
+n491 [label="Arguments:"];
+n488 -> n491
+n486 -> n488
+n482 -> n486
+n477 -> n482
+n492 [label="ELSE:"];
+n493 [label="Assignment:"];
+n494 [label="Identifier:cont"];
+n493 -> n494
+n495 [label="False:"];
+n493 -> n495
+n492 -> n493
+n477 -> n492
+n473 -> n477
+n496 [label="ELSE:"];
+n497 [label="If statement:"];
+n498 [label="Lt:"];
+n499 [label="Identifier:key_aux"];
+n498 -> n499
+n500 [label="Identifier:v_key"];
+n498 -> n500
+n497 -> n498
+n501 [label="If statement:"];
+n502 [label="FCall:"];
+n503 [label="Identifier:current_node"];
+n502 -> n503
+n504 [label="Identifier:GetHas_Right"];
+n502 -> n504
+n505 [label="Arguments:"];
+n502 -> n505
+n501 -> n502
+n506 [label="Statement:"];
+n507 [label="Assignment:"];
+n508 [label="Identifier:parent_node"];
+n507 -> n508
+n509 [label="Identifier:current_node"];
+n507 -> n509
+n506 -> n507
+n510 [label="Assignment:"];
+n511 [label="Identifier:current_node"];
+n510 -> n511
+n512 [label="FCall:"];
+n513 [label="Identifier:current_node"];
+n512 -> n513
+n514 [label="Identifier:GetRight"];
+n512 -> n514
+n515 [label="Arguments:"];
+n512 -> n515
+n510 -> n512
+n506 -> n510
+n501 -> n506
+n516 [label="ELSE:"];
+n517 [label="Assignment:"];
+n518 [label="Identifier:cont"];
+n517 -> n518
+n519 [label="False:"];
+n517 -> n519
+n516 -> n517
+n501 -> n516
+n497 -> n501
+n520 [label="ELSE:"];
+n521 [label="Statement:"];
+n522 [label="If statement:"];
+n523 [label="Identifier:is_root"];
+n522 -> n523
+n524 [label="If statement:"];
+n525 [label="And:"];
+n526 [label="Not:"];
+n527 [label="FCall:"];
+n528 [label="Identifier:current_node"];
+n527 -> n528
+n529 [label="Identifier:GetHas_Right"];
+n527 -> n529
+n530 [label="Arguments:"];
+n527 -> n530
+n526 -> n527
+n525 -> n526
+n531 [label="Not:"];
+n532 [label="FCall:"];
+n533 [label="Identifier:current_node"];
+n532 -> n533
+n534 [label="Identifier:GetHas_Left"];
+n532 -> n534
+n535 [label="Arguments:"];
+n532 -> n535
+n531 -> n532
+n525 -> n531
+n524 -> n525
+n536 [label="Assignment:"];
+n537 [label="Identifier:ntb"];
+n536 -> n537
+n538 [label="True:"];
+n536 -> n538
+n524 -> n536
+n539 [label="ELSE:"];
+n540 [label="Assignment:"];
+n541 [label="Identifier:ntb"];
+n540 -> n541
+n542 [label="FCall:"];
+n543 [label="this:"];
+n542 -> n543
+n544 [label="Identifier:Remove"];
+n542 -> n544
+n545 [label="Arguments:"];
+n546 [label="Identifier:parent_node"];
+n545 -> n546
+n547 [label="Identifier:current_node"];
+n545 -> n547
+n542 -> n545
+n540 -> n542
+n539 -> n540
+n524 -> n539
+n522 -> n524
+n548 [label="ELSE:"];
+n549 [label="Assignment:"];
+n550 [label="Identifier:ntb"];
+n549 -> n550
+n551 [label="FCall:"];
+n552 [label="this:"];
+n551 -> n552
+n553 [label="Identifier:Remove"];
+n551 -> n553
+n554 [label="Arguments:"];
+n555 [label="Identifier:parent_node"];
+n554 -> n555
+n556 [label="Identifier:current_node"];
+n554 -> n556
+n551 -> n554
+n549 -> n551
+n548 -> n549
+n522 -> n548
+n521 -> n522
+n557 [label="Assignment:"];
+n558 [label="Identifier:found"];
+n557 -> n558
+n559 [label="True:"];
+n557 -> n559
+n521 -> n557
+n560 [label="Assignment:"];
+n561 [label="Identifier:cont"];
+n560 -> n561
+n562 [label="False:"];
+n560 -> n562
+n521 -> n560
+n520 -> n521
+n497 -> n520
+n496 -> n497
+n473 -> n496
+n466 -> n473
+n563 [label="Assignment:"];
+n564 [label="Identifier:is_root"];
+n563 -> n564
+n565 [label="False:"];
+n563 -> n565
+n466 -> n563
+n464 -> n466
+n434 -> n464
+n428 -> n434
+n566 [label="Identifier:found"];
+n428 -> n566
+n169 -> n428
+n567 [label="MethodDeclaration:Remove"];
+n568 [label="Public:"];
+n567 -> n568
+n569 [label="Boolean:"];
+n567 -> n569
+n570 [label="Identifier:Remove"];
+n567 -> n570
+n571 [label="Parameters:"];
+n572 [label="Identifier:p_node"];
+n571 -> n572
+n573 [label="Identifer:c_node"];
+n571 -> n573
+n567 -> n571
+n574 [label="VarDeclarations:"];
+n575 [label="VarDeclaration:ntb"];
+n576 [label="Boolean:"];
+n575 -> n576
+n574 -> n575
+n577 [label="VarDeclaration:auxkey1"];
+n578 [label="Int:"];
+n577 -> n578
+n574 -> n577
+n579 [label="VarDeclaration:auxkey2"];
+n580 [label="Int:"];
+n579 -> n580
+n574 -> n579
+n581 [label="If statement:"];
+n582 [label="FCall:"];
+n583 [label="Identifier:c_node"];
+n582 -> n583
+n584 [label="Identifier:GetHas_Left"];
+n582 -> n584
+n585 [label="Arguments:"];
+n582 -> n585
+n581 -> n582
+n586 [label="Assignment:"];
+n587 [label="Identifier:ntb"];
+n586 -> n587
+n588 [label="FCall:"];
+n589 [label="this:"];
+n588 -> n589
+n590 [label="Identifier:RemoveLeft"];
+n588 -> n590
+n591 [label="Arguments:"];
+n592 [label="Identifier:p_node"];
+n591 -> n592
+n593 [label="Identifier:c_node"];
+n591 -> n593
+n588 -> n591
+n586 -> n588
+n581 -> n586
+n594 [label="ELSE:"];
+n595 [label="If statement:"];
+n596 [label="FCall:"];
+n597 [label="Identifier:c_node"];
+n596 -> n597
+n598 [label="Identifier:GetHas_Right"];
+n596 -> n598
+n599 [label="Arguments:"];
+n596 -> n599
+n595 -> n596
+n600 [label="Assignment:"];
+n601 [label="Identifier:ntb"];
+n600 -> n601
+n602 [label="FCall:"];
+n603 [label="this:"];
+n602 -> n603
+n604 [label="Identifier:RemoveRight"];
+n602 -> n604
+n605 [label="Arguments:"];
+n606 [label="Identifier:p_node"];
+n605 -> n606
+n607 [label="Identifier:c_node"];
+n605 -> n607
+n602 -> n605
+n600 -> n602
+n595 -> n600
+n608 [label="ELSE:"];
+n609 [label="Statement:"];
+n610 [label="Assignment:"];
+n611 [label="Identifier:auxkey1"];
+n610 -> n611
+n612 [label="FCall:"];
+n613 [label="Identifier:c_node"];
+n612 -> n613
+n614 [label="Identifier:GetKey"];
+n612 -> n614
+n615 [label="Arguments:"];
+n612 -> n615
+n610 -> n612
+n609 -> n610
+n616 [label="Assignment:"];
+n617 [label="Identifier:auxkey2"];
+n616 -> n617
+n618 [label="FCall:"];
+n619 [label="FCall:"];
+n620 [label="Identifier:p_node"];
+n619 -> n620
+n621 [label="Identifier:GetLeft"];
+n619 -> n621
+n622 [label="Arguments:"];
+n619 -> n622
+n618 -> n619
+n623 [label="Identifier:GetKey"];
+n618 -> n623
+n624 [label="Arguments:"];
+n618 -> n624
+n616 -> n618
+n609 -> n616
+n625 [label="If statement:"];
+n626 [label="FCall:"];
+n627 [label="this:"];
+n626 -> n627
+n628 [label="Identifier:Compare"];
+n626 -> n628
+n629 [label="Arguments:"];
+n630 [label="Identifier:auxkey1"];
+n629 -> n630
+n631 [label="Identifier:auxkey2"];
+n629 -> n631
+n626 -> n629
+n625 -> n626
+n632 [label="Statement:"];
+n633 [label="Assignment:"];
+n634 [label="Identifier:ntb"];
+n633 -> n634
+n635 [label="FCall:"];
+n636 [label="Identifier:p_node"];
+n635 -> n636
+n637 [label="Identifier:SetLeft"];
+n635 -> n637
+n638 [label="Arguments:"];
+n639 [label="Identifier:my_null"];
+n638 -> n639
+n635 -> n638
+n633 -> n635
+n632 -> n633
+n640 [label="Assignment:"];
+n641 [label="Identifier:ntb"];
+n640 -> n641
+n642 [label="FCall:"];
+n643 [label="Identifier:p_node"];
+n642 -> n643
+n644 [label="Identifier:SetHas_Left"];
+n642 -> n644
+n645 [label="Arguments:"];
+n646 [label="False:"];
+n645 -> n646
+n642 -> n645
+n640 -> n642
+n632 -> n640
+n625 -> n632
+n647 [label="ELSE:"];
+n648 [label="Statement:"];
+n649 [label="Assignment:"];
+n650 [label="Identifier:ntb"];
+n649 -> n650
+n651 [label="FCall:"];
+n652 [label="Identifier:p_node"];
+n651 -> n652
+n653 [label="Identifier:SetRight"];
+n651 -> n653
+n654 [label="Arguments:"];
+n655 [label="Identifier:my_null"];
+n654 -> n655
+n651 -> n654
+n649 -> n651
+n648 -> n649
+n656 [label="Assignment:"];
+n657 [label="Identifier:ntb"];
+n656 -> n657
+n658 [label="FCall:"];
+n659 [label="Identifier:p_node"];
+n658 -> n659
+n660 [label="Identifier:SetHas_Right"];
+n658 -> n660
+n661 [label="Arguments:"];
+n662 [label="False:"];
+n661 -> n662
+n658 -> n661
+n656 -> n658
+n648 -> n656
+n647 -> n648
+n625 -> n647
+n609 -> n625
+n608 -> n609
+n595 -> n608
+n594 -> n595
+n581 -> n594
+n574 -> n581
+n567 -> n574
+n663 [label="True:"];
+n567 -> n663
+n169 -> n567
+n664 [label="MethodDeclaration:RemoveRight"];
+n665 [label="Public:"];
+n664 -> n665
+n666 [label="Boolean:"];
+n664 -> n666
+n667 [label="Identifier:RemoveRight"];
+n664 -> n667
+n668 [label="Parameters:"];
+n669 [label="Identifier:p_node"];
+n668 -> n669
+n670 [label="Identifer:c_node"];
+n668 -> n670
+n664 -> n668
+n671 [label="VarDeclarations:"];
+n672 [label="VarDeclaration:ntb"];
+n673 [label="Boolean:"];
+n672 -> n673
+n671 -> n672
+n674 [label="While:"];
+n675 [label="FCall:"];
+n676 [label="Identifier:c_node"];
+n675 -> n676
+n677 [label="Identifier:GetHas_Right"];
+n675 -> n677
+n678 [label="Arguments:"];
+n675 -> n678
+n674 -> n675
+n679 [label="Statement:"];
+n680 [label="Assignment:"];
+n681 [label="Identifier:ntb"];
+n680 -> n681
+n682 [label="FCall:"];
+n683 [label="Identifier:c_node"];
+n682 -> n683
+n684 [label="Identifier:SetKey"];
+n682 -> n684
+n685 [label="Arguments:"];
+n686 [label="FCall:"];
+n687 [label="FCall:"];
+n688 [label="Identifier:c_node"];
+n687 -> n688
+n689 [label="Identifier:GetRight"];
+n687 -> n689
+n690 [label="Arguments:"];
+n687 -> n690
+n686 -> n687
+n691 [label="Identifier:GetKey"];
+n686 -> n691
+n692 [label="Arguments:"];
+n686 -> n692
+n685 -> n686
+n682 -> n685
+n680 -> n682
+n679 -> n680
+n693 [label="Assignment:"];
+n694 [label="Identifier:p_node"];
+n693 -> n694
+n695 [label="Identifier:c_node"];
+n693 -> n695
+n679 -> n693
+n696 [label="Assignment:"];
+n697 [label="Identifier:c_node"];
+n696 -> n697
+n698 [label="FCall:"];
+n699 [label="Identifier:c_node"];
+n698 -> n699
+n700 [label="Identifier:GetRight"];
+n698 -> n700
+n701 [label="Arguments:"];
+n698 -> n701
+n696 -> n698
+n679 -> n696
+n674 -> n679
+n671 -> n674
+n702 [label="Assignment:"];
+n703 [label="Identifier:ntb"];
+n702 -> n703
+n704 [label="FCall:"];
+n705 [label="Identifier:p_node"];
+n704 -> n705
+n706 [label="Identifier:SetRight"];
+n704 -> n706
+n707 [label="Arguments:"];
+n708 [label="Identifier:my_null"];
+n707 -> n708
+n704 -> n707
+n702 -> n704
+n671 -> n702
+n709 [label="Assignment:"];
+n710 [label="Identifier:ntb"];
+n709 -> n710
+n711 [label="FCall:"];
+n712 [label="Identifier:p_node"];
+n711 -> n712
+n713 [label="Identifier:SetHas_Right"];
+n711 -> n713
+n714 [label="Arguments:"];
+n715 [label="False:"];
+n714 -> n715
+n711 -> n714
+n709 -> n711
+n671 -> n709
+n664 -> n671
+n716 [label="True:"];
+n664 -> n716
+n169 -> n664
+n717 [label="MethodDeclaration:RemoveLeft"];
+n718 [label="Public:"];
+n717 -> n718
+n719 [label="Boolean:"];
+n717 -> n719
+n720 [label="Identifier:RemoveLeft"];
+n717 -> n720
+n721 [label="Parameters:"];
+n722 [label="Identifier:p_node"];
+n721 -> n722
+n723 [label="Identifer:c_node"];
+n721 -> n723
+n717 -> n721
+n724 [label="VarDeclarations:"];
+n725 [label="VarDeclaration:ntb"];
+n726 [label="Boolean:"];
+n725 -> n726
+n724 -> n725
+n727 [label="While:"];
+n728 [label="FCall:"];
+n729 [label="Identifier:c_node"];
+n728 -> n729
+n730 [label="Identifier:GetHas_Left"];
+n728 -> n730
+n731 [label="Arguments:"];
+n728 -> n731
+n727 -> n728
+n732 [label="Statement:"];
+n733 [label="Assignment:"];
+n734 [label="Identifier:ntb"];
+n733 -> n734
+n735 [label="FCall:"];
+n736 [label="Identifier:c_node"];
+n735 -> n736
+n737 [label="Identifier:SetKey"];
+n735 -> n737
+n738 [label="Arguments:"];
+n739 [label="FCall:"];
+n740 [label="FCall:"];
+n741 [label="Identifier:c_node"];
+n740 -> n741
+n742 [label="Identifier:GetLeft"];
+n740 -> n742
+n743 [label="Arguments:"];
+n740 -> n743
+n739 -> n740
+n744 [label="Identifier:GetKey"];
+n739 -> n744
+n745 [label="Arguments:"];
+n739 -> n745
+n738 -> n739
+n735 -> n738
+n733 -> n735
+n732 -> n733
+n746 [label="Assignment:"];
+n747 [label="Identifier:p_node"];
+n746 -> n747
+n748 [label="Identifier:c_node"];
+n746 -> n748
+n732 -> n746
+n749 [label="Assignment:"];
+n750 [label="Identifier:c_node"];
+n749 -> n750
+n751 [label="FCall:"];
+n752 [label="Identifier:c_node"];
+n751 -> n752
+n753 [label="Identifier:GetLeft"];
+n751 -> n753
+n754 [label="Arguments:"];
+n751 -> n754
+n749 -> n751
+n732 -> n749
+n727 -> n732
+n724 -> n727
+n755 [label="Assignment:"];
+n756 [label="Identifier:ntb"];
+n755 -> n756
+n757 [label="FCall:"];
+n758 [label="Identifier:p_node"];
+n757 -> n758
+n759 [label="Identifier:SetLeft"];
+n757 -> n759
+n760 [label="Arguments:"];
+n761 [label="Identifier:my_null"];
+n760 -> n761
+n757 -> n760
+n755 -> n757
+n724 -> n755
+n762 [label="Assignment:"];
+n763 [label="Identifier:ntb"];
+n762 -> n763
+n764 [label="FCall:"];
+n765 [label="Identifier:p_node"];
+n764 -> n765
+n766 [label="Identifier:SetHas_Left"];
+n764 -> n766
+n767 [label="Arguments:"];
+n768 [label="False:"];
+n767 -> n768
+n764 -> n767
+n762 -> n764
+n724 -> n762
+n717 -> n724
+n769 [label="True:"];
+n717 -> n769
+n169 -> n717
+n770 [label="MethodDeclaration:Search"];
+n771 [label="Public:"];
+n770 -> n771
+n772 [label="Int:"];
+n770 -> n772
+n773 [label="Identifier:Search"];
+n770 -> n773
+n774 [label="Parameters:"];
+n775 [label="Identifier:v_key"];
+n774 -> n775
+n770 -> n774
+n776 [label="VarDeclarations:"];
+n777 [label="VarDeclaration:cont"];
+n778 [label="Boolean:"];
+n777 -> n778
+n776 -> n777
+n779 [label="Assignment:"];
+n780 [label="Identifier:cont"];
+n779 -> n780
+n781 [label="True:"];
+n779 -> n781
+n776 -> n779
+n782 [label="VarDeclaration:ifound"];
+n783 [label="Int:"];
+n782 -> n783
+n776 -> n782
+n784 [label="Assignment:"];
+n785 [label="Identifier:ifound"];
+n784 -> n785
+n786 [label="Num:0"];
+n784 -> n786
+n776 -> n784
+n787 [label="VarDeclaration:current_node"];
+n788 [label="Tree:Tree"];
+n787 -> n788
+n776 -> n787
+n789 [label="Assignment:"];
+n790 [label="Identifier:current_node"];
+n789 -> n790
+n791 [label="this:"];
+n789 -> n791
+n776 -> n789
+n792 [label="VarDeclaration:key_aux"];
+n793 [label="Int:"];
+n792 -> n793
+n776 -> n792
+n794 [label="While:"];
+n795 [label="Identifier:cont"];
+n794 -> n795
+n796 [label="Statement:"];
+n797 [label="Assignment:"];
+n798 [label="Identifier:key_aux"];
+n797 -> n798
+n799 [label="FCall:"];
+n800 [label="Identifier:current_node"];
+n799 -> n800
+n801 [label="Identifier:GetKey"];
+n799 -> n801
+n802 [label="Arguments:"];
+n799 -> n802
+n797 -> n799
+n796 -> n797
+n803 [label="If statement:"];
+n804 [label="Lt:"];
+n805 [label="Identifier:v_key"];
+n804 -> n805
+n806 [label="Identifier:key_aux"];
+n804 -> n806
+n803 -> n804
+n807 [label="If statement:"];
+n808 [label="FCall:"];
+n809 [label="Identifier:current_node"];
+n808 -> n809
+n810 [label="Identifier:GetHas_Left"];
+n808 -> n810
+n811 [label="Arguments:"];
+n808 -> n811
+n807 -> n808
+n812 [label="Assignment:"];
+n813 [label="Identifier:current_node"];
+n812 -> n813
+n814 [label="FCall:"];
+n815 [label="Identifier:current_node"];
+n814 -> n815
+n816 [label="Identifier:GetLeft"];
+n814 -> n816
+n817 [label="Arguments:"];
+n814 -> n817
+n812 -> n814
+n807 -> n812
+n818 [label="ELSE:"];
+n819 [label="Assignment:"];
+n820 [label="Identifier:cont"];
+n819 -> n820
+n821 [label="False:"];
+n819 -> n821
+n818 -> n819
+n807 -> n818
+n803 -> n807
+n822 [label="ELSE:"];
+n823 [label="If statement:"];
+n824 [label="Lt:"];
+n825 [label="Identifier:key_aux"];
+n824 -> n825
+n826 [label="Identifier:v_key"];
+n824 -> n826
+n823 -> n824
+n827 [label="If statement:"];
+n828 [label="FCall:"];
+n829 [label="Identifier:current_node"];
+n828 -> n829
+n830 [label="Identifier:GetHas_Right"];
+n828 -> n830
+n831 [label="Arguments:"];
+n828 -> n831
+n827 -> n828
+n832 [label="Assignment:"];
+n833 [label="Identifier:current_node"];
+n832 -> n833
+n834 [label="FCall:"];
+n835 [label="Identifier:current_node"];
+n834 -> n835
+n836 [label="Identifier:GetRight"];
+n834 -> n836
+n837 [label="Arguments:"];
+n834 -> n837
+n832 -> n834
+n827 -> n832
+n838 [label="ELSE:"];
+n839 [label="Assignment:"];
+n840 [label="Identifier:cont"];
+n839 -> n840
+n841 [label="False:"];
+n839 -> n841
+n838 -> n839
+n827 -> n838
+n823 -> n827
+n842 [label="ELSE:"];
+n843 [label="Statement:"];
+n844 [label="Assignment:"];
+n845 [label="Identifier:ifound"];
+n844 -> n845
+n846 [label="Num:1"];
+n844 -> n846
+n843 -> n844
+n847 [label="Assignment:"];
+n848 [label="Identifier:cont"];
+n847 -> n848
+n849 [label="False:"];
+n847 -> n849
+n843 -> n847
+n842 -> n843
+n823 -> n842
+n822 -> n823
+n803 -> n822
+n796 -> n803
+n794 -> n796
+n776 -> n794
+n770 -> n776
+n850 [label="Identifier:ifound"];
+n770 -> n850
+n169 -> n770
+n851 [label="MethodDeclaration:Print"];
+n852 [label="Public:"];
+n851 -> n852
+n853 [label="Boolean:"];
+n851 -> n853
+n854 [label="Identifier:Print"];
+n851 -> n854
+n855 [label="Parameters:"];
+n851 -> n855
+n856 [label="VarDeclarations:"];
+n857 [label="VarDeclaration:current_node"];
+n858 [label="Tree:Tree"];
+n857 -> n858
+n856 -> n857
+n859 [label="VarDeclaration:ntb"];
+n860 [label="Boolean:"];
+n859 -> n860
+n856 -> n859
+n861 [label="Assignment:"];
+n862 [label="Identifier:current_node"];
+n861 -> n862
+n863 [label="this:"];
+n861 -> n863
+n856 -> n861
+n864 [label="Assignment:"];
+n865 [label="Identifier:ntb"];
+n864 -> n865
+n866 [label="FCall:"];
+n867 [label="this:"];
+n866 -> n867
+n868 [label="Identifier:RecPrint"];
+n866 -> n868
+n869 [label="Arguments:"];
+n870 [label="Identifier:current_node"];
+n869 -> n870
+n866 -> n869
+n864 -> n866
+n856 -> n864
+n851 -> n856
+n871 [label="True:"];
+n851 -> n871
+n169 -> n851
+n872 [label="MethodDeclaration:RecPrint"];
+n873 [label="Public:"];
+n872 -> n873
+n874 [label="Boolean:"];
+n872 -> n874
+n875 [label="Identifier:RecPrint"];
+n872 -> n875
+n876 [label="Parameters:"];
+n877 [label="Identifier:node"];
+n876 -> n877
+n872 -> n876
+n878 [label="VarDeclarations:"];
+n879 [label="VarDeclaration:ntb"];
+n880 [label="Boolean:"];
+n879 -> n880
+n878 -> n879
+n881 [label="If statement:"];
+n882 [label="FCall:"];
+n883 [label="Identifier:node"];
+n882 -> n883
+n884 [label="Identifier:GetHas_Left"];
+n882 -> n884
+n885 [label="Arguments:"];
+n882 -> n885
+n881 -> n882
+n886 [label="Statement:"];
+n887 [label="Assignment:"];
+n888 [label="Identifier:ntb"];
+n887 -> n888
+n889 [label="FCall:"];
+n890 [label="this:"];
+n889 -> n890
+n891 [label="Identifier:RecPrint"];
+n889 -> n891
+n892 [label="Arguments:"];
+n893 [label="FCall:"];
+n894 [label="Identifier:node"];
+n893 -> n894
+n895 [label="Identifier:GetLeft"];
+n893 -> n895
+n896 [label="Arguments:"];
+n893 -> n896
+n892 -> n893
+n889 -> n892
+n887 -> n889
+n886 -> n887
+n881 -> n886
+n897 [label="ELSE:"];
+n898 [label="Assignment:"];
+n899 [label="Identifier:ntb"];
+n898 -> n899
+n900 [label="True:"];
+n898 -> n900
+n897 -> n898
+n881 -> n897
+n878 -> n881
+n901 [label="Print:"];
+n902 [label="FCall:"];
+n903 [label="Identifier:node"];
+n902 -> n903
+n904 [label="Identifier:GetKey"];
+n902 -> n904
+n905 [label="Arguments:"];
+n902 -> n905
+n901 -> n902
+n878 -> n901
+n906 [label="If statement:"];
+n907 [label="FCall:"];
+n908 [label="Identifier:node"];
+n907 -> n908
+n909 [label="Identifier:GetHas_Right"];
+n907 -> n909
+n910 [label="Arguments:"];
+n907 -> n910
+n906 -> n907
+n911 [label="Statement:"];
+n912 [label="Assignment:"];
+n913 [label="Identifier:ntb"];
+n912 -> n913
+n914 [label="FCall:"];
+n915 [label="this:"];
+n914 -> n915
+n916 [label="Identifier:RecPrint"];
+n914 -> n916
+n917 [label="Arguments:"];
+n918 [label="FCall:"];
+n919 [label="Identifier:node"];
+n918 -> n919
+n920 [label="Identifier:GetRight"];
+n918 -> n920
+n921 [label="Arguments:"];
+n918 -> n921
+n917 -> n918
+n914 -> n917
+n912 -> n914
+n911 -> n912
+n906 -> n911
+n922 [label="ELSE:"];
+n923 [label="Assignment:"];
+n924 [label="Identifier:ntb"];
+n923 -> n924
+n925 [label="True:"];
+n923 -> n925
+n922 -> n923
+n906 -> n922
+n878 -> n906
+n872 -> n878
+n926 [label="True:"];
+n872 -> n926
+n169 -> n872
+n154 -> n169
+n10 -> n154
+n0 -> n10
 }

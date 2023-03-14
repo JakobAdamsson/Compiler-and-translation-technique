@@ -906,7 +906,7 @@ namespace yy {
             {
               yylhs.value.as < Node * > () = new Node("FCall", "", yylineno);
               yylhs.value.as < Node * > ()->children.push_back(yystack_[5].value.as < Node * > ());
-              yylhs.value.as < Node * > ()->children.push_back(new Node("Dot", "", yylineno));
+              //$$->children.push_back(new Node("Dot", "", yylineno, $3));
               yylhs.value.as < Node * > ()->children.push_back(new Node("Identifier", yystack_[3].value.as < std::string > (), yylineno,"Method"));
               yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
             }
@@ -1079,7 +1079,7 @@ namespace yy {
   case 29: // Term: NEW ID LPAREN RPAREN
 #line 211 "parser.yy"
             {
-              yylhs.value.as < Node * > () = new Node("NewVar", yystack_[2].value.as < std::string > (), yylineno, "Class");
+              yylhs.value.as < Node * > () = new Node("NewVar", yystack_[2].value.as < std::string > (), yylineno, yystack_[2].value.as < std::string > ());
               //$$->children.push_back(new Node("New", "", yylineno));
               //$$->children.push_back(new Node("Identifier", $2, yylineno, "Class"));
             }
