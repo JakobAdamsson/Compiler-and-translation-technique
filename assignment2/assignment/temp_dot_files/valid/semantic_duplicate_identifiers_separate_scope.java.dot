@@ -1,0 +1,161 @@
+digraph {
+n0 [label="Goal:"];
+n1 [label="MainClass:semantic_duplicate_identifiers_separate_scope"];
+n2 [label="Identifier:semantic_duplicate_identifiers_separate_scope"];
+n1 -> n2
+n3 [label="Method Identifier:a"];
+n1 -> n3
+n4 [label="Statement:"];
+n5 [label="Print:"];
+n6 [label="FCall:"];
+n7 [label="NewVar:A"];
+n6 -> n7
+n8 [label="Identifier:A"];
+n6 -> n8
+n9 [label="Arguments:"];
+n6 -> n9
+n5 -> n6
+n4 -> n5
+n1 -> n4
+n0 -> n1
+n10 [label="LRClassDec:"];
+n11 [label="ClassDeclaration:A"];
+n12 [label="Identifier:A"];
+n11 -> n12
+n13 [label="VarDeclarations:"];
+n14 [label="VarDeclaration:A"];
+n15 [label="Int:"];
+n14 -> n15
+n13 -> n14
+n11 -> n13
+n16 [label="MethodDeclarations:"];
+n17 [label="MethodDeclaration:A"];
+n18 [label="Public:"];
+n17 -> n18
+n19 [label="Int:"];
+n17 -> n19
+n20 [label="Identifier:A"];
+n17 -> n20
+n21 [label="Parameters:"];
+n17 -> n21
+n22 [label="VarDeclarations:"];
+n23 [label="VarDeclaration:A"];
+n24 [label="Int:"];
+n23 -> n24
+n22 -> n23
+n25 [label="Print:"];
+n26 [label="FCall:"];
+n27 [label="this:"];
+n26 -> n27
+n28 [label="Identifier:B"];
+n26 -> n28
+n29 [label="Arguments:"];
+n26 -> n29
+n25 -> n26
+n22 -> n25
+n30 [label="Assignment:"];
+n31 [label="Identifier:A"];
+n30 -> n31
+n32 [label="Num:1"];
+n30 -> n32
+n22 -> n30
+n17 -> n22
+n33 [label="Identifier:A"];
+n17 -> n33
+n16 -> n17
+n34 [label="MethodDeclaration:B"];
+n35 [label="Public:"];
+n34 -> n35
+n36 [label="Int:"];
+n34 -> n36
+n37 [label="Identifier:B"];
+n34 -> n37
+n38 [label="Parameters:"];
+n34 -> n38
+n39 [label="VarDeclarations:"];
+n40 [label="VarDeclaration:B"];
+n41 [label="Int:"];
+n40 -> n41
+n39 -> n40
+n42 [label="Assignment:"];
+n43 [label="Identifier:A"];
+n42 -> n43
+n44 [label="Num:5"];
+n42 -> n44
+n39 -> n42
+n45 [label="Assignment:"];
+n46 [label="Identifier:B"];
+n45 -> n46
+n47 [label="FCall:"];
+n48 [label="NewVar:B"];
+n47 -> n48
+n49 [label="Identifier:B"];
+n47 -> n49
+n50 [label="Arguments:"];
+n47 -> n50
+n45 -> n47
+n39 -> n45
+n34 -> n39
+n51 [label="Plus:"];
+n52 [label="Identifier:A"];
+n51 -> n52
+n53 [label="Identifier:B"];
+n51 -> n53
+n34 -> n51
+n16 -> n34
+n11 -> n16
+n10 -> n11
+n54 [label="ClassDeclaration:B"];
+n55 [label="Identifier:B"];
+n54 -> n55
+n56 [label="VarDeclarations:"];
+n57 [label="VarDeclaration:A"];
+n58 [label="Int:"];
+n57 -> n58
+n56 -> n57
+n54 -> n56
+n59 [label="MethodDeclarations:"];
+n60 [label="MethodDeclaration:A"];
+n61 [label="Public:"];
+n60 -> n61
+n62 [label="Int:"];
+n60 -> n62
+n63 [label="Identifier:A"];
+n60 -> n63
+n64 [label="Parameters:"];
+n65 [label="Identifier:A"];
+n64 -> n65
+n60 -> n64
+n66 [label="Empty:"];
+n60 -> n66
+n67 [label="Identifier:A"];
+n60 -> n67
+n59 -> n60
+n68 [label="MethodDeclaration:B"];
+n69 [label="Public:"];
+n68 -> n69
+n70 [label="Int:"];
+n68 -> n70
+n71 [label="Identifier:B"];
+n68 -> n71
+n72 [label="Parameters:"];
+n68 -> n72
+n73 [label="VarDeclarations:"];
+n74 [label="VarDeclaration:B"];
+n75 [label="Int:"];
+n74 -> n75
+n73 -> n74
+n76 [label="Assignment:"];
+n77 [label="Identifier:B"];
+n76 -> n77
+n78 [label="Num:1"];
+n76 -> n78
+n73 -> n76
+n68 -> n73
+n79 [label="Identifier:B"];
+n68 -> n79
+n59 -> n68
+n54 -> n59
+n10 -> n54
+n0 -> n10
+}

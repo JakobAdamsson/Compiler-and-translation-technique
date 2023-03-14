@@ -18,7 +18,7 @@ public:
     // Getters and Setters
     virtual void printRecord()
     {
-        std::cout << "id: " << id << " type: " << type <<" dtype: " <<dtype<<std::endl;
+        std::cout << "id: " << id << " type: " << type << " dtype: " << dtype << std::endl;
     };
 };
 class Variable : public Record
@@ -325,5 +325,12 @@ public:
     void resetTable()
     {
         root->resetScope(); // reset all scopes
+    }
+
+    Class *lookup2(std::string key)
+    {
+        Record *rec = root->lookup(key);
+        Class *cl = dynamic_cast<Class *>(rec);
+        return cl;
     }
 };

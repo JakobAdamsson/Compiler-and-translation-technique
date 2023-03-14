@@ -72,20 +72,20 @@ Program: Goal
 
 Type:       INT 
             {
-              $$ = new Node("Int", "", yylineno);
+              $$ = new Node("Int", "", yylineno, "Int");
             }
 
             | BOOLEAN
             {
-              $$ = new Node("Boolean", "", yylineno,"Boole");
+              $$ = new Node("Boolean", "", yylineno,"Boolean");
             }
             | ID
             {
-              $$ = new Node($1, $1, yylineno);
+              $$ = new Node($1, $1, yylineno, $1);
             }
             | INT LBRACKET RBRACKET
             {
-              $$ = new Node("IntArr", "", yylineno);
+              $$ = new Node("IntArr", "Int", yylineno,"IntArr");
             };
 VarDeclaration: Type ID SEMICOLON
             {
@@ -175,8 +175,8 @@ Expression: Term
             | Expression DOT LENGTH
             {
               $$ = $1;
-              $$->children.push_back(new Node("Dot", "", yylineno));
-              $$->children.push_back(new Node("Lenght", "", yylineno));
+
+              $$->children.push_back(new Node("Lenght", "", yylineno,"Int"));
             };
 
 Term:       NUM
@@ -185,11 +185,11 @@ Term:       NUM
             }
             | TRUE
             {
-              $$ = new Node("True", "", yylineno, "Boolean");
+              $$ = new Node( "Boolean","True", yylineno, "Boolean");
             }
             | FALSE
             {
-              $$ = new Node("False", "", yylineno, "Boolean");
+              $$ = new Node("Boolean", "False", yylineno, "Boolean");
             }
             |ID
             {
@@ -203,8 +203,10 @@ Term:       NUM
             | NEW INT LBRACKET Expression RBRACKET
             {
               $$ = new Node("IntArrDec", "", yylineno);
-              $$->children.push_back(new Node("New", "", yylineno));
-              $$->children.push_back(new Node("Int", "", yylineno));
+              $$->children.push_back(new Node("New", "Int", yylineno, "Int"));
+              $$->children.push_back(new Node("Int", "Int", yylineno, "Int"));
+              $4->type = "Int";
+              $4->dtype = "Int";
               $$->children.push_back($4);
             }
             | NEW ID LPAREN RPAREN
@@ -279,10 +281,9 @@ MethodDeclaration: PUBLIC Type ID LPAREN LRParamater RPAREN LBRACE LRVarOrStatem
               $$ = new Node("MethodDeclaration", $3, yylineno, dtype);
               $$->children.push_back(new Node("Public", "", yylineno));
               $$->children.push_back($2);
-              $$->children.push_back(new Node("Identifier", $3, yylineno));
+              $$->children.push_back(new Node("Identifier", $3, yylineno, $2->dtype));
               $$->children.push_back($5);
               $$->children.push_back($8);
-              //$10->type = "Return";
 
               $$->children.push_back($10);
             };

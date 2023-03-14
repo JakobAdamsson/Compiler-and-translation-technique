@@ -1,155 +1,25 @@
 digraph {
 n0 [label="Scope:root
- BT
- BinaryTree
- Tree
+Class A
+ invalid_array_integer
 "];
-n1 [label="Scope:MainClass(BinaryTree)
-BinaryTree this
+n1 [label="Scope:MainClass(invalid_array_integer)
+invalid_array_integer this
 "];
 n0 -> n1
-n2 [label="Scope:ClassDeclaration(BT)
-Int Start()
-BT this
+n2 [label="Scope:ClassDeclaration(A)
+A a1()
+IntArr a2()
+A this
 "];
-n3 [label="Scope:MethodDeclaration(Start)
-Boolean ntb
-Tree root
+n3 [label="Scope:MethodDeclaration(a1)
+Int num
+IntArr num_aux
 "];
 n2 -> n3
+n4 [label="Scope:MethodDeclaration(a2)
+Int a
+"];
+n2 -> n4
 n0 -> n2
-n4 [label="Scope:ClassDeclaration(Tree)
-Boolean Compare()
-Boolean Delete()
-Boolean GetHas_Left()
-Boolean GetHas_Right()
-Int GetKey()
-Tree GetLeft()
-Tree GetRight()
-Boolean Init()
-Boolean Insert()
-Boolean Print()
-Boolean RecPrint()
-Boolean Remove()
-Boolean RemoveLeft()
-Boolean RemoveRight()
-Int Search()
-Boolean SetHas_Left()
-Boolean SetHas_Right()
-Boolean SetKey()
-Boolean SetLeft()
-Boolean SetRight()
-Boolean has_left
-Boolean has_right
-Int key
-Tree left
-Tree my_null
-Tree right
-Tree this
-"];
-n5 [label="Scope:MethodDeclaration(Init)
-Int v_key
-"];
-n4 -> n5
-n6 [label="Scope:MethodDeclaration(SetRight)
-Tree rn
-"];
-n4 -> n6
-n7 [label="Scope:MethodDeclaration(SetLeft)
-Tree ln
-"];
-n4 -> n7
-n8 [label="Scope:MethodDeclaration(GetRight)
-"];
-n4 -> n8
-n9 [label="Scope:MethodDeclaration(GetLeft)
-"];
-n4 -> n9
-n10 [label="Scope:MethodDeclaration(GetKey)
-"];
-n4 -> n10
-n11 [label="Scope:MethodDeclaration(SetKey)
-Int v_key
-"];
-n4 -> n11
-n12 [label="Scope:MethodDeclaration(GetHas_Right)
-"];
-n4 -> n12
-n13 [label="Scope:MethodDeclaration(GetHas_Left)
-"];
-n4 -> n13
-n14 [label="Scope:MethodDeclaration(SetHas_Left)
-Boolean val
-"];
-n4 -> n14
-n15 [label="Scope:MethodDeclaration(SetHas_Right)
-Boolean val
-"];
-n4 -> n15
-n16 [label="Scope:MethodDeclaration(Compare)
-Boolean ntb
-Int nti
-Int num1
-Int num2
-"];
-n4 -> n16
-n17 [label="Scope:MethodDeclaration(Insert)
-Boolean cont
-Tree current_node
-Int key_aux
-Tree new_node
-Boolean ntb
-Int v_key
-"];
-n4 -> n17
-n18 [label="Scope:MethodDeclaration(Delete)
-Boolean cont
-Tree current_node
-Boolean found
-Boolean is_root
-Int key_aux
-Boolean ntb
-Tree parent_node
-Int v_key
-"];
-n4 -> n18
-n19 [label="Scope:MethodDeclaration(Remove)
-Int auxkey1
-Int auxkey2
-Tree c_node
-Boolean ntb
-Tree p_node
-"];
-n4 -> n19
-n20 [label="Scope:MethodDeclaration(RemoveRight)
-Tree c_node
-Boolean ntb
-Tree p_node
-"];
-n4 -> n20
-n21 [label="Scope:MethodDeclaration(RemoveLeft)
-Tree c_node
-Boolean ntb
-Tree p_node
-"];
-n4 -> n21
-n22 [label="Scope:MethodDeclaration(Search)
-Boolean cont
-Tree current_node
-Int ifound
-Int key_aux
-Int v_key
-"];
-n4 -> n22
-n23 [label="Scope:MethodDeclaration(Print)
-Tree current_node
-Boolean ntb
-"];
-n4 -> n23
-n24 [label="Scope:MethodDeclaration(RecPrint)
-Tree node
-Boolean ntb
-"];
-n4 -> n24
-n0 -> n4
 }

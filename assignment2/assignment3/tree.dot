@@ -1,0 +1,157 @@
+digraph {
+n0 [label="Goal:"];
+n1 [label="MainClass:Factorial"];
+n2 [label="Identifier:Factorial"];
+n1 -> n2
+n3 [label="Method Identifier:a"];
+n1 -> n3
+n4 [label="Statement:"];
+n5 [label="Print:"];
+n6 [label="FCall:"];
+n7 [label="NewVar:Fac"];
+n6 -> n7
+n8 [label="Dot:"];
+n6 -> n8
+n9 [label="Identifier:ComputeFac"];
+n6 -> n9
+n10 [label="Arguments:"];
+n11 [label="Num:1"];
+n10 -> n11
+n6 -> n10
+n5 -> n6
+n4 -> n5
+n1 -> n4
+n0 -> n1
+n12 [label="LRClassDec:"];
+n13 [label="ClassDeclaration:Hej2"];
+n14 [label="Identifier:Hej2"];
+n13 -> n14
+n15 [label="Empty:"];
+n13 -> n15
+n16 [label="MethodDeclarations:"];
+n17 [label="MethodDeclaration:hejsan"];
+n18 [label="Public:"];
+n17 -> n18
+n19 [label="Int:"];
+n17 -> n19
+n20 [label="Identifier:hejsan"];
+n17 -> n20
+n21 [label="Parameters:"];
+n22 [label="Identifier:x"];
+n21 -> n22
+n23 [label="Identifer:y"];
+n21 -> n23
+n17 -> n21
+n24 [label="Empty:"];
+n17 -> n24
+n25 [label="Plus:"];
+n26 [label="Identifier:x"];
+n25 -> n26
+n27 [label="Identifier:y"];
+n25 -> n27
+n17 -> n25
+n16 -> n17
+n13 -> n16
+n12 -> n13
+n28 [label="ClassDeclaration:Fac"];
+n29 [label="Identifier:Fac"];
+n28 -> n29
+n30 [label="Empty:"];
+n28 -> n30
+n31 [label="MethodDeclarations:"];
+n32 [label="MethodDeclaration:ComputeFac"];
+n33 [label="Public:"];
+n32 -> n33
+n34 [label="Int:"];
+n32 -> n34
+n35 [label="Identifier:ComputeFac"];
+n32 -> n35
+n36 [label="Parameters:"];
+n37 [label="Identifier:num_aux"];
+n36 -> n37
+n32 -> n36
+n38 [label="VarDeclarations:"];
+n39 [label="VarDeclaration:hejsan"];
+n40 [label="IntArr:"];
+n39 -> n40
+n38 -> n39
+n41 [label="VarDeclaration:a"];
+n42 [label="Int:"];
+n41 -> n42
+n38 -> n41
+n43 [label="Assignment:"];
+n44 [label="Identifier:a"];
+n43 -> n44
+n45 [label="Num:10"];
+n43 -> n45
+n38 -> n43
+n46 [label="VarDeclaration:b"];
+n47 [label="Int:"];
+n46 -> n47
+n38 -> n46
+n48 [label="Assignment:"];
+n49 [label="Identifier:b"];
+n48 -> n49
+n50 [label="Num:20"];
+n48 -> n50
+n38 -> n48
+n51 [label="ArrModifier:"];
+n52 [label="Identifier:hejsan"];
+n51 -> n52
+n53 [label="Plus:"];
+n54 [label="Identifier:b"];
+n53 -> n54
+n55 [label="Identifier:a"];
+n53 -> n55
+n51 -> n53
+n56 [label="Plus:"];
+n57 [label="Identifier:a"];
+n56 -> n57
+n58 [label="Identifier:b"];
+n56 -> n58
+n51 -> n56
+n38 -> n51
+n59 [label="ArrModifier:"];
+n60 [label="Identifier:hejsan"];
+n59 -> n60
+n61 [label="Num:0"];
+n59 -> n61
+n62 [label="Num:1"];
+n59 -> n62
+n38 -> n59
+n63 [label="Assignment:"];
+n64 [label="Identifier:num_aux"];
+n63 -> n64
+n65 [label="FCall:"];
+n66 [label="this:"];
+n65 -> n66
+n67 [label="Dot:"];
+n65 -> n67
+n68 [label="Identifier:ComputeFac"];
+n65 -> n68
+n69 [label="Arguments:"];
+n70 [label="FCall:"];
+n71 [label="NewVar:Hej2"];
+n70 -> n71
+n72 [label="Dot:"];
+n70 -> n72
+n73 [label="Identifier:hejsan"];
+n70 -> n73
+n74 [label="Arguments:"];
+n75 [label="Num:5"];
+n74 -> n75
+n76 [label="Num:5"];
+n74 -> n76
+n70 -> n74
+n69 -> n70
+n65 -> n69
+n63 -> n65
+n38 -> n63
+n32 -> n38
+n77 [label="Identifier:num_aux"];
+n32 -> n77
+n31 -> n32
+n28 -> n31
+n12 -> n28
+n0 -> n12
+}

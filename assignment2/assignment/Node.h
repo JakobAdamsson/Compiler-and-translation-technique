@@ -244,6 +244,7 @@ public:
         symboltable->current_class = classdec_test;
         classdec_test->id = i->value;
         classdec_test->type = i->type;
+        classdec_test->dtype = "Class";
 
         Variable *this_ = new Variable();
         this_->id = "this";
@@ -267,7 +268,7 @@ public:
     {
         for (auto i = children.begin(); i != children.end(); i++)
         {
-         
+
             if ((*i)->type == this->mclass)
             {
                 symboltable->enterScope();
@@ -298,7 +299,7 @@ public:
                         if (rec == NULL)
                         {
                             std::cout << "ERROR IN SEMANTIC ANALYSIS VARIABLES NO RECORD FOUND FOR-> "
-                                      << "ID: " << (*ii)->value << " TYPE: " << (*ii)->type << " LINENUMBER: "  << (*ii)->lineno << std::endl;
+                                      << "ID: " << (*ii)->value << " TYPE: " << (*ii)->type << " LINENUMBER: " << (*ii)->lineno << std::endl;
                             // return;
                         }
                     }
@@ -329,7 +330,7 @@ public:
                 if (!rec)
                 {
                     std::cout << "ERROR IN CHECK LEAFES NO RECORD FOUND FOR-> "
-                              << "ID: " << node->value << " TYPE: " << node->type<<" Dtype: " <<node -> dtype<< " LINENUMBER: "  << node->lineno<< std::endl;
+                              << "ID: " << node->value << " TYPE: " << node->type << " Dtype: " << node->dtype << " LINENUMBER: " << node->lineno << std::endl;
                     return "";
                 }
                 return rec->dtype;
@@ -340,57 +341,28 @@ public:
                 if (!rec)
                 {
                     std::cout << "ERROR IN CHECK LEAFES NO RECORD FOUND FOR-> "
-                              << "ID: " << node->value << " TYPE: " << node->type<<" Dtype: " <<node -> dtype<< " LINENUMBER: "  << node->lineno<< std::endl;
+                              << "ID: " << node->value << " TYPE: " << node->type << " Dtype: " << node->dtype << " LINENUMBER: " << node->lineno << std::endl;
                     return "";
                 }
                 return rec->dtype;
-            }           
+            }
 
             return node->dtype;
         }
 
         if (node->type == fcall)
         {
-
-            auto class_node = std::next(node->children.begin(), 0);
-            if ((*class_node)->type == fcall)
-            {
-                Class *hej = fcall_check_first_child(symboltable, (*class_node));
-
-                if (!hej)
-                {
-                    std::cout<<"asdadasdasdaasd"<<std::endl;
-                    (*class_node)->print_node();
-                    
-                    return "";
-                }
-                auto method_node = std::next(node->children.begin(), 1);
-
-                Method *tja = hej->lookupMethod((*method_node)->value);
-                if (tja)
-                    return tja->dtype;
-                else
-                    return "";
-                //return check_leafs((*class_node), symboltable);
-            }
-
-
-            Class *hej = fcall_check_first_child(symboltable, (*class_node));
-
-            if (!hej)
-            {
-                std::cout<<"asdadasdasdaasd"<<std::endl;
-                (*class_node)->print_node();
-                
-                return "";
-            }
+            Class *method_caller = fcall_check_first_child(symboltable, node);
             auto method_node = std::next(node->children.begin(), 1);
-
-            Method *tja = hej->lookupMethod((*method_node)->value);
-            if (tja)
-                return tja->dtype;
-            else
-                return "";
+            if (method_caller)
+            {
+                Method *method_function = method_caller->lookupMethod((*method_node)->value);
+                if (method_function)
+                {
+                    return method_function->dtype;
+                }
+            }
+            return "";
         }
 
         else
@@ -404,11 +376,14 @@ public:
                 {
                     common = child_dtype;
                 }
+                else if ((common == "Int" && child_dtype == "IntArr") || (common == "IntArr" && child_dtype == "Int"))
+                {
+                    return common;
+                }
                 else if (child_dtype != common)
                 {
-                    std::cout <<"THESE ARE NOT EQUAL!" <<child_dtype << " == " << common<<  " children size = "<< child->children.size()<<std::endl;
-                    child ->print_node();
-
+                    std::cout << "THESE ARE NOT EQUAL!" << child_dtype << " == " << common << " children size = " << child->children.size() << std::endl;
+                    child->print_node();
                     return "";
                 }
             }
@@ -428,7 +403,8 @@ public:
                 if (temp == "")
                 {
                     std::cout << "ERROR IN CHECK ASSIGNMENT TYPE ERROR-> "
-                              << "ID: " << (*first_child)->value << " TYPE: " << (*first_child)->type << " DTYPE: " << temp << " LINENUMBER: "  << (*first_child)->lineno<< std::endl;
+                              << "ID: " << (*first_child)->value << " TYPE: " << (*first_child)->type << " DTYPE: " << temp << " LINENUMBER: " << (*first_child)->lineno << std::endl;
+                    (*itr)->print_node();
                 }
             }
             else if ((*itr)->type == this->mclass)
@@ -458,7 +434,7 @@ public:
                 if (swag_yolo == "")
                 {
                     std::cout << "ERROR IN CHECK ASSIGNMENT INVALID COMPARISON-> "
-                              << "ID: " << (*itr)->value << " TYPE: " << (*itr)->type << " DTYPE: " << swag_yolo << " LINENUMBER: "  << (*itr)->lineno<< std::endl;
+                              << "ID: " << (*itr)->value << " TYPE: " << (*itr)->type << " DTYPE: " << swag_yolo << " LINENUMBER: " << (*itr)->lineno << std::endl;
                 }
 
                 check_assignment(symboltable, *itr);
@@ -474,18 +450,28 @@ public:
     {
         if (i->type == newvar)
         {
+            Class *rec2 = symboltable->lookup2(i->value);
+            if (rec2)
+            {
+                return rec2;
+            }
+
             Record *rec = symboltable->lookup(i->value);
+            i->print_node();
             if (rec == NULL)
             {
                 std::cout << "ERROR IN (fcall_chick_first_child)NO RECORD FOUND FOR-> "
-                          << "ID: " << i->value << " TYPE: " << i->type << " LINENUMBER: "  << i->lineno<<std::endl;
+                          << "ID: " << i->value << " TYPE: " << i->type << " LINENUMBER: " << i->lineno << std::endl;
                 return NULL;
             }
+            rec->printRecord();
+            symboltable->printCurrent();
             Class *cls = dynamic_cast<Class *>(rec);
             if (cls == nullptr)
             {
                 std::cout << "NO CLASS FOUND FOR-> "
-                          << "ID: " << i->value << " TYPE: " << i->type << " LINENUMBER: "  << i->lineno<< std::endl;
+                          << "ID: " << i->value << " TYPE: " << i->type << " LINENUMBER: " << i->lineno << std::endl;
+                symboltable->printCurrent();
                 return NULL;
             }
             return cls;
@@ -497,15 +483,16 @@ public:
             if (rec == NULL)
             {
                 std::cout << "ERROR IN (fcall_chick_first_child)NO RECORD FOUND FOR-> "
-                          << "ID: " << i->value << " TYPE: " << i->type << " LINENUMBER: "  << i->lineno<< std::endl;
+                          << "ID: " << i->value << " TYPE: " << i->type << " LINENUMBER: " << i->lineno << std::endl;
                 return NULL;
             }
-            Record *rec2 = symboltable->lookup(rec->type);
-            Class *cls = dynamic_cast<Class *>(rec2);
+            Class *cls = symboltable->lookup2(rec->type);
+            // rec2->printRecord();
+            // Class *cls = dynamic_cast<Class *>(rec2);
             if (cls == nullptr)
             {
                 std::cout << "ERROR IN (fcall_chick_first_child)NO CLASS FOUND FOR-> "
-                          << "ID: " << i->value << " TYPE: " << i->type<<" LINENUMBER: "  << i->lineno << std::endl;
+                          << "ID: " << i->value << " TYPE: " << i->type << " LINENUMBER: " << i->lineno << std::endl;
                 return NULL;
             }
             return cls;
@@ -518,24 +505,30 @@ public:
             if (rec == NULL)
             {
                 std::cout << "(FCall identifier)NO RECORD FOUND FOR-> "
-                          << "ID: " << i->value << " TYPE: " << i->dtype << " LINENUMBER: "<< i->lineno<< std::endl;
+                          << "ID: " << i->value << " TYPE: " << i->dtype << " LINENUMBER: " << i->lineno << std::endl;
                 return NULL;
             }
             Record *rec2 = symboltable->lookup(rec->dtype);
             if (rec2 == NULL)
             {
                 std::cout << "(FCall identifier)NO RECORD2 FOUND FOR-> "
-                          << "ID: " << i->value << " TYPE: " << i->dtype<< " LINENUMBER: " << i->lineno<< std::endl;
+                          << "ID: " << i->value << " TYPE: " << i->dtype << " LINENUMBER: " << i->lineno << std::endl;
                 return NULL;
             }
             Class *cls = dynamic_cast<Class *>(rec2);
             if (cls == nullptr)
             {
                 std::cout << "(FCall identifier)NO CLASS FOUND FOR-> "
-                          << "ID: " << i->value << " TYPE: " << i->type <<" LINENUMBER: "  << i->lineno<< std::endl;
+                          << "ID: " << i->value << " TYPE: " << i->type << " LINENUMBER: " << i->lineno << std::endl;
                 return NULL;
             }
             return cls;
+        }
+        else
+        {
+            auto child1 = std::next(i->children.begin(), 0);
+
+            return fcall_check_first_child(symboltable, (*child1));
         }
 
         return NULL;
@@ -558,10 +551,36 @@ public:
                 symboltable->enterScope();
                 auto method_type = std::next((*itr)->children.begin(), 1);
                 auto return_type = std::next((*itr)->children.begin(), 5);
-
-                if (((*method_type)->dtype != (*return_type)->dtype) || ((*return_type)->dtype != "Num" && (*method_type)->dtype == "Int"))
+                std::string return_type_string = (*return_type)->dtype;
+                if ((*return_type)->type == identify || (*return_type)->type == thiss)
                 {
-                    std::cout << "ERROR Method type dont match return type for: " << (*method_type)->value<<" LINENUMBER: "  << (*method_type)->lineno << std::endl;
+                    if ((*return_type)->type == thiss)
+                    {
+                        Record *rec = symboltable->lookup(thiss);
+                        if (rec)
+                        {
+                            return_type_string = rec->dtype;
+                        }
+                    }
+                    else
+                    {
+                        Record *rec_return = symboltable->lookup((*return_type)->value);
+                        if (rec_return)
+                        {
+                            return_type_string = rec_return->dtype;
+                        }
+                    }
+                }
+                else if ((*return_type)->type == "Plus" || (*return_type)->type == "Minus" || (*return_type)->type == "Divide" || (*return_type)->type == "Mult")
+                {
+                    return_type_string = check_leafs(*return_type, symboltable);
+                }
+
+                if (((*method_type)->dtype != return_type_string))
+                {
+                    std::cout << (*method_type)->dtype << " == " << return_type_string << std::endl;
+
+                    std::cout << "ERROR Method type dont match return type for: " << (*method_type)->value << " LINENUMBER: " << (*method_type)->lineno << std::endl;
                 }
 
                 (*itr)->semantic_analysis_methods(symboltable, *itr);
@@ -585,7 +604,7 @@ public:
                 Method *tja = hej->lookupMethod((*method_node)->value);
                 if ((*argument_node)->children.size() != tja->Parameters2.size())
                 {
-                    std::cout << "ERROR METHOD PARAMS DOES NOT EQUAL THE ARGUMETNTS IN SIZE: " << (*method_node)->value << " LINENUMBER:  "<< (*method_node)->lineno<<std::endl;
+                    std::cout << "ERROR METHOD PARAMS DOES NOT EQUAL THE ARGUMETNTS IN SIZE: " << (*method_node)->value << " LINENUMBER:  " << (*method_node)->lineno << std::endl;
                 }
                 dtype_check = tja->dtype;
                 check_arguments(symboltable, (*argument_node), tja->Parameters2);
@@ -611,7 +630,7 @@ public:
                 if (rec->dtype != params[i]->dtype)
                 {
 
-                    std::cout << "ERROR (FCALL) WRONG TYPE FOR ARGUMENT: " << (*thirdchild)->value << " On index: " << i << "LINE NUMBER: "<< (*thirdchild)->lineno <<std::endl;
+                    std::cout << "ERROR (FCALL) WRONG TYPE FOR ARGUMENT: " << (*thirdchild)->value << " On index: " << i << "LINE NUMBER: " << (*thirdchild)->lineno << std::endl;
                 }
             }
             else if (child->type == mult || child->type == divide || child->type == minus || child->type == plus)
@@ -619,7 +638,7 @@ public:
                 std::string child_type = check_leafs(child, symboltable);
                 if (child_type != params[i]->dtype)
                 {
-                    std::cout << "ERROR (FCALL) WRONG TYPE FOR ARGUMENT: " << (*thirdchild)->value << " On index: " << i << " LINENUMBER: "<< (*thirdchild)->lineno <<std::endl;
+                    std::cout << "ERROR (FCALL) WRONG TYPE FOR ARGUMENT: " << (*thirdchild)->value << " On index: " << i << " LINENUMBER: " << (*thirdchild)->lineno << std::endl;
                 }
             }
             else if (child->type == fcall)
@@ -661,19 +680,30 @@ public:
             }
             else if (child->type == arrmodifier)
             {
+                auto target_child = std::next(child->children.begin(), 0);
+                std::string target_child_stroonk = check_leafs((*target_child), symboltable);
+                std::cout << target_child_stroonk << std::endl;
+
+                if (target_child_stroonk != "IntArr")
+                {
+                    std::cout << "ERROR (ARRMODIFIER) WRONG TYPE FOR TARGET: " << (*target_child)->value << " LINENUMBER: " << (*target_child)->lineno << std::endl;
+                }
+
                 auto index_child = std::next(child->children.begin(), 1);
+
                 auto value_child = std::next(child->children.begin(), 2);
+
                 if ((*index_child)->type == mult || (*index_child)->type == divide || (*index_child)->type == minus || (*index_child)->type == plus || (*index_child)->type == identify)
                 {
                     std::string child_type_i = check_leafs((*index_child), symboltable);
                     if (child_type_i != "Int")
                     {
-                        std::cout << "ERROR (ARRMODIFIER, INDEX) WRONG TYPE FOR ARGUMENT: " << (*index_child)->value << " Line number: "<< (*index_child) -> lineno<< std::endl;
+                        std::cout << "ERROR (ARRMODIFIER, INDEX) WRONG TYPE FOR ARGUMENT: " << (*index_child)->value << " Line number: " << (*index_child)->lineno << std::endl;
                     }
                 }
                 else if ((*index_child)->dtype != "Int")
                 {
-                    std::cout << "ERROR (ARRMODIFIER) WRONG TYPE FOR INDEX: " << (*index_child)->value << " LINENUMBER: " << (*index_child)->lineno<<std::endl;
+                    std::cout << "ERROR (ARRMODIFIER) WRONG TYPE FOR INDEX: " << (*index_child)->value << " LINENUMBER: " << (*index_child)->lineno << std::endl;
                 }
 
                 if ((*value_child)->type == mult || (*value_child)->type == divide || (*value_child)->type == minus || (*value_child)->type == plus || (*value_child)->type == identify)
@@ -681,12 +711,40 @@ public:
                     std::string child_type_v = check_leafs((*value_child), symboltable);
                     if (child_type_v != "Int")
                     {
-                        std::cout << "ERROR (ARRMODIFIER, VALUE) WRONG TYPE FOR ARGUMENT: " << (*value_child)->value << " LINENUMBER "<< (*value_child)->lineno<<std::endl;
+                        std::cout << "ERROR (ARRMODIFIER, VALUE) WRONG TYPE FOR ARGUMENT: " << (*value_child)->value << " LINENUMBER " << (*value_child)->lineno << std::endl;
+                    }
+                }
+                else if ((*value_child)->type == "ArrDec")
+                {
+                    // look på vänstra barn noden och kolla så att det är en intarr
+                    // på högra noden måste vi kolla så att det är en int.
+                    auto child1 = std::next((*value_child)->children.begin(), 0);
+                    std::string child1_string = check_leafs((*child1), symboltable);
+                    auto child2 = std::next((*value_child)->children.begin(), 1);
+                    std::string child2_string = check_leafs((*child2), symboltable);
+                    std::cout << "DSADSASADASDAS_: " << child2_string << std::endl;
+                    if (child1_string != "IntArr" && child2_string != "Int")
+                    {
+                        std::cout << "ERROR (ARRMODIFIER, VALUE) WRONG TYPE FOR ARGUMENT: " << (*value_child)->value << " LINENUMBER " << (*value_child)->lineno << std::endl;
                     }
                 }
                 else if ((*value_child)->dtype != "Int")
                 {
-                    std::cout << "ERROR (ARRMODIFIER) WRONG TYPE FOR VALUE: " << (*value_child)->value << "LINE NUMBER: "<<(*value_child)->lineno <<std::endl;
+                    std::cout << "ERROR (ARRMODIFIER) WRONG TYPE FOR VALUE: " << (*value_child)->dtype << "LINE NUMBER: " << (*value_child)->lineno << std::endl;
+                }
+            }
+            else if (child->type == "ArrDec")
+            {
+                // look på vänstra barn noden och kolla så att det är en intarr
+                // på högra noden måste vi kolla så att det är en int.
+                auto child1 = std::next(child->children.begin(), 0);
+                std::string child1_string = check_leafs((*child1), symboltable);
+                auto child2 = std::next(child->children.begin(), 1);
+                std::string child2_string = check_leafs((*child2), symboltable);
+                std::cout << "DSADSASADASDAS_: " << child2_string << child1_string << std::endl;
+                if (child1_string != "IntArr" || child2_string != "Int")
+                {
+                    std::cout << "ERROR (ARRMODIFIER, VALUE) WRONG TYPE FOR ARGUMENT: " << child->value << " LINENUMBER " << child->lineno << std::endl;
                 }
             }
 
