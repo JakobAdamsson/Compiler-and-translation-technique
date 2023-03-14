@@ -1,135 +1,79 @@
 digraph {
 n0 [label="Goal:"];
-n1 [label="MainClass:invalid_array_integer"];
-n2 [label="Identifier:invalid_array_integer"];
+n1 [label="MainClass:Factorial"];
+n2 [label="Identifier:Factorial"];
 n1 -> n2
 n3 [label="Method Identifier:a"];
 n1 -> n3
 n4 [label="Statement:"];
 n5 [label="Print:"];
 n6 [label="FCall:"];
-n7 [label="NewVar:A"];
+n7 [label="NewVar:Element"];
 n6 -> n7
-n8 [label="Identifier:a2"];
+n8 [label="Identifier:Init"];
 n6 -> n8
 n9 [label="Arguments:"];
 n6 -> n9
-n10 [label="Lenght:"];
-n6 -> n10
 n5 -> n6
 n4 -> n5
 n1 -> n4
 n0 -> n1
-n11 [label="ClassDeclaration:A"];
-n12 [label="Identifier:A"];
-n11 -> n12
-n13 [label="Empty:"];
-n11 -> n13
-n14 [label="MethodDeclarations:"];
-n15 [label="MethodDeclaration:a1"];
-n16 [label="Public:"];
-n15 -> n16
-n17 [label="A:A"];
-n15 -> n17
-n18 [label="Identifier:a1"];
-n15 -> n18
-n19 [label="Parameters:"];
-n20 [label="Identifier:num"];
-n19 -> n20
-n15 -> n19
-n21 [label="VarDeclarations:"];
-n22 [label="VarDeclaration:num_aux"];
-n23 [label="IntArr:Int"];
-n22 -> n23
-n21 -> n22
-n24 [label="ArrModifier:"];
-n25 [label="Identifier:num_aux"];
-n24 -> n25
-n26 [label="Boolean:False"];
-n24 -> n26
-n27 [label="Num:2"];
-n24 -> n27
-n21 -> n24
-n28 [label="If statement:"];
-n29 [label="Lt:"];
-n30 [label="ArrDec:"];
-n31 [label="Identifier:num_aux"];
-n30 -> n31
-n32 [label="FCall:"];
-n33 [label="this:"];
-n32 -> n33
-n34 [label="Identifier:a2"];
-n32 -> n34
-n35 [label="Arguments:"];
-n32 -> n35
-n30 -> n32
-n29 -> n30
-n36 [label="Num:1"];
-n29 -> n36
-n28 -> n29
-n37 [label="ArrModifier:"];
-n38 [label="Identifier:num_aux"];
-n37 -> n38
-n39 [label="Num:0"];
-n37 -> n39
-n40 [label="Num:1"];
-n37 -> n40
-n28 -> n37
-n41 [label="ELSE:"];
-n42 [label="Assignment:"];
-n43 [label="Identifier:num_aux"];
-n42 -> n43
-n44 [label="FCall:"];
-n45 [label="this:"];
-n44 -> n45
-n46 [label="Identifier:a2"];
-n44 -> n46
-n47 [label="Arguments:"];
-n44 -> n47
-n42 -> n44
-n41 -> n42
-n28 -> n41
-n21 -> n28
-n48 [label="ArrModifier:"];
-n49 [label="Identifier:num_aux"];
-n48 -> n49
-n50 [label="Num:3"];
-n48 -> n50
-n51 [label="Identifier:num"];
-n52 [label="Lenght:"];
-n51 -> n52
-n48 -> n51
-n21 -> n48
-n15 -> n21
-n53 [label="this:"];
-n15 -> n53
+n10 [label="ClassDeclaration:Element"];
+n11 [label="Identifier:Element"];
+n10 -> n11
+n12 [label="Empty:"];
+n10 -> n12
+n13 [label="MethodDeclarations:"];
+n14 [label="MethodDeclaration:Init"];
+n15 [label="Public:"];
 n14 -> n15
-n54 [label="MethodDeclaration:a2"];
-n55 [label="Public:"];
-n54 -> n55
-n56 [label="IntArr:Int"];
-n54 -> n56
-n57 [label="Identifier:a2"];
-n54 -> n57
-n58 [label="Parameters:"];
-n54 -> n58
-n59 [label="VarDeclarations:"];
-n60 [label="VarDeclaration:a"];
-n61 [label="Int:"];
-n60 -> n61
-n59 -> n60
-n62 [label="ArrModifier:"];
-n63 [label="Identifier:a"];
-n62 -> n63
-n64 [label="Num:0"];
-n62 -> n64
-n65 [label="Num:2"];
-n62 -> n65
-n59 -> n62
-n54 -> n59
-n66 [label="Identifier:a"];
-n54 -> n66
-n14 -> n54
-n11 -> n14
-n0 -> n11
+n16 [label="Boolean:"];
+n14 -> n16
+n17 [label="Identifier:Init"];
+n14 -> n17
+n18 [label="Parameters:"];
+n14 -> n18
+n19 [label="VarDeclarations:"];
+n20 [label="VarDeclaration:test"];
+n21 [label="Int:"];
+n20 -> n21
+n19 -> n20
+n22 [label="Assignment:"];
+n23 [label="Identifier:test"];
+n22 -> n23
+n24 [label="FCall:"];
+n25 [label="this:"];
+n24 -> n25
+n26 [label="Identifier:Bar"];
+n24 -> n26
+n27 [label="Arguments:"];
+n28 [label="Identifier:a"];
+n27 -> n28
+n24 -> n27
+n22 -> n24
+n19 -> n22
+n14 -> n19
+n29 [label="Boolean:False"];
+n14 -> n29
+n13 -> n14
+n30 [label="MethodDeclaration:Bar"];
+n31 [label="Public:"];
+n30 -> n31
+n32 [label="Int:"];
+n30 -> n32
+n33 [label="Identifier:Bar"];
+n30 -> n33
+n34 [label="Parameters:"];
+n35 [label="Identifier:a"];
+n34 -> n35
+n36 [label="Identifer:b"];
+n34 -> n36
+n30 -> n34
+n37 [label="Empty:"];
+n30 -> n37
+n38 [label="Num:1"];
+n30 -> n38
+n13 -> n30
+n10 -> n13
+n0 -> n10
 }

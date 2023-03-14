@@ -383,7 +383,6 @@ public:
                 else if (child_dtype != common)
                 {
                     std::cout << "THESE ARE NOT EQUAL!" << child_dtype << " == " << common << " children size = " << child->children.size() << std::endl;
-                    child->print_node();
                     return "";
                 }
             }
@@ -396,7 +395,7 @@ public:
 
         for (auto itr = i->children.begin(); itr != i->children.end(); itr++)
         {
-            if ((*itr)->type == minus || (*itr)->type == mult || (*itr)->type == divide || (*itr)->type == plus || (*itr)->type == assignment)
+            if ((*itr)->type == minus || (*itr)->type == mult || (*itr)->type == divide || (*itr)->type == plus)
             {
                 std::string temp = check_leafs(*itr, symboltable);
                 auto first_child = std::next((*itr)->children.begin(), 0);
@@ -404,7 +403,18 @@ public:
                 {
                     std::cout << "ERROR IN CHECK ASSIGNMENT TYPE ERROR-> "
                               << "ID: " << (*first_child)->value << " TYPE: " << (*first_child)->type << " DTYPE: " << temp << " LINENUMBER: " << (*first_child)->lineno << std::endl;
-                    (*itr)->print_node();
+                }
+            }
+            else if ((*itr)->type == this->identify && (*itr)->children.size() > 0)
+            {
+                Record *int_arr_questionmark = symboltable->lookup((*itr)->value);
+                if (int_arr_questionmark)
+                {
+                    if (int_arr_questionmark->dtype != "IntArr")
+                    {
+                        std::cout << "ERROR IN CHECK ASSIGNMENT TYPE ERROR-> "
+                                  << "ID: " << (*itr)->value << " TYPE: " << (*itr)->type << " DTYPE: " << int_arr_questionmark->dtype << " LINENUMBER: " << (*itr)->lineno << std::endl;
+                    }
                 }
             }
             else if ((*itr)->type == this->mclass)
@@ -578,7 +588,7 @@ public:
 
                 if (((*method_type)->dtype != return_type_string))
                 {
-                    std::cout << (*method_type)->dtype << " == " << return_type_string << std::endl;
+                    // std::cout << (*method_type)->dtype << " == " << return_type_string << std::endl;
 
                     std::cout << "ERROR Method type dont match return type for: " << (*method_type)->value << " LINENUMBER: " << (*method_type)->lineno << std::endl;
                 }
@@ -682,7 +692,6 @@ public:
             {
                 auto target_child = std::next(child->children.begin(), 0);
                 std::string target_child_stroonk = check_leafs((*target_child), symboltable);
-                std::cout << target_child_stroonk << std::endl;
 
                 if (target_child_stroonk != "IntArr")
                 {
@@ -722,7 +731,7 @@ public:
                     std::string child1_string = check_leafs((*child1), symboltable);
                     auto child2 = std::next((*value_child)->children.begin(), 1);
                     std::string child2_string = check_leafs((*child2), symboltable);
-                    std::cout << "DSADSASADASDAS_: " << child2_string << std::endl;
+
                     if (child1_string != "IntArr" && child2_string != "Int")
                     {
                         std::cout << "ERROR (ARRMODIFIER, VALUE) WRONG TYPE FOR ARGUMENT: " << (*value_child)->value << " LINENUMBER " << (*value_child)->lineno << std::endl;
@@ -741,7 +750,7 @@ public:
                 std::string child1_string = check_leafs((*child1), symboltable);
                 auto child2 = std::next(child->children.begin(), 1);
                 std::string child2_string = check_leafs((*child2), symboltable);
-                std::cout << "DSADSASADASDAS_: " << child2_string << child1_string << std::endl;
+
                 if (child1_string != "IntArr" || child2_string != "Int")
                 {
                     std::cout << "ERROR (ARRMODIFIER, VALUE) WRONG TYPE FOR ARGUMENT: " << child->value << " LINENUMBER " << child->lineno << std::endl;

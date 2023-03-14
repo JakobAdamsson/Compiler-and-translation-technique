@@ -1,24 +1,24 @@
 digraph {
 n0 [label="Scope:root
-Class A
- invalid_array_integer
+Class Element
+ Factorial
 "];
-n1 [label="Scope:MainClass(invalid_array_integer)
-invalid_array_integer this
+n1 [label="Scope:MainClass(Factorial)
+Factorial this
 "];
 n0 -> n1
-n2 [label="Scope:ClassDeclaration(A)
-A a1()
-IntArr a2()
-A this
+n2 [label="Scope:ClassDeclaration(Element)
+Int Bar()
+Boolean Init()
+Element this
 "];
-n3 [label="Scope:MethodDeclaration(a1)
-Int num
-IntArr num_aux
+n3 [label="Scope:MethodDeclaration(Init)
+Int test
 "];
 n2 -> n3
-n4 [label="Scope:MethodDeclaration(a2)
+n4 [label="Scope:MethodDeclaration(Bar)
 Int a
+Boolean b
 "];
 n2 -> n4
 n0 -> n2
