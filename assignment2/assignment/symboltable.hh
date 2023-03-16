@@ -290,6 +290,9 @@ public:
     Class *this_fcall_current_class;
     std::string variable_type;
     Variable *thiss;
+
+    std::map<int, std::vector<std::string>> errors;
+
     int id;
     SymbolTable()
     {
@@ -297,6 +300,35 @@ public:
         root->scopeName = "root";
         current = root;
     }
+
+    void add_error(int key, const std::string &value)
+    {
+        auto it = errors.find(key);
+        if (it == errors.end())
+        {
+            // Key does not exist, insert a new key-value pair
+            errors[key] = {value};
+        }
+        else
+        {
+            // Key exists, append value to the vector
+            it->second.push_back(value);
+        }
+    }
+
+    void print_errors() const
+    {
+        for (const auto &kv : errors)
+        {
+            std::cout << "Error line: " << kv.first << ": ";
+            for (const auto &message : kv.second)
+            {
+                std::cout << message << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
+
     void enterScope(std::string name = "")
     {
         current = current->nextChild(name);

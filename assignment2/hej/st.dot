@@ -1,0 +1,44 @@
+digraph {
+n0 [label="Scope:root
+Class A
+ invalid_nestedmethod_calls
+"];
+n1 [label="Scope:MainClass(invalid_nestedmethod_calls)
+invalid_nestedmethod_calls this
+"];
+n0 -> n1
+n2 [label="Scope:ClassDeclaration(A)
+A a1()
+Int a2()
+Boolean a3()
+Int a4()
+Int a5()
+Boolean b
+A this
+"];
+n3 [label="Scope:MethodDeclaration(a1)
+Int num
+Int num_aux
+"];
+n2 -> n3
+n4 [label="Scope:MethodDeclaration(a2)
+Int a
+IntArr ia
+Int ret
+"];
+n2 -> n4
+n5 [label="Scope:MethodDeclaration(a3)
+"];
+n2 -> n5
+n6 [label="Scope:MethodDeclaration(a4)
+"];
+n2 -> n6
+n7 [label="Scope:MethodDeclaration(a5)
+Boolean a
+Int b
+IntArr c
+A d
+"];
+n2 -> n7
+n0 -> n2
+}
