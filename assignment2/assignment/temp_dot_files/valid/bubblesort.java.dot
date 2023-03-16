@@ -378,7 +378,7 @@ n191 [label="New:Int"];
 n190 -> n191
 n192 [label="Int:Int"];
 n190 -> n192
-n193 [label="Int:sz"];
+n193 [label="Identifier:sz"];
 n190 -> n193
 n188 -> n190
 n184 -> n188

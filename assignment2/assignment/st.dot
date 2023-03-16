@@ -1,7 +1,7 @@
 digraph {
 n0 [label="Scope:root
 Class Element
- Factorial
+MainClass Factorial
 Class Thing
 "];
 n1 [label="Scope:MainClass(Factorial)

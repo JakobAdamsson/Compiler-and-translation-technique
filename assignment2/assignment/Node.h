@@ -154,6 +154,20 @@ public:
         for (auto child : i->children)
         {
             Variable *new_param = new Variable();
+
+            auto it = symboltable->current_method->Variables.find(i->value);
+            if (it != symboltable->current_method->Variables.end())
+            {
+
+                symboltable->add_error(child->lineno, "Parameter name already declared");
+            }
+
+            auto heja = symboltable->current_method->Parameters.find(i->value);
+            if (heja != symboltable->current_method->Parameters.end())
+            {
+                symboltable->add_error(child->lineno, "Parameter name already declared");
+            }
+
             new_param->id = child->value;
             new_param->type = child->type;
             new_param->dtype = child->dtype;
@@ -164,6 +178,12 @@ public:
     void VarDec_method(SymbolTable *symboltable, Node *i)
     {
         Variable *vardec_test = new Variable();
+        Record *check_if_declared = symboltable->lookup(i->value);
+        if (check_if_declared)
+        {
+            // is_declared = true;
+            symboltable->add_error(i->lineno, "Variable already declared");
+        }
         // Fill data
         vardec_test->id = i->value;
         vardec_test->type = i->type;
@@ -178,6 +198,12 @@ public:
     {
         Variable *vardec_test = new Variable();
         // Fill data
+        Record *check_if_declared = symboltable->lookup(i->value);
+        if (check_if_declared)
+        {
+            // is_declared = true;
+            symboltable->add_error(i->lineno, "Variable already declared");
+        }
         vardec_test->id = i->value;
         vardec_test->type = i->type;
         vardec_test->dtype = i->dtype;
@@ -192,6 +218,12 @@ public:
 
         Method *methoddec_test = new Method();
         // Fill the data
+        Record *check_if_declared = symboltable->lookup(i->value);
+        if (check_if_declared)
+        {
+            // is_declared = true;
+            symboltable->add_error(i->lineno, "Method already declared");
+        }
         symboltable->current_method = methoddec_test;
         methoddec_test->id = i->value;
         methoddec_test->type = i->type;
@@ -218,6 +250,7 @@ public:
 
         mainclass_test->id = i->value;
         mainclass_test->type = i->type;
+        mainclass_test->dtype = "MainClass";
 
         Variable *this_ = new Variable();
         this_->id = "this";
@@ -241,6 +274,15 @@ public:
         // Create a new record
         Class *classdec_test = new Class();
         // Fill the data
+        Class *check_if_declared = symboltable->lookup2(i->value);
+
+        if (check_if_declared != NULL)
+        {
+            // is_declared = true;
+            check_if_declared->printRecord();
+
+            symboltable->add_error(i->lineno, "Class already declared: " + i->dtype + i->value);
+        }
         symboltable->current_class = classdec_test;
         classdec_test->id = i->value;
         classdec_test->type = i->type;
@@ -496,11 +538,17 @@ public:
 
     void check_assignment(SymbolTable *symboltable, Node *i)
     {
-
         if (i->type == "ArrDec" && i->children.size() > 2)
             symboltable->add_error(i->lineno, "wrong brackets on intarr");
         if (i->type == "IntArrDec")
-            i->print_node();
+        {
+            Node *last_child = i->children.back();
+            if (last_child->value == "True" || last_child->value == "False")
+                symboltable->add_error(i->lineno, "Wrong type in brackets");
+        }
+        if (i->type == "ArrDec" && i->children.size() > 2)
+            symboltable->add_error(i->lineno, "wrong brackets on intarr");
+
         for (auto itr = i->children.begin(); itr != i->children.end(); itr++)
         {
 
@@ -793,7 +841,7 @@ public:
 
         for (auto itr = i->children.begin(); itr != i->children.end(); itr++)
         {
-            //(*itr)->print_node();
+
             if ((*itr)->type == this->mclass)
             {
                 symboltable->enterScope();
@@ -835,11 +883,15 @@ public:
                     return_type_string = check_leafs(*return_type, symboltable);
                 }
 
+                if ((*return_type)->type == fcall)
+                {
+                    return_type_string = check_fcall_type(symboltable, (*return_type));
+                }
                 if (((*method_type)->dtype != return_type_string))
                 {
                     // std::cout
                     //<< "ERROR Method type dont match return type for: " << (*method_type)->value << " LINENUMBER: " << (*method_type)->lineno << std::endl;
-                    symboltable->add_error((*return_type)->lineno, "Return typt dont match: " + (*method_type)->value + "-");
+                    symboltable->add_error((*method_type)->lineno, "Return typt dont match: " + (*method_type)->value + "-");
                 }
 
                 (*itr)->semantic_analysis_methods(symboltable, *itr);
@@ -852,6 +904,7 @@ public:
                 (*itr)->semantic_analysis_methods(symboltable, *itr);
                 symboltable->exitScope();
             }
+
             else if ((*itr)->type == this->fcall)
             {
                 (*itr)->semantic_analysis_methods(symboltable, *itr);
@@ -859,11 +912,24 @@ public:
                 auto class_node = std::next((*itr)->children.begin(), 0);
                 auto argument_node = std::next((*itr)->children.begin(), 2);
                 Class *hej = fcall_check_first_child(symboltable, (*class_node));
+
+                std::string test = check_leafs((*class_node), symboltable);
+                if (test == "Int")
+                {
+                    return "";
+                }
+                Record *test2 = symboltable->lookup2(test);
+                Class *test3 = dynamic_cast<Class *>(test2);
                 std::string dtype2 = check_fcall_type(symboltable, (*class_node));
 
                 auto method_node = std::next((*itr)->children.begin(), 1);
 
-                Method *tja = hej->lookupMethod((*method_node)->value);
+                if (!test3)
+                {
+                    (*itr)->print_node(test);
+                }
+                Method *tja = test3->lookupMethod((*method_node)->value);
+
                 if (tja)
                 {
                     if ((*argument_node)->children.size() != tja->Parameters2.size())
@@ -876,6 +942,7 @@ public:
 
                     check_arguments(symboltable, (*argument_node), tja->Parameters2);
                 }
+
                 else
                 {
                     // std::cout << "ERROR METHOD DOES NOT EXIST: " << (*method_node)->value << " LINENUMBER:  " << (*method_node)->lineno << std::endl;
@@ -920,6 +987,17 @@ public:
         {
 
             if (child->type == identify)
+            {
+                Record *rec = symboltable->lookup(child->value);
+
+                if (rec->dtype != params[i]->dtype)
+                {
+
+                    // std::cout << "ERROR (FCALL) WRONG TYPE FOR ARGUMENT: " << (*thirdchild)->value << " On index: " << i << "LINE NUMBER: " << (*thirdchild)->lineno << std::endl;
+                    symboltable->add_error((*thirdchild)->lineno, "Wrong type for arguments: " + (*thirdchild)->value + "-");
+                }
+            }
+            else if (child->value == thiss)
             {
                 Record *rec = symboltable->lookup(child->value);
                 if (rec->dtype != params[i]->dtype)

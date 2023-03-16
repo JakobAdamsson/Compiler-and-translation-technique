@@ -746,7 +746,7 @@ n375 [label="New:Int"];
 n374 -> n375
 n376 [label="Int:Int"];
 n374 -> n376
-n377 [label="Int:sz"];
+n377 [label="Identifier:sz"];
 n374 -> n377
 n372 -> n374
 n357 -> n372

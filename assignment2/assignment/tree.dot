@@ -129,7 +129,7 @@ n67 [label="New:Int"];
 n66 -> n67
 n68 [label="Int:Int"];
 n66 -> n68
-n69 [label="Int:1"];
+n69 [label="Num:1"];
 n66 -> n69
 n64 -> n66
 n28 -> n64
@@ -141,7 +141,7 @@ n73 [label="New:Int"];
 n72 -> n73
 n74 [label="Int:Int"];
 n72 -> n74
-n75 [label="Int:True"];
+n75 [label="Boolean:True"];
 n72 -> n75
 n70 -> n72
 n28 -> n70
@@ -153,7 +153,7 @@ n79 [label="New:Int"];
 n78 -> n79
 n80 [label="Int:Int"];
 n78 -> n80
-n81 [label="Int:1"];
+n81 [label="Num:1"];
 n78 -> n81
 n76 -> n78
 n28 -> n76

@@ -498,7 +498,7 @@ n251 [label="New:Int"];
 n250 -> n251
 n252 [label="Int:Int"];
 n250 -> n252
-n253 [label="Int:sz"];
+n253 [label="Identifier:sz"];
 n250 -> n253
 n248 -> n250
 n244 -> n248

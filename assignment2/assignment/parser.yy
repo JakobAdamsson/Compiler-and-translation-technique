@@ -213,8 +213,7 @@ Term:       NUM
               $$ = new Node("IntArrDec", "", yylineno);
               $$->children.push_back(new Node("New", "Int", yylineno, "Int"));
               $$->children.push_back(new Node("Int", "Int", yylineno, "Int"));
-              $4->type = "Int";
-              $4->dtype = "Int";
+
               $$->children.push_back($4);
             }
             | NEW ID LPAREN RPAREN

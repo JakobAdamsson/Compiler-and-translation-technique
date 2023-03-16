@@ -24,20 +24,13 @@ public:
 class Variable : public Record
 {
 };
-typedef struct _Parameters3
-{
-    std::string type;
-    std::string id;
-    std::string dtype;
-    int x;
-} _Parameters3;
+
 class Method : public Record
 {
 public:
     std::map<std::string, std::string> Parameters;
     std::vector<Variable *> Parameters2;
     std::map<std::string, Variable *> Variables;
-    std::map<std::string, _Parameters3 *> Parameters3;
     int param_number = 0;
 
     // Methods
@@ -50,15 +43,7 @@ public:
         Parameters.insert(std::pair<std::string, std::string>(key, type));
         Parameters2.push_back(param);
     };
-    void addToStruct(std::string type, std::string id, std::string dtype)
-    {
-        _Parameters3 *p3 = new _Parameters3;
-        p3->type = type;
-        p3->id = id;
-        p3->dtype = dtype;
-        p3->x = param_number++;
-        Parameters3.insert(std::pair<std::string, _Parameters3 *>(type, p3));
-    }
+
 
     void printVariables()
     {
