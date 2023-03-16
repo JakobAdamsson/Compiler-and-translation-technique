@@ -1,1 +1,22 @@
-10+12*18
+public class Factorial{
+    public static void main(String[] a){
+	System.out.println(new Fac().ComputeFac(10));
+    }
+}
+
+
+class Fac {
+	int x;
+    public int ComputeFac(int num)
+	{
+
+		boolean y;
+		y = (5 == 10) && (4 == 10);
+		return num;
+	}
+	public int ComputeFac(int num)
+	{
+		return num;
+	}
+}
+

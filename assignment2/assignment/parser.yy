@@ -62,6 +62,7 @@ Needs to have a Goal production inorder to be valid Java.
 */
 Program: Goal
             {
+              
               $$ = $1;
             }
             | Program ClassDeclaration
@@ -318,7 +319,7 @@ MethodDeclaration: PUBLIC Type ID LPAREN LRParamater RPAREN LBRACE LRVarOrStatem
               $$->children.push_back($9);
 
             };
-ClassDeclaration: CLASS ID LBRACE LRVarDec LRMethodDec RBRACE
+ClassDeclaration:CLASS ID LBRACE LRVarDec LRMethodDec RBRACE
             {
               $$ = new Node("ClassDeclaration", $2, yylineno);
               $$->children.push_back(new Node("Identifier", $2, yylineno));
@@ -345,6 +346,7 @@ ClassDeclaration: CLASS ID LBRACE LRVarDec LRMethodDec RBRACE
           
 MainClass: PUBLIC CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LBRACE Statement RBRACE RBRACE
             {
+ 
               $$ = new Node("MainClass", $3, yylineno);
               $$->children.push_back(new Node("Identifier", $3, yylineno));
               $$->children.push_back(new Node("Method Identifier", $13, yylineno));

@@ -28,7 +28,8 @@ class Variable : public Record
 class Method : public Record
 {
 public:
-    std::vector<Variable *> Parameters;
+    std::map<std::string, std::string> Parameters;
+    std::vector<Variable *> Parameters2;
     std::map<std::string, Variable *> Variables;
     int param_number = 0;
 
@@ -37,10 +38,10 @@ public:
     {
         Variables.insert(std::pair<std::string, Variable *>(key, type));
     };
-    void addParameter(Variable *param)
+    void addParameter(std::string key, std::string type, Variable *param)
     {
-
-        Parameters.push_back(param);
+        Parameters.insert(std::pair<std::string, std::string>(key, type));
+        Parameters2.push_back(param);
     };
 
     void printVariables()
@@ -50,24 +51,20 @@ public:
             std::cout << "Variable: " << i->first << " type: " << i->second->type << std::endl;
         }
     }
-    void printParameters()
+    void printParameters2()
     {
-        for (auto str : Parameters)
+        for (auto str : Parameters2)
         {
             std::cout << "Paramters: " << str->id << " dtype: " << str->dtype << std::endl;
         }
     }
-
-    Variable *lookupVariable(std::string key)
+    void printParameters()
     {
-        if (Variables.find(key) != Variables.end())
+        for (auto i = Parameters.begin(); i != Parameters.end(); i++)
         {
-            return Variables[key];
+            std::cout << "Parameter: " << i->first << " type: " << i->second << std::endl;
         }
-        else
-
-            return nullptr;
-    };
+    }
 };
 
 class Class : public Record
@@ -85,24 +82,25 @@ public:
     {
         Methods.insert(std::pair<std::string, Method *>(key, type));
     };
-    Variable *lookupVariable(std::string key)
-    {
-        if (Variables.find(key) != Variables.end())
-        {
-            return Variables[key];
-        }
-        else
+    Variable lookupVariable(std::string key){
 
-            return nullptr;
     };
     Method *lookupMethod(std::string method_name)
     {
+        int x;
         if (Methods.find(method_name) != Methods.end())
+        {
+            x = 1;
+        }
+        else
+        {
+            x = 0;
+        }
+        if (x)
         {
             return Methods[method_name];
         }
-        else
-            return nullptr;
+        return nullptr;
     };
 
     void printVariables()
@@ -129,7 +127,6 @@ public:
     std::list<Scope *> childrenScopes;
     std::map<std::string, Record *> records;
     std::string scopeName;
-
     int id;
 
     void putRecord(std::string key, Record *item)
@@ -272,7 +269,7 @@ public:
     Method *current_method;
     Class *current_class;
     std::vector<std::string> method_params;
-    std::string where_to_add_var; // This is to know if we should add a variable to a method scope or a class scope
+
     Class *fcall_current_class;
     Class *this_fcall_current_class;
     std::string variable_type;
