@@ -275,6 +275,56 @@ public:
             else if ((*child)->type == "MethodDeclaration")
             {
                 symboltable->enterScope();
+                std::vector<Node *> grand_children((*child)->children.begin(), (*child)->children.end());
+                Node *method_type = grand_children[1];
+
+                Node *return_node = grand_children.back();
+                std::string return_dtype;
+                if (return_node->type == "Identifier")
+                {
+                    Record *check_identifier = symboltable->lookup(return_node->value);
+                    if (!check_identifier)
+                    {
+                        symboltable->add_error(return_node->lineno, "Identifier " + return_node->value + " not declared");
+                    }
+                    else
+                    {
+                        return_dtype = check_identifier->dtype;
+                    }
+                }
+                else if (return_node->type == "Int" && return_node->type == "ArrDecc")
+                {
+                    return_dtype = "Int";
+                }
+                else if (return_node->type == "True" || return_node->type == "False")
+                {
+                    return_dtype = "Boolean";
+                }
+                else if (return_node->type == "NewVar")
+                {
+                    return_dtype = return_node->value;
+                }
+                else if (return_node->type == "Num")
+                {
+                    return_dtype = "Int";
+                }
+                else if (return_node->type == "this")
+                {
+                    return_node->print_node();
+                    Record *this_record = symboltable->lookup("this");
+                    Record *this_class = symboltable->lookup(this_record->dtype);
+                    Class *check_class_class = dynamic_cast<Class *>(this_class);
+                    return_dtype = check_class_class->id;
+                }
+                else if (return_node->type == "FCall")
+                {
+                    return_dtype = validate_fcall(symboltable, return_node);
+                }
+                if (return_dtype != method_type->dtype)
+                {
+                    symboltable->add_error((*child)->lineno, "Wrong return type : " + return_dtype + " != " + method_type->dtype);
+                }
+
                 (*child)->semantic_analysis(symboltable);
                 symboltable->exitScope();
             }
@@ -295,6 +345,11 @@ public:
                             if ((!(*grand_child)->children.size() == 1 && check_identifier->dtype == "IntArr")) // This is if the length of an array is used.
                             {
                                 symboltable->add_error((*grand_child)->lineno, "Wrong type in numerical expression: " + (*grand_child)->type);
+                            }
+                            else if ((!(*grand_child)->children.size() == 1 && check_identifier->dtype == "Int")) // kolla här
+                            {
+
+                                symboltable->add_error((*grand_child)->lineno, "This type doesnt have length " + (*grand_child)->type);
                             }
                         }
                         else if ((*grand_child)->children.size() != 0)
@@ -385,6 +440,10 @@ public:
 
                 // Check third child
                 auto grand_child3 = std::next((*child)->children.begin(), 2);
+                if ((*grand_child3)->children.size() == 1) // may hav eto do a look here to make sure it is not a array
+                {
+                    symboltable->add_error((*child)->lineno, "Cannot take length of integer: " + (*grand_child3)->value);
+                }
                 std::string grand_child_dtype3 = check_dtype_arrmodifier(symboltable, (*grand_child3));
                 if (grand_child_dtype3 != "Int")
                 {

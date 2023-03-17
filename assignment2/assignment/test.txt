@@ -6,13 +6,17 @@ public class Factorial{
 
 class Fac {
 	int x;
-    public int ComputeFac(int num, int x, int y)
+    public int[] ComputeFac(int num, int x, int y)
 	{
 		int[] numbers;
-		
+		int y;
+		y = 5;
+		boolean hej;
+		hej = true;
 		numbers = new int[x] ;
-		return num;
+		return numbers;
 	}
+
 
 }
 
