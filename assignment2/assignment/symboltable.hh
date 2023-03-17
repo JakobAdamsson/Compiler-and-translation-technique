@@ -15,6 +15,7 @@ public:
     std::string type;
     std::string dtype;
 
+
     // Getters and Setters
     virtual void printRecord()
     {

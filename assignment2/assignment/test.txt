@@ -4,19 +4,17 @@ public class Factorial{
     }
 }
 
-
 class Fac {
 	int x;
-    public int ComputeFac(int num)
+    public int ComputeFac(int num, int x, int y)
 	{
+		int[] numbers;
+		
+		numbers = new int[x] ;
+		return num;
+	}
 
-		boolean y;
-		y = (5 == 10) && (4 == 10);
-		return num;
-	}
-	public int ComputeFac(int num)
-	{
-		return num;
-	}
 }
+
+
 
