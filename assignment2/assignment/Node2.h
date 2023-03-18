@@ -27,30 +27,6 @@ public:
     string type, value, dtype;
     list<Node *> children;
 
-    // Identifiers
-    std::string mclass = "MainClass";
-    std::string classdec = "ClassDeclaration";
-    std::string vardec = "VarDeclaration";
-    std::string vardecs = "VarDeclarations";
-    std::string midentify = "MethodDeclaration";
-    std::string identify = "Identifier";
-    std::string sment = "LRStatement";
-    std::string parameter = "Parameters";
-    std::string elsestate = "ELSE";
-    std::string expression = "Expression";
-    std::string fcall = "FCall";
-    std::string assignment = "Assignment";
-    std::string newvar = "NewVar";
-    std::string thiss = "this";
-    std::string minus = "Minus";
-    std::string plus = "Plus";
-    std::string mult = "Mult";
-    std::string divide = "Divide";
-    std::string ifstate = "If statement";
-    std::string gt = "Gt";
-    std::string lt = "Lt";
-    std::string eq = "==";
-    std::string arrmodifier = "ArrModifier";
     // Constructor
     Node(string t, string v, int l, string data_type = "") : type(t), value(v), lineno(l), dtype(data_type)
     {
@@ -103,1056 +79,787 @@ public:
         std::cout << msg << " Value: " << this->value << " Type: " << this->type << " Dtype: " << this->dtype << " Line number: " << this->lineno << std::endl;
     }
 
+    /* create_symboltable() when leaving this function you can expect that:
+    1) all variables,methods,classes have been declared.
+    2) Every identifier have been checked that they been declared inside their scope before being used.
+    3) Checked that that no duplicate declarations exist.
+    */
     void create_symboltable(SymbolTable *symboltable)
     {
-        // Please keep in mind that it only iteratetes through one level of the tree(e.g root only has mainclass and class dec).
-        symboltable->variable_type = this->type;
-        for (auto i = children.begin(); i != children.end(); i++)
+        for (auto child = children.begin(); child != children.end(); child++)
         {
-
-            if ((*i)->type == this->mclass)
+            if ((*child)->type == "VarDeclaration") // Here we add a variable declaration node to the symboltable
             {
+                Variable *new_variable = new Variable();
+                new_variable->type = (*child)->type;
+                new_variable->dtype = (*child)->dtype;
+                new_variable->id = (*child)->value;
 
-                Mainclass(symboltable, (*i));
-            }
-
-            else if ((*i)->type == this->classdec)
-            {
-                // create record och add
-                ClassDec(symboltable, (*i));
-            }
-
-            else if ((*i)->type == this->midentify)
-            {
-                MethDec(symboltable, (*i));
-            }
-            else if ((*i)->type == this->vardec)
-            {
-                // När vi är här så är vi i method-scope
-                if (symboltable->current->scopeName.substr(0, 5) == "Class")
+                if (symboltable->where_to_add_var == "Class")
                 {
-                    VarDec_class(symboltable, (*i));
-                }
-                else
-                {
-                    VarDec_method(symboltable, (*i));
-                }
-            }
-            else if ((*i)->type == this->parameter)
-            {
-                addMethodParameters(symboltable, (*i));
-            }
-            else
-            {
-                (*i)->create_symboltable(symboltable);
-            }
-        }
-    }
+                    Variable *var_check = symboltable->current_class->lookupVariable((*child)->value);
 
-    void addMethodParameters(SymbolTable *symboltable, Node *i)
-    {
-        for (auto child : i->children)
-        {
-            Variable *new_param = new Variable();
-
-            auto it = symboltable->current_method->Variables.find(i->value);
-            if (it != symboltable->current_method->Variables.end())
-            {
-
-                symboltable->add_error(child->lineno, "Parameter name already declared");
-            }
-
-            auto heja = symboltable->current_method->Parameters.find(i->value);
-            if (heja != symboltable->current_method->Parameters.end())
-            {
-                symboltable->add_error(child->lineno, "Parameter name already declared");
-            }
-
-            new_param->id = child->value;
-            new_param->type = child->type;
-            new_param->dtype = child->dtype;
-            symboltable->current_method->addParameter(child->value, symboltable->variable_type, new_param);
-            symboltable->put(child->value, new_param);
-        }
-    }
-    void VarDec_method(SymbolTable *symboltable, Node *i)
-    {
-        Variable *vardec_test = new Variable();
-        Record *check_if_declared = symboltable->lookup(i->value);
-        if (check_if_declared)
-        {
-            // is_declared = true;
-            symboltable->add_error(i->lineno, "Variable already declared");
-        }
-        // Fill data
-        vardec_test->id = i->value;
-        vardec_test->type = i->type;
-        vardec_test->dtype = i->dtype;
-        symboltable->current_method->addVariable(vardec_test->id, vardec_test);
-
-        // Add the record to the current scope record
-        symboltable->put(vardec_test->id, vardec_test);
-    }
-
-    void VarDec_class(SymbolTable *symboltable, Node *i)
-    {
-        Variable *vardec_test = new Variable();
-        // Fill data
-        Record *check_if_declared = symboltable->lookup(i->value);
-        if (check_if_declared)
-        {
-            // is_declared = true;
-            symboltable->add_error(i->lineno, "Variable already declared");
-        }
-        vardec_test->id = i->value;
-        vardec_test->type = i->type;
-        vardec_test->dtype = i->dtype;
-        symboltable->current_class->addVariable(vardec_test->id, vardec_test);
-
-        // Add the record to the current scope record
-        symboltable->put(vardec_test->id, vardec_test);
-    }
-    void MethDec(SymbolTable *symboltable, Node *i)
-    {
-        // Create a new record
-
-        Method *methoddec_test = new Method();
-        // Fill the data
-        Record *check_if_declared = symboltable->lookup(i->value);
-        if (check_if_declared)
-        {
-            // is_declared = true;
-            symboltable->add_error(i->lineno, "Method already declared");
-        }
-        symboltable->current_method = methoddec_test;
-        methoddec_test->id = i->value;
-        methoddec_test->type = i->type;
-        methoddec_test->dtype = i->dtype;
-
-        // Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
-        symboltable->put(methoddec_test->id, methoddec_test);
-
-        // Enter new scope
-        symboltable->enterScope(this->midentify + "(" + i->value + ")");
-
-        i->create_symboltable(symboltable);
-
-        symboltable->current_class->addMethod(methoddec_test->id, methoddec_test);
-        symboltable->exitScope();
-    }
-
-    // t as in type :)
-    void Mainclass(SymbolTable *symboltable, Node *i)
-    {
-        // Create a new record
-        Class *mainclass_test = new Class();
-        // Fill the data
-
-        mainclass_test->id = i->value;
-        mainclass_test->type = i->type;
-        mainclass_test->dtype = "MainClass";
-
-        Variable *this_ = new Variable();
-        this_->id = "this";
-        this_->type = i->value;
-        this_->dtype = i->value;
-        mainclass_test->addVariable(this_->id, this_);
-        // Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
-
-        symboltable->put(mainclass_test->id, mainclass_test);
-        // Enter new scope
-        symboltable->enterScope(this->mclass + "(" + i->value + ")");
-        symboltable->put(this_->id, this_);
-        i->create_symboltable(symboltable);
-
-        symboltable->exitScope();
-    }
-
-    void ClassDec(SymbolTable *symboltable, Node *i)
-    {
-
-        // Create a new record
-        Class *classdec_test = new Class();
-        // Fill the data
-        Class *check_if_declared = symboltable->lookup2(i->value);
-
-        if (check_if_declared != NULL)
-        {
-            // is_declared = true;
-            check_if_declared->printRecord();
-
-            symboltable->add_error(i->lineno, "Class already declared: " + i->dtype + i->value);
-        }
-        symboltable->current_class = classdec_test;
-        classdec_test->id = i->value;
-        classdec_test->type = i->type;
-        classdec_test->dtype = "Class";
-
-        Variable *this_ = new Variable();
-        this_->id = "this";
-        this_->type = i->value;
-        this_->dtype = i->value;
-        classdec_test->addVariable(this_->id, this_);
-
-        // Add the record to the symboltable. Put uses putRecord and putRecord inserts a pair(key and value) into the defined map.
-
-        // Enter new scope
-        symboltable->put(classdec_test->id, classdec_test);
-
-        symboltable->enterScope(this->classdec + "(" + i->value + ")");
-        symboltable->put(this_->id, this_);
-        i->create_symboltable(symboltable);
-
-        symboltable->exitScope();
-    }
-
-    void semantic_analysis_variables(SymbolTable *symboltable)
-    {
-
-        for (auto i = children.begin(); i != children.end(); i++)
-        {
-            if ((*i)->type == this->mclass)
-            {
-                symboltable->enterScope();
-                (*i)->semantic_analysis_variables(symboltable);
-                symboltable->exitScope();
-            }
-            else if ((*i)->type == this->midentify)
-            {
-                // Now we are in method scope
-                symboltable->enterScope();
-                (*i)->semantic_analysis_variables(symboltable);
-
-                symboltable->exitScope();
-            }
-            else if ((*i)->type == this->classdec)
-            {
-                symboltable->enterScope();
-                (*i)->semantic_analysis_variables(symboltable);
-                symboltable->exitScope();
-            }
-            else if ((*i)->type == this->assignment)
-            {
-
-                for (auto ii = (*i)->children.begin(); ii != (*i)->children.end(); ii++)
-                {
-                    Record *rec = symboltable->lookup((*ii)->value);
-                    if ((*ii)->type == this->identify)
+                    if (var_check != nullptr)
                     {
-                        if (rec == NULL)
+                        symboltable->add_error((*child)->lineno, "Variable " + (*child)->value + " already declared in class: " + symboltable->current_class->id);
+                    }
+                    symboltable->current_class->addVariable(new_variable->id, new_variable);
+                }
+                else if (symboltable->where_to_add_var == "Method")
+                {
+                    Variable *var_check = symboltable->current_method->lookupVariable((*child)->value);
+
+                    if (var_check != nullptr)
+                    {
+                        symboltable->add_error((*child)->lineno, "Variable " + (*child)->value + " already declared in method: " + symboltable->current_method->id);
+                    }
+                    symboltable->current_method->addVariable(new_variable->id, new_variable);
+                }
+                symboltable->put(new_variable->id, new_variable);
+                (*child)->create_symboltable(symboltable);
+            }
+            else if ((*child)->type == "Parameters")
+            {
+                for (auto grand_child = (*child)->children.begin(); grand_child != (*child)->children.end(); grand_child++)
+                {
+
+                    Variable *var_check = symboltable->current_method->lookupVariable((*grand_child)->value);
+
+                    if (var_check != nullptr)
+                    {
+                        symboltable->add_error((*grand_child)->lineno, "Paramater " + (*grand_child)->value + " already declared in method: " + symboltable->current_method->id);
+                    }
+                    Variable *new_parameter = new Variable();
+                    new_parameter->type = (*grand_child)->type;
+                    new_parameter->dtype = (*grand_child)->dtype;
+                    new_parameter->id = (*grand_child)->value;
+                    symboltable->put(new_parameter->id, new_parameter);
+                    symboltable->current_method->addVariable(new_parameter->id, new_parameter);
+                    symboltable->current_method->addParameter(new_parameter);
+                }
+            }
+            else if ((*child)->type == "MainClass")
+            {
+                Class *mainclass = new Class();
+                mainclass->type = (*child)->type;
+                mainclass->dtype = (*child)->dtype;
+                mainclass->id = (*child)->value;
+                symboltable->put(mainclass->id, mainclass);
+
+                symboltable->current_class = mainclass; // updates current class
+                symboltable->enterScope();
+
+                Record *new_variable = new Variable();
+                new_variable->type = (*child)->type;
+                new_variable->dtype = (*child)->value;
+                new_variable->id = "this";
+                symboltable->put(new_variable->id, new_variable);
+
+                (*child)->create_symboltable(symboltable);
+                symboltable->exitScope();
+            }
+            else if ((*child)->type == "ClassDeclaration")
+            {
+                // Check if class already declared
+                Record *class_check = symboltable->lookup((*child)->value);
+                if (class_check != NULL)
+                {
+                    symboltable->add_error((*child)->lineno, "Class " + (*child)->value + " already declared");
+                }
+
+                Class *new_class = new Class();
+
+                new_class->type = (*child)->type;
+                new_class->dtype = (*child)->dtype;
+                new_class->id = (*child)->value;
+                symboltable->put(new_class->id, new_class);
+                symboltable->where_to_add_var = "Class";
+                symboltable->current_class = new_class; // updates current class
+
+                symboltable->enterScope();
+
+                Record *new_variable = new Variable();
+                new_variable->type = (*child)->type;
+                new_variable->dtype = (*child)->value;
+                new_variable->id = "this";
+                symboltable->put(new_variable->id, new_variable);
+
+                (*child)->create_symboltable(symboltable);
+                symboltable->exitScope();
+            }
+            else if ((*child)->type == "Method Identifier") // This is the method of the main class, we don't want to check this one
+            {
+                // Not sure what to do here
+            }
+            else if ((*child)->type == "MethodDeclaration")
+            {
+                // Check if method already declared
+                Method *method_check = symboltable->current_class->lookupMethod((*child)->value);
+                if (method_check != nullptr)
+                {
+                    symboltable->add_error((*child)->lineno, "Method " + (*child)->value + " already declared in class: " + symboltable->current_class->id);
+                }
+                Method *new_method = new Method();
+                new_method->type = (*child)->type;
+                new_method->dtype = (*child)->dtype;
+                new_method->id = (*child)->value;
+                symboltable->current_method = new_method;
+                symboltable->current_class->addMethod(new_method->id, new_method);
+                symboltable->put(new_method->id, new_method);
+                symboltable->where_to_add_var = "Method";
+                symboltable->enterScope();
+                (*child)->create_symboltable(symboltable);
+                symboltable->exitScope();
+            }
+            else if ((*child)->type == "Identifier") // Here we check if a identifier is declared
+            {
+
+                Record *check_identifier = symboltable->lookup((*child)->value);
+                if (!check_identifier)
+                {
+
+                    symboltable->add_error((*child)->lineno, "Identifier " + (*child)->value + " not declared");
+                }
+
+                (*child)->create_symboltable(symboltable);
+            }
+            else if ((*child)->type == "FCall")
+            {
+                // Tror att vi måste kolla first child här och se till så att det är en fcall eller en newvar, annars tror jag att det ska ge ett felmedellande om variabeln in te är deklaraded?? kanske.. :D
+                // TLDR: om det är en ID här så måste vi kolla så att den är deklarerad
+                //  MEN VI SPARAR DETTA TILL SIST!!
+
+                // Get the args node
+                auto args = std::next((*child)->children.begin(), 2);
+                for (auto arg = (*args)->children.begin(); arg != (*args)->children.end(); arg++)
+                {
+                    if ((*arg)->type == "Identifier")
+                    {
+                        Record *check_identifier = symboltable->lookup((*arg)->value);
+                        if (!check_identifier)
                         {
-                            symboltable->add_error((*i)->lineno, "Variable not declared");
-                            // std::cout << "ERROR IN SEMANTIC ANALYSIS VARIABLES NO RECORD FOUND FOR-> "
-                            //           << "ID: " << (*ii)->value << " TYPE: " << (*ii)->type << " LINENUMBER: " << (*ii)->lineno << std::endl;
-                            //  return;
+                            symboltable->add_error((*arg)->lineno, "Identifier " + (*arg)->value + " not declared");
                         }
                     }
                 }
+
+                // (*child)->create_symboltable(symboltable); // ska tas bort tror vi :)
+
+                // Kolla om arguments har identifiers, om det finns, gör lookup.
             }
             else
             {
-                (*i)->semantic_analysis_variables(symboltable);
+                (*child)->create_symboltable(symboltable);
             }
         }
     }
 
-    bool isLeaf() const
-    {
-        return children.empty();
-    }
-
-    std::string check_leafs(Node *node, SymbolTable *symboltable)
+    void
+    semantic_analysis(SymbolTable *symboltable)
     {
 
-        if (node->isLeaf())
+        for (auto child = children.begin(); child != children.end(); child++)
         {
-            // Return the node's 'hej' value
-
-            if (node->type == identify)
+            
+           
+            if ((*child)->type == "MainClass")
             {
-                Record *rec = symboltable->lookup(node->value);
+                symboltable->enterScope();
+                (*child)->semantic_analysis(symboltable);
+                symboltable->exitScope();
+            }
+            else if ((*child)->type == "ClassDeclaration")
+            {
+                symboltable->enterScope();
+                (*child)->semantic_analysis(symboltable);
+                symboltable->exitScope();
+            }
+            else if ((*child)->type == "MethodDeclaration")
+            {
+                symboltable->enterScope();
+                std::vector<Node *> grand_children((*child)->children.begin(), (*child)->children.end());
+                Node *method_type = grand_children[1];
 
-                if (!rec)
+                Node *return_node = grand_children.back();
+
+                std::string return_dtype;
+                if (return_node->type == "Identifier")
                 {
-                    symboltable->add_error(node->lineno, "No previous record found for variable");
-                    //  std::cout << "ERROR IN CHECK LEAFES NO RECORD FOUND FOR-> "
-                    //            << "ID: " << node->value << " TYPE: " << node->type << " Dtype: " << node->dtype << " LINENUMBER: " << node->lineno << std::endl;
-                    return "";
-                }
-
-                return rec->dtype;
-            }
-            if (node->type == thiss)
-            {
-                Record *rec = symboltable->lookup("this");
-                if (!rec)
-                {
-                    symboltable->add_error(node->lineno, "No previous record found for variable");
-                    // std::cout << "ERROR IN CHECK LEAFES NO RECORD FOUND FOR-> "
-                    //           << "ID: " << node->value << " TYPE: " << node->type << " Dtype: " << node->dtype << " LINENUMBER: " << node->lineno << std::endl;
-                    return "";
-                }
-                return rec->dtype;
-            }
-
-            return node->dtype;
-        }
-        if (node->type == lt || node->type == gt || node->type == eq)
-        {
-            return "Boolean";
-        }
-
-        if (node->type == fcall)
-        {
-            return check_fcall_type(symboltable, node);
-        }
-        if (node->type == "ArrDec")
-        {
-            return "Int";
-        }
-        if (node->type == "IntArrDec")
-        {
-            return "IntArr";
-        }
-
-        else
-        {
-            // Recursively check all child nodes
-            std::string common = "";
-            for (auto child : node->children)
-            {
-                std::string child_dtype = check_leafs(child, symboltable);
-
-                // std::cout << "dsdadasdas: " << child_dtype << std::endl;
-                if (common.empty())
-                {
-                    common = child_dtype;
-                }
-                // else if ((common == "IntArr" && child_dtype == "Int"))
-                //{
-                //
-                //    return common;
-                //}
-                else if (child_dtype != common)
-                {
-                    // std::cout << "THESE ARE NOT EQUAL!" << child_dtype << " == " << common << " children size = " << child->children.size() << "LINE NUMBER: " << child->lineno << std::endl;
-                    return "";
-                }
-            }
-
-            return common;
-        }
-    }
-
-    std::string check_fcall_type(SymbolTable *symboltable, Node *node)
-    {
-
-        if (node->type != "FCall")
-        {
-            // Return an empty string or throw an error, depending on your requirements
-            return "";
-        }
-        auto first_child = std::next(node->children.begin(), 0);
-        auto second_child = std::next(node->children.begin(), 1);
-        if ((*first_child)->type == "NewVar" || (*first_child)->type == identify || (*first_child)->type == thiss)
-        {
-            Record *class_node;
-            if ((*first_child)->type == "NewVar")
-            {
-                class_node = symboltable->lookup2((*first_child)->value);
-                if (!class_node)
-                {
-                    symboltable->add_error((*first_child)->lineno, "Wrong type of function call");
-                    // std::cout << "ERROR IN CHECK LEAFES NO RECORD FOUND FOR-> "
-                    //           << "ID: " << (*first_child)->value << " TYPE: " << (*first_child)->type << " Dtype: " << (*first_child)->dtype << " LINENUMBER: " << (*first_child)->lineno << std::endl;
-                    return "";
-                }
-            }
-            else if ((*first_child)->type == thiss)
-            {
-                Record *class_node2;
-                class_node2 = symboltable->lookup((*first_child)->type);
-                class_node = symboltable->lookup2(class_node2->dtype);
-
-                if (!class_node)
-                {
-                    symboltable->add_error((*first_child)->lineno, "Wrong type of function call");
-                    //  std::cout << "ERROR IN CHECK LEAFES NO RECORD FOUND FOR-> "
-                    //            << "ID: " << (*first_child)->value << " TYPE: " << (*first_child)->type << " Dtype: " << (*first_child)->dtype << " LINENUMBER: " << (*first_child)->lineno << std::endl;
-                    return "";
-                }
-            }
-            else
-            {
-                Record *class_node2;
-                class_node2 = symboltable->lookup((*first_child)->value);
-                class_node = symboltable->lookup2(class_node2->dtype);
-
-                if (!class_node)
-                {
-                    symboltable->add_error((*first_child)->lineno, "Wrong type of function call");
-                    // std::cout << "ERROR IN CHECK LEAFES NO RECORD FOUND FOR-> "
-                    //           << "ID: " << (*first_child)->value << " TYPE: " << (*first_child)->type << " Dtype: " << (*first_child)->dtype << " LINENUMBER: " << (*first_child)->lineno << std::endl;
-                    return "";
-                }
-            }
-            Class *clc = dynamic_cast<Class *>(class_node);
-            if (clc == nullptr)
-            {
-
-                // Return an empty string or throw an error, depending on your requirements
-                return "";
-            }
-
-            Record *method_node = clc->lookupMethod((*second_child)->value);
-            if (method_node == nullptr)
-            {
-                // Return an empty string or throw an error, depending on your requirements
-                return "";
-            }
-            return method_node->dtype;
-        }
-        else if ((*first_child)->type == "FCall")
-        {
-
-            std::string class_dtype = check_fcall_type(symboltable, (*first_child));
-
-            Record *class_node = symboltable->lookup2(class_dtype);
-            Class *clc = dynamic_cast<Class *>(class_node);
-
-            Record *method_node = clc->lookupMethod((*second_child)->value);
-            if (method_node == nullptr)
-            {
-                // Return an empty string or throw an error, depending on your requirements
-                return "";
-            }
-
-            return method_node->dtype;
-        }
-        else
-        {
-            // Return an empty string or throw an error, depending on your requirements
-            return "";
-        }
-    }
-
-    void check_assignment(SymbolTable *symboltable, Node *i)
-    {
-        if (i->type == "ArrDec" && i->children.size() > 2)
-            symboltable->add_error(i->lineno, "wrong brackets on intarr");
-        if (i->type == "IntArrDec")
-        {
-            Node *last_child = i->children.back();
-            if (last_child->value == "True" || last_child->value == "False")
-                symboltable->add_error(i->lineno, "Wrong type in brackets");
-        }
-        if (i->type == "ArrDec" && i->children.size() > 2)
-            symboltable->add_error(i->lineno, "wrong brackets on intarr");
-
-        for (auto itr = i->children.begin(); itr != i->children.end(); itr++)
-        {
-
-            if ((*itr)->type == assignment)
-            {
-                std::string temp = check_leafs(*itr, symboltable);
-
-                // std::cout << temp << std::endl;
-
-                auto first_child = std::next((*itr)->children.begin(), 0);
-                if (temp == "")
-                {
-                    symboltable->add_error((*itr)->lineno, "Type Error");
-                }
-                check_assignment(symboltable, *itr);
-            }
-            else if ((*itr)->type == this->identify && (*itr)->children.size() > 0)
-            {
-                Record *int_arr_questionmark = symboltable->lookup((*itr)->value);
-                if (int_arr_questionmark)
-                {
-                    if (int_arr_questionmark->dtype != "IntArr")
+                    Record *check_identifier = symboltable->lookup(return_node->value);
+                    if (!check_identifier)
                     {
-                        symboltable->add_error((*itr)->lineno, "Type Error");
-                    }
-                }
-            }
-            else if ((*itr)->type == this->mclass)
-            {
-                symboltable->enterScope();
-                check_assignment(symboltable, *itr);
-                symboltable->exitScope();
-            }
-
-            else if ((*itr)->type == this->classdec)
-            {
-                symboltable->enterScope();
-                check_assignment(symboltable, *itr);
-                symboltable->exitScope();
-            }
-            else if ((*itr)->type == this->midentify)
-            {
-                symboltable->enterScope();
-                check_assignment(symboltable, *itr);
-                symboltable->exitScope();
-            }
-            else if ((*itr)->type == lt || (*itr)->type == gt || (*itr)->type == eq || (*itr)->type == "And" || (*itr)->type == "Or" || (*itr)->type == "Plus")
-            {
-
-                std::string swag_yolo = check_leafs2((*itr), symboltable);
-
-                if (swag_yolo == "")
-                {
-                    // std::cout << "ERROR IN CHECK ASSIGNMENT INVALID COMPARISON-> "
-                    //           << "ID: " << (*itr)->value << " TYPE: " << (*itr)->type << " DTYPE: " << swag_yolo << " LINENUMBER: " << (*itr)->lineno << std::endl;
-                    symboltable->add_error((*itr)->lineno, "Comparison-");
-                }
-
-                check_assignment(symboltable, *itr);
-            }
-            else
-            {
-                check_assignment(symboltable, *itr);
-            }
-        }
-    }
-    std::string check_leafs2(Node *node, SymbolTable *symboltable)
-    {
-        if ((node->type == plus || node->type == gt || node->type == lt))
-        {
-            auto child1 = std::next(node->children.begin(), 0);
-            if ((*child1)->type == fcall)
-            {
-                return check_fcall_type(symboltable, (*child1));
-            }
-            if (node->children.size() > 1)
-            {
-                if ((node->type == gt || node->type == lt))
-                {
-                    std::string grej;
-                    std::string temp;
-                    for (auto child : node->children)
-                    {
-                        temp = check_leafs(child, symboltable);
-                        if (grej.empty())
-                        {
-                            grej = temp;
-                        }
-                        if (temp != grej)
-                        {
-                            return "";
-                        }
-                    }
-                    if (temp == "Boolean")
-                        return "";
-                    return grej;
-                }
-
-                std::string hej = check_leafs(node, symboltable);
-                if (hej == "Boolean")
-                {
-                    return "";
-                }
-            }
-        }
-
-        if (node->isLeaf())
-        {
-            // Return the node's 'hej' value
-
-            if (node->type == identify)
-            {
-                Record *rec = symboltable->lookup(node->value);
-
-                if (!rec)
-                {
-                    // std::cout << "ERROR IN CHECK LEAFES NO RECORD FOUND FOR-> "
-                    //           << "ID: " << node->value << " TYPE: " << node->type << " Dtype: " << node->dtype << " LINENUMBER: " << node->lineno << std::endl;
-                    symboltable->add_error(node->lineno, "No Record-");
-                    return "";
-                }
-
-                return rec->dtype;
-            }
-
-            if (node->type == thiss)
-            {
-                Record *rec = symboltable->lookup("this");
-                if (!rec)
-                {
-
-                    // std::cout << "ERROR IN CHECK LEAFES NO RECORD FOUND FOR-> "
-                    //           << "ID: " << node->value << " TYPE: " << node->type << " Dtype: " << node->dtype << " LINENUMBER: " << node->lineno << std::endl;
-                    symboltable->add_error(node->lineno, "No Record-");
-                    return "";
-                }
-                return rec->dtype;
-            }
-
-            return node->dtype;
-        }
-
-        else if (node->type == fcall)
-        {
-            return check_fcall_type(symboltable, node);
-        }
-        else if (node->type == "ArrDec")
-        {
-            return "Int";
-        }
-        else if (node->type == "IntArrDec")
-        {
-            return "IntArr";
-        }
-        else if (node->type == gt || node->type == lt)
-        {
-            return "Boolean";
-        }
-
-        else
-        {
-            // Recursively check all child nodes
-            std::string common = "";
-            for (auto child : node->children)
-            {
-                std::string child_dtype = check_leafs2(child, symboltable);
-
-                // std::cout << "dsdadasdas: " << child_dtype << std::endl;
-                if (common.empty())
-                {
-                    common = child_dtype;
-                }
-                // else if ((common == "IntArr" && child_dtype == "Int"))
-                //{
-                //
-                //    return common;
-                //}
-                else if (child_dtype != common)
-                {
-                    // std::cout << "THESE ARE NOT EQUAL!" << child_dtype << " == " << common << " children size = " << child->children.size() << "LINE NUMBER: " << child->lineno << std::endl;
-                    symboltable->add_error(child->lineno, "Failed Comparison-");
-                    return "";
-                }
-            }
-            if (common == "IntArr")
-            {
-                return "";
-            }
-            return common;
-        }
-    }
-    Class *fcall_check_first_child(SymbolTable *symboltable, Node *i)
-    {
-        if (i->type == newvar)
-        {
-            Class *rec2 = symboltable->lookup2(i->value);
-            if (rec2)
-            {
-                return rec2;
-            }
-
-            Record *rec = symboltable->lookup(i->value);
-
-            if (rec == NULL)
-            {
-                // std::cout << "ERROR IN (fcall_chick_first_child)NO RECORD FOUND FOR-> "
-                //           << "ID: " << i->value << " TYPE: " << i->type << " LINENUMBER: " << i->lineno << std::endl;
-
-                symboltable->add_error(i->lineno, "No Record-");
-                return NULL;
-            }
-
-            symboltable->printCurrent();
-            Class *cls = dynamic_cast<Class *>(rec);
-            if (cls == nullptr)
-            {
-                // std::cout << "NO CLASS FOUND FOR-> "
-                //           << "ID: " << i->value << " TYPE: " << i->type << " LINENUMBER: " << i->lineno << std::endl;
-                // symboltable->printCurrent();
-                symboltable->add_error(i->lineno, "No Class found-");
-                return NULL;
-            }
-            return cls;
-        }
-        else if (i->type == thiss)
-        {
-            Record *rec = symboltable->lookup("this");
-
-            if (rec == NULL)
-            {
-                symboltable->add_error(i->lineno, "No Record-");
-                return NULL;
-            }
-            Class *cls = symboltable->lookup2(rec->type);
-            // rec2->printRecord();
-            // Class *cls = dynamic_cast<Class *>(rec2);
-            if (cls == nullptr)
-            {
-
-                symboltable->add_error(i->lineno, "No Class found-");
-                return NULL;
-            }
-            return cls;
-
-            // Det kan också vara en identifier och det kan vara ett fcall.
-        }
-        else if (i->type == identify)
-        {
-            Record *rec = symboltable->lookup(i->value);
-            if (rec == NULL)
-            {
-                // std::cout << "(FCall identifier)NO RECORD FOUND FOR-> "
-                //           << "ID: " << i->value << " TYPE: " << i->dtype << " LINENUMBER: " << i->lineno << std::endl;
-
-                symboltable->add_error(i->lineno, "No Record: " + i->value + "-");
-                return NULL;
-            }
-            Record *rec2 = symboltable->lookup(rec->dtype);
-            if (rec2 == NULL)
-            {
-                // std::cout << "(FCall identifier)NO RECORD2 FOUND FOR-> "
-                //           << "ID: " << i->value << " TYPE: " << i->dtype << " LINENUMBER: " << i->lineno << std::endl;
-                symboltable->add_error(i->lineno, "No Record: " + i->value + "-");
-
-                return NULL;
-            }
-            Class *cls = dynamic_cast<Class *>(rec2);
-            if (cls == nullptr)
-            {
-                // std::cout << "(FCall identifier)NO CLASS FOUND FOR-> "
-                //           << "ID: " << i->value << " TYPE: " << i->type << " LINENUMBER: " << i->lineno << std::endl;
-                symboltable->add_error(i->lineno, "No Record: " + i->value + "-");
-                return NULL;
-            }
-            return cls;
-        }
-        else
-        {
-            auto child1 = std::next(i->children.begin(), 0);
-
-            return fcall_check_first_child(symboltable, (*child1));
-        }
-
-        return NULL;
-    }
-
-    std::string semantic_analysis_methods(SymbolTable *symboltable, Node *i)
-    {
-        std::string dtype_check;
-
-        for (auto itr = i->children.begin(); itr != i->children.end(); itr++)
-        {
-
-            if ((*itr)->type == this->mclass)
-            {
-                symboltable->enterScope();
-                semantic_analysis_methods(symboltable, *itr);
-                symboltable->exitScope();
-            }
-            else if ((*itr)->type == this->midentify)
-            {
-
-                // Now we are in method scope
-                symboltable->enterScope();
-                auto method_type = std::next((*itr)->children.begin(), 1);
-
-                int index = (*itr)->children.size() - 1;
-                auto return_type = std::next((*itr)->children.begin(), index);
-                std::string return_type_string = (*return_type)->dtype;
-                if ((*return_type)->type == identify || (*return_type)->type == thiss)
-                {
-
-                    if ((*return_type)->type == thiss)
-                    {
-                        Record *rec = symboltable->lookup(thiss);
-                        if (rec)
-                        {
-                            return_type_string = rec->dtype;
-                        }
+                        symboltable->add_error(return_node->lineno, "Identifier " + return_node->value + " not declared");
                     }
                     else
                     {
-                        Record *rec_return = symboltable->lookup((*return_type)->value);
-                        if (rec_return)
+                        return_dtype = check_identifier->dtype;
+                    }
+                }
+                else if (return_node->type == "Int" )
+                {
+                    return_dtype = "Int";
+                }
+                else if (return_node->type == "ArrDec")
+                {
+                    std::vector<Node *> ArrDec_children(return_node->children.begin(), return_node->children.end());
+                    if(ArrDec_children[1]->type == "FCall")
+                    {
+                        std::string ArrDec_fcall = validate_fcall(symboltable,ArrDec_children[1]);
+                        return_dtype = validate_fcall(symboltable,ArrDec_children[1]);
+                    }
+                    else
+                    {
+                        return_dtype = "Int";
+                    }
+                }
+                else if (return_node->type == "True" || return_node->type == "false"||return_node->type == "Boolean")
+                {
+                    return_dtype = "Boolean";
+                }
+                else if (return_node->type == "NewVar")
+                {
+                    return_dtype = return_node->value;
+                }
+                else if (return_node->type == "Num")
+                {
+                    return_dtype = "Int";
+                }
+                else if (return_node->type == "this")
+                {
+                    
+                    Record *this_record = symboltable->lookup("this");
+                    Record *this_class = symboltable->lookup(this_record->dtype);
+                    Class *check_class_class = dynamic_cast<Class *>(this_class);
+                    return_dtype = check_class_class->id;
+                }
+                else if (return_node->type == "FCall")
+                {
+                    return_dtype = validate_fcall(symboltable, return_node);
+                }
+                if (return_dtype != method_type->dtype)
+                {
+                    symboltable->add_error((*child)->lineno, "Wrong return type : " + return_dtype + " != " + method_type->dtype);
+                }
+
+                (*child)->semantic_analysis(symboltable);
+                symboltable->exitScope();
+            }
+            else if ((*child)->type == "Plus" || (*child)->type == "Divide" || (*child)->type == "Minus" || (*child)->type == "Mult" || (*child)->type == "Gt" || (*child)->type == "Lt")
+            {
+
+                for (auto grand_child = (*child)->children.begin(); grand_child != (*child)->children.end(); grand_child++)
+                {
+                    if ((*grand_child)->type == "Plus" || (*grand_child)->type == "Divide" || (*grand_child)->type == "Minus" || (*grand_child)->type == "Mult" || (*grand_child)->type == "Gt" || (*grand_child)->type == "Lt")
+                    {
+                        (*grand_child)->semantic_analysis(symboltable);
+                    }
+                    else if ((*grand_child)->type == "Identifier")
+                    {
+                        Record *check_identifier = symboltable->lookup((*grand_child)->value);
+
+                        if (check_identifier && check_identifier->dtype != "Int") // We dont need to check if the identifier have been declared here, that have been done in create symbol table. we only need to an error msg if it is not of type Int
                         {
-                            return_type_string = rec_return->dtype;
+                            if ((!(*grand_child)->children.size() == 1 && check_identifier->dtype == "IntArr")) // This is if the length of an array is used.
+                            {
+                                symboltable->add_error((*grand_child)->lineno, "Wrong type in numerical expression: " + (*grand_child)->type);
+                            }
+                            else if ((!(*grand_child)->children.size() == 1 && check_identifier->dtype == "Int")) // kolla här
+                            {
+
+                                symboltable->add_error((*grand_child)->lineno, "This type doesnt have length " + (*grand_child)->type);
+                            }
+                            else if (check_identifier->dtype != "Int")
+                            {
+                                symboltable->add_error((*grand_child)->lineno,check_identifier->id+" is of type: "  +check_identifier->dtype + " not of type: Int");
+                            }
+                        }
+                        else if ((*grand_child)->children.size() != 0)
+                        {
+                            symboltable->add_error((*grand_child)->lineno, check_identifier->dtype + " Identifier: " + (*grand_child)->value + " does not have length");
                         }
                     }
+                    else if ((*grand_child)->type == "FCall")
+                    {
+                        // HÄR MÅSTE VI HANTERA FUNKTION CALL PÅ NÅGOT SÄTT!
+                        // Funktionscallet måste bli INT här.
+                    }
+                    else if ((*grand_child)->type != "Int" && (*grand_child)->type != "Num")
+                    {
+                        symboltable->add_error((*grand_child)->lineno, "Wrong type in numerical expression: " + (*grand_child)->type);
+                    }
                 }
-                else if ((*return_type)->type == "Plus" || (*return_type)->type == "Minus" || (*return_type)->type == "Divide" || (*return_type)->type == "Mult")
-                {
-                    return_type_string = check_leafs(*return_type, symboltable);
-                }
-
-                if ((*return_type)->type == fcall)
-                {
-                    return_type_string = check_fcall_type(symboltable, (*return_type));
-                }
-                if (((*method_type)->dtype != return_type_string))
-                {
-                    // std::cout
-                    //<< "ERROR Method type dont match return type for: " << (*method_type)->value << " LINENUMBER: " << (*method_type)->lineno << std::endl;
-                    symboltable->add_error((*method_type)->lineno, "Return typt dont match: " + (*method_type)->value + "-");
-                }
-
-                (*itr)->semantic_analysis_methods(symboltable, *itr);
-
-                symboltable->exitScope();
             }
-            else if ((*itr)->type == this->classdec)
+            else if ((*child)->type == "And" || (*child)->type == "Or")
             {
-                symboltable->enterScope();
-                (*itr)->semantic_analysis_methods(symboltable, *itr);
-                symboltable->exitScope();
+                for (auto grand_child = (*child)->children.begin(); grand_child != (*child)->children.end(); grand_child++)
+                { // MAYBE WE HAVE NOT THOUGT ABOUT EVERY CASE FOR NOT :)
+                    if ((*grand_child)->type == "And" || (*grand_child)->type == "Or" || (*grand_child)->type == "Gt" || (*grand_child)->type == "Lt" || (*grand_child)->type == "==" )
+                    {
+                        (*grand_child)->print_node();
+                        (*grand_child)->semantic_analysis(symboltable);
+                    }
+                    else if ((*grand_child)->type == "Not")
+                    {
+                        std::string test_dtype = check_datatype(symboltable,(*grand_child) );
+                        (*grand_child)->print_node(test_dtype);
+                    }
+                    else if ((*grand_child)->type == "Identifier")
+                    {
+                        Record *check_identifier = symboltable->lookup((*grand_child)->value);
+                        if (check_identifier && check_identifier->dtype != "Boolean") // We dont need to check if the identifier have been declared here, that have been done in create symbol table. we only need to an error msg if it is not of type Int
+                            symboltable->add_error((*grand_child)->lineno, "Wrong type in boolean expression: " + (*grand_child)->type);
+                    }
+                    else if ((*grand_child)->type != "Boolean") // may have to do something here if it is valid to do something like "int && int"
+                    {
+                        symboltable->add_error((*grand_child)->lineno, "Wrong type in boolean expression: " + (*grand_child)->type);
+                    }
+                }
             }
-
-            else if ((*itr)->type == this->fcall)
+            else if ((*child)->type == "Eq")
             {
-                (*itr)->semantic_analysis_methods(symboltable, *itr);
+                auto grand_child1 = std::next((*child)->children.begin(), 0);
+                Record *grand_child_exists = symboltable->lookup((*grand_child1)->value);
+                std::string grand_child_dtype1 = check_dtype_eq(symboltable, (*grand_child1));
 
-                auto class_node = std::next((*itr)->children.begin(), 0);
-                auto argument_node = std::next((*itr)->children.begin(), 2);
-                Class *hej = fcall_check_first_child(symboltable, (*class_node));
-
-                std::string test = check_leafs((*class_node), symboltable);
-                if (test == "Int")
+                auto grand_child2 = std::next((*child)->children.begin(), 1);
+                std::string grand_child_dtype2 = check_dtype_eq(symboltable, (*grand_child2));
+                if (grand_child_dtype1 != grand_child_dtype2)
                 {
-                    return "";
+                    symboltable->add_error((*child)->lineno, "Type mismatch in equality expression: " + grand_child_dtype1 + " and " + grand_child_dtype2);
                 }
-                Record *test2 = symboltable->lookup2(test);
-                Class *test3 = dynamic_cast<Class *>(test2);
-                std::string dtype2 = check_fcall_type(symboltable, (*class_node));
+            }
+            else if ((*child)->type == "VarDeclaration")
+            {
+                // This section will is for when a new variable is declared that is of class. We need to check if that class exists.
+                Variable *var_declaration = new Variable();
+                var_declaration->type = (*child)->type;
+                var_declaration->dtype = (*child)->dtype;
+                var_declaration->id = (*child)->value;
 
-                auto method_node = std::next((*itr)->children.begin(), 1);
-
-                if (!test3)
+                if (var_declaration->dtype != "Int" && var_declaration->dtype != "Boolean" && var_declaration->dtype != "IntArr")
                 {
-                    (*itr)->print_node(test);
-                }
-                Method *tja = test3->lookupMethod((*method_node)->value);
-
-                if (tja)
-                {
-                    if ((*argument_node)->children.size() != tja->Parameters2.size())
+                    Record *type_check = symboltable->lookup((*child)->dtype);
+                    if (type_check == nullptr)
                     {
 
-                        // std::cout << "ERROR METHOD PARAMS DOES NOT EQUAL THE ARGUMETNTS IN SIZE: " << (*method_node)->value << " LINENUMBER:  " << (*method_node)->lineno << std::endl;
-                        symboltable->add_error((*method_node)->lineno, "Wrong number of arguments: " + (*method_node)->value + "-");
+                        symboltable->add_error((*child)->lineno, "Type " + (*child)->dtype + " not declared");
                     }
-                    dtype_check = tja->dtype;
-
-                    check_arguments(symboltable, (*argument_node), tja->Parameters2);
+                }
+            }
+            else if ((*child)->type == "ArrModifier")
+            {
+                // Check first child
+                auto grand_child1 = std::next((*child)->children.begin(), 0);
+                Record *grand_child_exists = symboltable->lookup((*grand_child1)->value);
+                if (grand_child_exists->dtype != "IntArr")
+                {
+                    symboltable->add_error((*child)->lineno, "Not an array" + (*grand_child1)->value);
                 }
 
+                // Check second child
+                auto grand_child2 = std::next((*child)->children.begin(), 1);
+                std::string grand_child_dtype2 = check_dtype_arrmodifier(symboltable, (*grand_child2));
+
+                if (grand_child_dtype2 != "Int")
+                {
+                    symboltable->add_error((*child)->lineno, "Not a valid datatype for index: " + (*grand_child2)->value);
+                }
+
+                // Check third child
+                auto grand_child3 = std::next((*child)->children.begin(), 2);
+                if ((*grand_child3)->children.size() == 1) // may hav eto do a look here to make sure it is not a array
+                {
+                    symboltable->add_error((*child)->lineno, "Cannot take length of integer: " + (*grand_child3)->value);
+                }
+                std::string grand_child_dtype3 = check_dtype_arrmodifier(symboltable, (*grand_child3));
+                if (grand_child_dtype3 != "Int")
+                {
+                    symboltable->add_error((*child)->lineno, "Not a valid datatype for value of arraymodifier: " + (*grand_child3)->value);
+                }
+            }
+            else if ((*child)->type == "Assignment")
+            {
+                // Here we will check that each assignment will have the same type on both sides of the equalssign.
+                // We assume that any encountered PLUS MINUS MULT DIVIDE LT Gt have been correctly evaluated.
+                // We should also be able to assume that any AND OR and == also are correctly but this is not implemented yet.
+                
+                auto grand_child1 = std::next((*child)->children.begin(), 0);
+                Record *grand_child_exists = symboltable->lookup((*grand_child1)->value);
+                std::string grand_child_dtype1;
+                if(grand_child_exists)
+                {
+                    grand_child_dtype1 = grand_child_exists->dtype;
+                }
                 else
                 {
-                    // std::cout << "ERROR METHOD DOES NOT EXIST: " << (*method_node)->value << " LINENUMBER:  " << (*method_node)->lineno << std::endl;
-                    symboltable->add_error((*method_node)->lineno, "Method does not exist " + (*method_node)->value + "-");
+                    grand_child_dtype1 = (*grand_child1)->value + " isnon";
                 }
+                auto grand_child2 = std::next((*child)->children.begin(), 1);
+                std::string grand_child_dtype2;
+
+                if ((*grand_child2)->type == "Identifier")
+                {
+
+                    Record *grand_child2_exists = symboltable->lookup((*grand_child2)->value);
+                    if (!((*grand_child2)->children.size() == 1 && grand_child2_exists->dtype == "IntArr")) // This is if the length of an array is used.
+                    {
+                        grand_child_dtype2 = grand_child2_exists->dtype;
+                    }
+                    else
+                    {
+                        grand_child_dtype2 = "Int";
+                    }
+                }
+                else if ((*grand_child2)->type == "Boolean" || (*grand_child2)->type == "And" || (*grand_child2)->type == "Or" || (*grand_child2)->type == "Lt" || (*grand_child2)->type == "Gt" || (*grand_child2)->type == "==" || (*grand_child2)->type == "Not")
+                {
+                    grand_child_dtype2 = "Boolean";
+                }
+                else if ((*grand_child2)->type == "Int" || (*grand_child2)->type == "Num" || (*grand_child2)->type == "Plus" || (*grand_child2)->type == "Divide" || (*grand_child2)->type == "Minus" || (*grand_child2)->type == "Mult")
+                {
+                    grand_child_dtype2 = "Int";
+                }
+                else if ((*grand_child2)->type == "FCall")
+                {
+                   
+                    // Do something
+                    grand_child_dtype2 = validate_fcall(symboltable, (*grand_child2));
+                    // Kolla arguments here?
+                }
+                else if ((*grand_child2)->type == "IntArrDec")
+                {
+                    grand_child_dtype2 = "IntArr";
+                }
+                else if ((*grand_child2)->type == "ArrDec")
+                {
+                    grand_child_dtype2 = "Int";
+                }
+                else if ((*grand_child2)->type == "this")
+                {
+                    Record *this_record = symboltable->lookup("this");
+                    grand_child_dtype2 = this_record->dtype;
+                }
+                else if ((*grand_child2)->type == "NewVar")
+                {
+
+                    Record *newvar_record = symboltable->lookup((*grand_child2)->value);
+                    grand_child_dtype2 = newvar_record->id;
+                }
+                if (grand_child_dtype1 != grand_child_dtype2)
+                {
+                    symboltable->add_error(((*grand_child1)->lineno), "Wrong types for assignment of: " + grand_child_dtype1 + " + " + grand_child_dtype2);
+                }
+
+                (*child)->semantic_analysis(symboltable);
             }
             else
             {
-
-                (*itr)->semantic_analysis_methods(symboltable, *itr);
+                (*child)->semantic_analysis(symboltable);
             }
-        }
-        return dtype_check;
-    }
-
-    void check_arguments2(SymbolTable *symboltable, Node *itr, std::vector<Variable *> params)
-    {
-        if (itr->children.size() == 0)
-        {
-            auto firstchild = std::next(itr->children.begin(), 0);
-            if ((*firstchild)->type == fcall)
-            {
-                std::string data_typ = semantic_analysis_methods(symboltable, (*firstchild));
-                std::cout << data_typ << std::endl;
-            }
-            return;
         }
     }
 
-    void check_arguments(SymbolTable *symboltable, Node *itr, std::vector<Variable *> params)
+    // ONLY USE WHEN CHECKING ARRAY MODIFIER!
+    std::string check_dtype_arrmodifier(SymbolTable *symboltable, Node *node)
     {
-
-        int i = 0;
-        if (itr->isLeaf())
+        std::string node_dtype;
+        if (node->type == "Plus" || (node)->type == "Divide" || (node)->type == "Minus" || (node)->type == "Mult" || (node)->type == "Int" || (node)->type == "Num")
         {
-            return;
+            node_dtype = "Int";
         }
-
-        auto thirdchild = std::next(itr->children.begin(), 1);
-
-        for (auto child : itr->children)
+        else if (node->type == "Identifier")
         {
-
-            if (child->type == identify)
+            Record *node_exists = symboltable->lookup((node)->value);
+            if (!(node->children.size() == 1 && node_exists->dtype == "IntArr")) // This is if the length of an array is used.
             {
-                Record *rec = symboltable->lookup(child->value);
-
-                if (rec->dtype != params[i]->dtype)
-                {
-
-                    // std::cout << "ERROR (FCALL) WRONG TYPE FOR ARGUMENT: " << (*thirdchild)->value << " On index: " << i << "LINE NUMBER: " << (*thirdchild)->lineno << std::endl;
-                    symboltable->add_error((*thirdchild)->lineno, "Wrong type for arguments: " + (*thirdchild)->value + "-");
-                }
+                node_dtype = node_exists->dtype;
             }
-            else if (child->value == thiss)
-            {
-                Record *rec = symboltable->lookup(child->value);
-                if (rec->dtype != params[i]->dtype)
-                {
-
-                    // std::cout << "ERROR (FCALL) WRONG TYPE FOR ARGUMENT: " << (*thirdchild)->value << " On index: " << i << "LINE NUMBER: " << (*thirdchild)->lineno << std::endl;
-                    symboltable->add_error((*thirdchild)->lineno, "Wrong type for arguments: " + (*thirdchild)->value + "-");
-                }
-            }
-            else if (child->type == mult || child->type == divide || child->type == minus || child->type == plus)
-            {
-                std::string child_type = check_leafs(child, symboltable);
-                if (child_type != params[i]->dtype)
-                {
-                    // std::cout << "ERROR (FCALL) WRONG TYPE FOR ARGUMENT: " << (*thirdchild)->value << " On index: " << i << " LINENUMBER: " << (*thirdchild)->lineno << std::endl;
-                    symboltable->add_error((*thirdchild)->lineno, "Wrong type for arguments: " + (*thirdchild)->value + "-");
-                }
-            }
-            else if (child->type == fcall)
-            {
-
-                std::string child_type = semantic_analysis_methods(symboltable, itr);
-                // std::string child_type = check_leafs(child, symboltable);
-
-                if (child_type != params[i]->dtype)
-                {
-                    // itr->print_node("ERROR");
-                    //  std::cout << "ERROR (FCALL) WRONG TYPE FOR ARGUMENT: " << (*thirdchild)->value << " On index: " << i << " LINENUMBER: " << (*thirdchild)->lineno << std::endl;
-                    symboltable->add_error(itr->lineno, "Wrong type for arguments: " + itr->value + "-");
-                }
-            }
-
-            else if (child->type == newvar)
-            {
-
-                Record *rec = symboltable->lookup(child->value);
-                if (rec->dtype != params[i]->dtype)
-                {
-
-                    // std::cout << "ERROR (FCALL) WRONG TYPE FOR ARGUMENT: " << (*thirdchild)->value << " On index: " << i << "LINE NUMBER: " << (*thirdchild)->lineno << std::endl;
-                    symboltable->add_error((*thirdchild)->lineno, "Wrong type for arguments: " + (*thirdchild)->value + "-");
-                }
-            }
-            i++;
         }
+        else if ((node)->type == "FCall")
+        {
+            // Do something
+        }
+        return node_dtype;
     }
-
-    void check_int_arrs(SymbolTable *symboltable, Node *i)
+    std::string check_dtype_eq(SymbolTable *symboltable, Node *node)
     {
-
-        for (auto child : i->children)
+        std::string node_dtype;
+        if ((node)->type == "Identifier")
         {
-            if (child->type == this->mclass)
+
+            Record *grand_child2_exists = symboltable->lookup(node->value);
+            if (!(node->children.size() == 1 && grand_child2_exists->dtype == "IntArr")) // This is if the length of an array is used.
             {
-                symboltable->enterScope();
-                check_int_arrs(symboltable, child);
-                symboltable->exitScope();
+                node_dtype = grand_child2_exists->dtype;
             }
-
-            else if (child->type == this->classdec)
-            {
-                symboltable->enterScope();
-                check_int_arrs(symboltable, child);
-                symboltable->exitScope();
-            }
-            else if (child->type == this->midentify)
-            {
-                symboltable->enterScope();
-                check_int_arrs(symboltable, child);
-                symboltable->exitScope();
-            }
-            else if (child->type == arrmodifier)
-            {
-                auto target_child = std::next(child->children.begin(), 0);
-                std::string target_child_stroonk = check_leafs((*target_child), symboltable);
-
-                if (target_child_stroonk != "IntArr")
-                {
-                    // std::cout << "ERROR (ARRMODIFIER) WRONG TYPE FOR TARGET: " << (*target_child)->value << " LINENUMBER: " << (*target_child)->lineno << std::endl;
-                    symboltable->add_error((*target_child)->lineno, "Array modifier wrong type: " + (*target_child)->value + "-");
-                }
-
-                auto index_child = std::next(child->children.begin(), 1);
-
-                auto value_child = std::next(child->children.begin(), 2);
-
-                if ((*index_child)->type == mult || (*index_child)->type == divide || (*index_child)->type == minus || (*index_child)->type == plus || (*index_child)->type == identify)
-                {
-                    std::string child_type_i = check_leafs((*index_child), symboltable);
-                    if (child_type_i != "Int")
-                    {
-                        // std::cout << "ERROR (ARRMODIFIER, INDEX) WRONG TYPE FOR ARGUMENT: " << (*index_child)->value << " Line number: " << (*index_child)->lineno << std::endl;
-                        symboltable->add_error((*target_child)->lineno, "Array modifier wrong type argument: " + (*target_child)->value + "-");
-                    }
-                }
-                else if ((*index_child)->dtype != "Int")
-                {
-                    // std::cout << "ERROR (ARRMODIFIER) WRONG TYPE FOR INDEX: " << (*index_child)->value << " LINENUMBER: " << (*index_child)->lineno << std::endl;
-                    symboltable->add_error((*index_child)->lineno, "Array modifier wrong type index: " + (*index_child)->value + "-");
-                }
-
-                if ((*value_child)->type == mult || (*value_child)->type == divide || (*value_child)->type == minus || (*value_child)->type == plus || (*value_child)->type == identify)
-                {
-                    std::string child_type_v = check_leafs((*value_child), symboltable);
-                    if (child_type_v != "Int")
-                    {
-                        // std::cout << "ERROR (ARRMODIFIER, VALUE) WRONG TYPE FOR ARGUMENT: " << (*value_child)->value << " LINENUMBER " << (*value_child)->lineno << std::endl;
-                        symboltable->add_error((*index_child)->lineno, "Array modifier wrong type argument: " + (*value_child)->value + "-");
-                    }
-                }
-                else if ((*value_child)->type == "ArrDec")
-                {
-                    // look på vänstra barn noden och kolla så att det är en intarr
-                    // på högra noden måste vi kolla så att det är en int.
-                    auto child1 = std::next((*value_child)->children.begin(), 0);
-                    std::string child1_string = check_leafs((*child1), symboltable);
-                    auto child2 = std::next((*value_child)->children.begin(), 1);
-                    std::string child2_string = check_leafs((*child2), symboltable);
-
-                    if (child1_string != "IntArr" && child2_string != "Int")
-                    {
-                        // std::cout << "ERROR (ARRMODIFIER, VALUE) WRONG TYPE FOR ARGUMENT: " << (*value_child)->value << " LINENUMBER " << (*value_child)->lineno << std::endl;
-                        symboltable->add_error((*value_child)->lineno, "Array modifier wrong type argument: " + (*value_child)->value + "-");
-                    }
-                }
-                else if ((*value_child)->dtype != "Int")
-                {
-                    // std::cout << "ERROR (ARRMODIFIER) WRONG TYPE FOR VALUE: " << (*value_child)->dtype << "LINE NUMBER: " << (*value_child)->lineno << std::endl;
-                    symboltable->add_error((*value_child)->lineno, "Array modifier wrong type value: " + (*value_child)->value + "-");
-                }
-                check_int_arrs(symboltable, child);
-            }
-            else if (child->type == "ArrDec")
-            {
-                // look på vänstra barn noden och kolla så att det är en intarr
-                // på högra noden måste vi kolla så att det är en int.
-                auto child1 = std::next(child->children.begin(), 0);
-                std::string child1_string = check_leafs((*child1), symboltable);
-                auto child2 = std::next(child->children.begin(), 1);
-                std::string child2_string = check_leafs((*child2), symboltable);
-
-                if (child1_string != "IntArr" || child2_string != "Int")
-                {
-                    // std::cout << "ERROR (ARRMODIFIER, VALUE) WRONG TYPE FOR ARGUMENT: " << child->value << " LINENUMBER " << child->lineno << std::endl;
-                    symboltable->add_error(child->lineno, "Array modifier wrong type argument: " + child->value + "-");
-                }
-                check_int_arrs(symboltable, child);
-            }
-
             else
             {
-                check_int_arrs(symboltable, child);
+                node_dtype = "Int";
             }
         }
-    };
+        else if (node->type == "Boolean" || node->type == "And" || node->type == "Or" || node->type == "Lt" || node->type == "Gt")
+        {
+            node_dtype = "Boolean";
+        }
+        else if (node->type == "==")
+        {
+
+            node_dtype = "Boolean";
+            node->semantic_analysis(symboltable);
+        }
+        else if (node->type == "Int" || node->type == "Num" || node->type == "Plus" || node->type == "Divide" || node->type == "Minus" || node->type == "Mult")
+        {
+            node_dtype = "Int";
+        }
+        else if (node->type == "FCall")
+        {
+            // Do something
+        }
+        else if (node->type == "IntArr")
+        {
+            node_dtype = "IntArr"; // This mamybe need changing
+        }
+        return node_dtype;
+    }
+
+    std::string validate_fcall(SymbolTable *symboltable, Node *node)
+    {
+
+        if (node->type == "FCall")
+        {
+            
+     
+            fcall_check_arguments(symboltable, node);
+
+            auto child1 = std::next(node->children.begin(), 0);
+            auto child2 = std::next(node->children.begin(), 1);
+            if ((*child1)->type == "Identifier")
+            {
+                // Lookvariabel up på identifiern för current_class för att kolla att den variabeln är deklarerad
+                Record *check_identifier = symboltable->lookup((*child1)->value);
+                if (!check_identifier)
+                {
+                    symboltable->add_error((*child1)->lineno, "Identifier " + (*child1)->value + " not declared");
+                }
+
+                // Göra en lookup på den datatypen för att kolla att den classen är deklarerad
+                Record *check_class = symboltable->lookup(check_identifier->dtype); // BLIR FEL HÄR!
+                if (!check_class)
+                {
+                    symboltable->add_error((*child1)->lineno, "Class " + check_identifier->dtype + " not declared");
+                }
+                Class *check_class_class = dynamic_cast<Class *>(check_class);
+
+                if (check_class_class == nullptr)
+                {
+                    symboltable->add_error((*child1)->lineno, "Class cast failed: " + check_identifier->dtype);
+                }
+
+                // göra en lookupmethod lookupmethod för child->value på den klassen
+                Method *check_method = check_class_class->lookupMethod((*child2)->value);
+                if (check_method == nullptr)
+                {
+                    symboltable->add_error((*child2)->lineno, "Method " + (*child2)->value + " not declared in class: " + check_class_class->id);
+                    return "NoDtype";
+                }
+                return check_method->dtype;
+            }
+            else if ((*child1)->type == "NewVar")
+            {
+                Record *newvar_record = symboltable->lookup((*child1)->value);
+                Class *newvar_class = dynamic_cast<Class *>(newvar_record);
+                if (newvar_class == nullptr)
+                {
+                    symboltable->add_error((*child1)->lineno, "Class cast failed: " + (*child1)->value);
+                    return "NoDtype";
+                }
+                Method *newvar_method = newvar_class->lookupMethod((*child2)->value);
+                if (newvar_method == nullptr)
+                {
+                    symboltable->add_error((*child2)->lineno, "Method " + (*child2)->value + " not declared in class: " + newvar_class->id);
+                    return "NoDtype";
+                }
+                return newvar_method->dtype;
+                // göra en look up child1 dtype som ska vara en klass
+                //  göra en lookupmethod för child -> value på den klassen
+            }
+            else if ((*child1)->type == "FCall")
+            {
+                std::string return_type = validate_fcall(symboltable, (*child1));
+
+                Record *fcall_record = symboltable->lookup(return_type);
+                if (!fcall_record)
+                {
+                    symboltable->add_error((*child1)->lineno, "Method " + (*child1)->value + " not declared in class: ");
+                    return "Nothingfound";
+                }
+
+                Class *fcall_class = dynamic_cast<Class *>(fcall_record);
+                Method *fcall_method = fcall_class->lookupMethod((*child2)->value);
+                if (fcall_method == nullptr)
+                {
+                    symboltable->add_error((*child2)->lineno, "Method " + (*child2)->value + " not declared in class: " + fcall_class->id);
+                    return "NoDtype";
+                }
+                return fcall_method->dtype;
+            }
+            else if ((*child1)->type == "this")
+            {
+                Record *this_record = symboltable->lookup("this");
+                Record *this_class = symboltable->lookup(this_record->dtype);
+                Class *check_class_class = dynamic_cast<Class *>(this_class);
+
+                Method *check_method = check_class_class->lookupMethod((*child2)->value);
+                if (check_method == nullptr)
+                {
+                    symboltable->add_error((*child2)->lineno, "Method " + (*child2)->value + " not declared in class: " + check_class_class->id);
+                    return "NoDtype";
+                }
+                return check_method->dtype;
+            }
+            else
+            {
+                return "";
+            }
+        }
+        return "";
+    }
+
+    void fcall_check_arguments(SymbolTable *symboltable, Node *node)
+    {
+        auto class_child = std::next(node->children.begin(), 0);
+        auto method_child = std::next(node->children.begin(), 1);
+        auto args_child = std::next(node->children.begin(), 2);
+        Class *check_class_class;
+        if ((*class_child)->type == "this")
+        {
+            Record *this_record = symboltable->lookup("this");
+            Record *this_class = symboltable->lookup(this_record->dtype);
+            check_class_class = dynamic_cast<Class *>(this_class);
+        }
+        else if ((*class_child)->type == "NewVar")
+        {
+            Record *newvar_record = symboltable->lookup((*class_child)->value);
+            check_class_class = dynamic_cast<Class *>(newvar_record);
+        }
+        else if ((*class_child)->type == "FCall")
+        {
+            std::string class_name = (*class_child)->validate_fcall(symboltable, (*class_child));
+
+            Record *this_class = symboltable->lookup(class_name);
+
+            if (!this_class)
+            {
+                symboltable->add_error((*class_child)->lineno, "Method " + (*class_child)->value + " not declared in class: ");
+                return;
+            }
+            check_class_class = dynamic_cast<Class *>(this_class);
+        }
+        else if ((*class_child)->type == "Identifier")
+        {
+            Record *check_identifier = symboltable->lookup((*class_child)->value);
+            Record *check_class = symboltable->lookup(check_identifier->dtype);
+            check_class_class = dynamic_cast<Class *>(check_class);
+        }
+
+        Method *check_method = check_class_class->lookupMethod((*method_child)->value);
+        if(!check_method)
+        {
+            return;
+        }
+        if ((*args_child)->children.size() != check_method->Parameters.size())
+        {
+            symboltable->add_error((*args_child)->lineno, "Wrong number of arguments in function call");
+            return;
+        }
+   
+
+        std::vector<Node *> arg_vector((*args_child)->children.begin(), (*args_child)->children.end());
+
+        int index = 0;
+        std::string temp;
+        while (index < check_method->Parameters.size())
+        {
+
+            if (arg_vector[index]->type == "Plus" || arg_vector[index]->type == "Divide" || arg_vector[index]->type == "Minus" || arg_vector[index]->type == "Mult" || arg_vector[index]->type == "Int" || arg_vector[index]->type == "Num")
+            {
+                temp = "Int";
+            }
+            else if (arg_vector[index]->type == "Boolean" || arg_vector[index]->type == "And" || arg_vector[index]->type == "Or" || arg_vector[index]->type == "Lt" || arg_vector[index]->type == "Gt" || arg_vector[index]->type == "==")
+            {
+                temp = "Boolean";
+            }
+            else if (arg_vector[index]->type == "FCall")
+            {
+                temp = validate_fcall(symboltable, arg_vector[index]);
+            }
+            else if (arg_vector[index]->type == "Identifier")
+            {
+                Record *check_identifier = symboltable->lookup(arg_vector[index]->value);
+                temp = check_identifier->dtype;
+            }
+            else if (arg_vector[index]->type == "this")
+            {
+                Record *this_record = symboltable->lookup("this");
+                Record *this_class = symboltable->lookup(this_record->dtype);
+                check_class_class = dynamic_cast<Class *>(this_class);
+                temp = check_class_class->id;
+            }
+            else if (arg_vector[index]->type == "IntArr")
+            {
+                temp = "IntArr";
+            }
+            else
+            {
+                temp = arg_vector[index]->dtype;
+            }
+
+            if (check_method->Parameters[index]->dtype != temp)
+            {
+                symboltable->add_error((*args_child)->lineno, "Wrong type of argument in function call");
+            }
+
+            index++;
+        }
+    }
+
+
+
+
+
+    std::string check_datatype(SymbolTable* symboltable,Node* node)
+    {
+        std::vector<Node *> children(node->children.begin(), node->children.end());
+        std::string return_dtype;
+        if (node->type == "Not")
+        {
+            return_dtype = check_datatype(symboltable,children[0]);
+            if(return_dtype != "Boolean")
+            {
+                symboltable->add_error(node->lineno,"Wrong type for Not");
+            }
+        }
+        else if(node->type == "Identifier")
+        {
+            Record* id_record = symboltable->lookup(node -> value);
+            if(!id_record)
+            {
+                return_dtype = "";
+            }
+            else
+            {
+                return_dtype = id_record ->dtype;
+            }
+        }
+        else if((node->type == "Boolean"))
+        {
+            return_dtype = "Boolean";
+        }
+
+
+
+
+        return return_dtype;
+    }
 };
 
 #endif

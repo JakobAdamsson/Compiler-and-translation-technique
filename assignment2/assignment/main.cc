@@ -57,9 +57,9 @@ int main(int argc, char **argv)
 
     if (parseSuccess && !lexical_errors)
     {
-      printf("\nThe compiler successfuly generated a syntax tree for the given input! \n");
+      //printf("\nThe compiler successfuly generated a syntax tree for the given input! \n");
 
-      printf("\nPrint Tree:  \n");
+      //printf("\nPrint Tree:  \n");
       try
       {
         // root->print_tree();

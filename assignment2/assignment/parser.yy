@@ -34,7 +34,7 @@ This file is a part of the course DV1655 Compiler and translation techniques at 
 %token <std::string> INT LBRACKET RBRACKET BOOLEAN ID SEMICOLON NUM TRUE 
 %token <std::string> FALSE THIS NEW NOT LPAREN RPAREN AND OR LT GT EQ PLUS
 %token <std::string> MINUS TIMES DIVIDE DOT LENGTH LBRACE RBRACE COMMA IF RETURN 
-%token <std::string> ELSE WHILE PRINT EQUALSIGN PUBLIC STATIC VOID MAIN STRING CLASS
+%token <std::string> ELSE WHILE PRINT EQUALSIGN PUBLIC STATIC VOID MAIN STRING CLASS TOKEN_DOLLAR TOKEN_CARET
 %token END 0 "end of file"
 
 //defition of operator precedence

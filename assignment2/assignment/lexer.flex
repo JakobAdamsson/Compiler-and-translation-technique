@@ -7,6 +7,8 @@ int lexical_errors = 0;
 %option yylineno noyywrap nounput batch noinput stack 
 %%
 
+\$                      { return yy::parser::make_TOKEN_DOLLAR(yytext); }
+\^                      { return yy::parser::make_TOKEN_CARET(yytext); }
 "int"                   {return yy::parser::make_INT(yytext);}
 "["                     {return yy::parser::make_LBRACKET(yytext);}
 "]"                     {return yy::parser::make_RBRACKET(yytext);}

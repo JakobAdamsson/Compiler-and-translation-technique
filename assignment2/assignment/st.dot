@@ -1,25 +1,58 @@
 digraph {
 n0 [label="Scope:root
- A
- invalid_array_integer
+ Element
+ Factorial
+ Thing
 "];
 n1 [label="Scope:
-invalid_array_integer this
+Factorial this
 "];
 n0 -> n1
 n2 [label="Scope:
-A a1()
-IntArr a2()
-A this
+Int a
+Boolean c
+Boolean d
+IntArr e
+Int func()
+Int func2()
+Thing this
+Element x
 "];
 n3 [label="Scope:
-Int num
-IntArr num_aux
+IntArr fung
 "];
 n2 -> n3
 n4 [label="Scope:
-Int a
 "];
 n2 -> n4
 n0 -> n2
+n5 [label="Scope:
+Boolean InBool()
+Boolean InBool2()
+Element InClass()
+Int InInt()
+Int InInt2()
+Int a
+Boolean b
+Element c
+Element this
+"];
+n6 [label="Scope:
+Int x
+"];
+n5 -> n6
+n7 [label="Scope:
+Int x
+"];
+n5 -> n7
+n8 [label="Scope:
+"];
+n5 -> n8
+n9 [label="Scope:
+"];
+n5 -> n9
+n10 [label="Scope:
+"];
+n5 -> n10
+n0 -> n5
 }

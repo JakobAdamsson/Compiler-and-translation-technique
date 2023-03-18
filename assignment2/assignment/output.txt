@@ -1,0 +1,276 @@
+Output:
+============================================
+File: test_files/*.java
+============================================
+============================================
+File: test_files/tree_validation/dangling_else.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+============================================
+File: test_files/tree_validation/operatorpriority.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+============================================
+File: test_files/lexical_errors/special_characters.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 1. Cannot generate a syntax for this input:syntax error, unexpected TOKEN_DOLLAR, expecting CLASS
+End of syntax errors!
+============================================
+File: test_files/lexical_errors/unsupported_comments.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 8. Cannot generate a syntax for this input:syntax error, unexpected DIVIDE, expecting CLASS
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/class_missing_closing_bracket.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 9. Cannot generate a syntax for this input:syntax error, unexpected end of file
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/illegal_class_name.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 11. Cannot generate a syntax for this input:syntax error, unexpected NUM, expecting ID
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/illegal_if_in_if_condition.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 11. Cannot generate a syntax for this input:syntax error, unexpected IF
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/illegal_print.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 11. Cannot generate a syntax for this input:syntax error, unexpected INT
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/illegal_type_declaration.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 9. Cannot generate a syntax for this input:syntax error, unexpected INT, expecting ID
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/invalid_class_signature.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 7. Cannot generate a syntax for this input:syntax error, unexpected EQUALSIGN, expecting LBRACE
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/invalid_method_call_1.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 11. Cannot generate a syntax for this input:syntax error, unexpected RPAREN
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/invalid_method_call_2.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 11. Cannot generate a syntax for this input:syntax error, unexpected ID, expecting LPAREN
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/invalid_method_call.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 11. Cannot generate a syntax for this input:syntax error, unexpected SEMICOLON, expecting LPAREN
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/method_missing_closing_bracket.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 14. Cannot generate a syntax for this input:syntax error, unexpected end of file, expecting RBRACE or PUBLIC
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/method_missing_return.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 12. Cannot generate a syntax for this input:syntax error, unexpected RBRACE, expecting LBRACE
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/no_main_func.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 2. Cannot generate a syntax for this input:syntax error, unexpected ID, expecting MAIN
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/no_statement_in_main.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 4. Cannot generate a syntax for this input:syntax error, unexpected RBRACE, expecting LBRACE
+End of syntax errors!
+============================================
+File: test_files/syntax_errors/statement_after_return.java
+============================================
+Syntax errors found! See the logs below:
+	@error at line 25. Cannot generate a syntax for this input:syntax error, unexpected ID, expecting RBRACE
+End of syntax errors!
+============================================
+File: test_files/valid/binarysearch.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+============================================
+File: test_files/valid/binarytree.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+============================================
+File: test_files/valid/bubblesort.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+============================================
+File: test_files/valid/factorial.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+============================================
+File: test_files/valid/linearsearch.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+============================================
+File: test_files/valid/linkedlist.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+============================================
+File: test_files/valid/quicksort.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+============================================
+File: test_files/valid/semantic_array_integer.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+============================================
+File: test_files/valid/semantic_duplicate_identifiers_separate_scope.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+============================================
+File: test_files/valid/semantic_method_call_in_boolean_expression.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+============================================
+File: test_files/valid/semantic_valid_method_call.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+============================================
+File: test_files/semantic_errors/duplicate_identifiers.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+Error line: 10: Variable a already declared in class: Factorial 
+Error line: 18: Method func already declared in class: Factorial 
+Error line: 19: Class Factorial already declared 
+Error line: 23: Variable b already declared in class: Pemis 
+Error line: 25: Paramater param already declared in method: Pen 
+Error line: 30: Variable param already declared in method: Pen2 
+============================================
+File: test_files/semantic_errors/invalid_array_integer.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+Error line: 11: Not a valid datatype for index: False 
+Error line: 13: Not valid index for array 
+Error line: 18: Not a valid datatype for value of arraymodifier: num 
+Error line: 24: Not an arraya 
+Error line: 26: Wrong return type : Int != IntArr 
+============================================
+File: test_files/semantic_errors/invalid_definitions.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+Error line: 14: Identifier e not declared Wrong types for assignment of: e isnon + Int 
+Error line: 15: Wrong types for assignment of: Int + Boolean 
+Error line: 16: Wrong types for assignment of: Int + IntArr 
+Error line: 21: Method zzFunc not declared in class: classdata Wrong types for assignment of: Boolean + NoDtype 
+Error line: 23: Method zFunc not declared in class: classtest Wrong types for assignment of: Boolean + NoDtype 
+Error line: 24: Wrong types for assignment of: Boolean + Int 
+Error line: 25: Wrong types for assignment of: Boolean + Int 
+Error line: 26: Wrong types for assignment of: Boolean + IntArr 
+Error line: 31: Wrong types for assignment of: IntArr + Int 
+Error line: 32: Wrong types for assignment of: IntArr + Boolean 
+Error line: 37: Wrong types for assignment of: classdata + Int 
+Error line: 38: Wrong types for assignment of: classdata + Boolean 
+Error line: 39: Wrong types for assignment of: classdata + IntArr 
+Error line: 45: Wrong types for assignment of: Int + Boolean 
+Error line: 46: Wrong types for assignment of: Int + IntArr 
+Error line: 47: Wrong types for assignment of: Int + classdata 
+Error line: 48: Wrong types for assignment of: Boolean + Int 
+Error line: 49: Wrong types for assignment of: Boolean + IntArr 
+Error line: 50: Wrong types for assignment of: Boolean + classdata 
+Error line: 51: Wrong types for assignment of: IntArr + Int 
+Error line: 52: Wrong types for assignment of: IntArr + Boolean 
+Error line: 53: Wrong types for assignment of: IntArr + classdata 
+Error line: 67: Type classthatdoesntExist not declared 
+Error line: 89: Identifier c not declared 
+============================================
+File: test_files/semantic_errors/invalid_nestedmethod_calls.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+Error line: 22: Wrong type of argument in function call Wrong type of argument in function call Wrong type of argument in function call Wrong type of argument in function call 
+Error line: 23: Wrong type of argument in function call Wrong type of argument in function call 
+Error line: 24: Wrong type of argument in function call Wrong type of argument in function call 
+Error line: 25: Wrong types for assignment of: Boolean + Int 
+Error line: 26: Method  not declared in class:  Method  not declared in class:  Wrong type of argument in function call Method  not declared in class:  Method  not declared in class:  Wrong type of argument in function call Wrong types for assignment of: Boolean + Int 
+Error line: 30: Wrong type of argument in function call 
+Error line: 31: Wrong number of arguments in function call 
+Error line: 32: Wrong type of argument in function call Wrong type of argument in function call Wrong type of argument in function call 
+Error line: 33: Wrong type of argument in function call Wrong type of argument in function call 
+============================================
+File: test_files/semantic_errors/invalid_operations.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+Error line: 18: b1 is of type: Boolean not of type: Int 
+Error line: 19: Wrong type in numerical expression: Identifier 
+Error line: 20: c1 is of type: ClassDatatest not of type: Int 
+Error line: 21: b1 is of type: Boolean not of type: Int b1 is of type: Boolean not of type: Int 
+Error line: 22: Wrong type in numerical expression: Identifier Wrong type in numerical expression: Identifier 
+Error line: 23: Wrong type in numerical expression: Identifier 
+Error line: 24: c1 is of type: ClassDatatest not of type: Int c1 is of type: ClassDatatest not of type: Int 
+Error line: 25: Wrong types for assignment of: Int + Boolean Wrong type in boolean expression: Identifier Wrong type in boolean expression: Identifier 
+Error line: 27: Wrong types for assignment of: Int + Boolean Wrong type in boolean expression: Identifier Wrong type in boolean expression: Identifier 
+Error line: 28: Wrong types for assignment of: Int + Boolean c1 is of type: ClassDatatest not of type: Int c1 is of type: ClassDatatest not of type: Int 
+Error line: 29: Wrong types for assignment of: Boolean + Int b1 is of type: Boolean not of type: Int b1 is of type: Boolean not of type: Int 
+Error line: 30: Wrong types for assignment of: Boolean + Int b1 is of type: Boolean not of type: Int Wrong type in numerical expression: Identifier 
+Error line: 31: Wrong type in boolean expression: Identifier 
+Error line: 32: Type mismatch in equality expression: Boolean and ClassDatatest 
+Error line: 33: Wrong types for assignment of: IntArr + Int Wrong type in numerical expression: Identifier Wrong type in numerical expression: Identifier 
+Error line: 34: Wrong types for assignment of: IntArr + Boolean Wrong type in boolean expression: Identifier Wrong type in boolean expression: Identifier 
+Error line: 35: b1 is of type: Boolean not of type: Int b2 is of type: Boolean not of type: Int 
+Error line: 36: Wrong type for Not Wrong types for assignment of: Boolean + Int 
+============================================
+File: test_files/semantic_errors/invalid_return.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+Error line: 19: Wrong return type : Boolean != Int 
+Error line: 23: Wrong return type : IntArr != Int 
+Error line: 27: Wrong return type : Int != Boolean 
+Error line: 31: Wrong return type : IntArr != Boolean 
+Error line: 35: Wrong return type : Int != IntArr 
+Error line: 39: Wrong return type : Boolean != IntArr 
+Error line: 43: Wrong return type : Boolean != Int 
+============================================
+File: test_files/semantic_errors/littletest.java
+============================================
+
+Built a parse-tree at st.dot. Use 'make st' to generate the pdf version.eyy
+Error line: 16: NewVar class doesnt exists Wrong types for assignment of: Element + grand_child_dtype2 doesnt exist 
+Error line: 18: Wrong types for assignment of: Boolean + Element 
+Error line: 23: Wrong use of length 
+Error line: 24: Wrong types for assignment of: Element + Int 
+Error line: 26: Wrong types for assignment of: Element + IntArr 
+Error line: 27:  wrong index type 
+Error line: 30: Wrong number of arguments in function call 

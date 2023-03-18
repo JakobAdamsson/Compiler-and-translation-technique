@@ -58,8 +58,8 @@ public:
         outStream << "}" << std::endl;
         outStream.close();
 
-        printf("\nBuilt a parse-tree at %s. Use 'make tree' to generate the pdf version.", filename);
-        printf("eyy\n");
+        // printf("\nBuilt a parse-tree at %s. Use 'make tree' to generate the pdf version.", filename);
+        // printf("eyy\n");
     }
 
     void generate_tree_content(int &count, ofstream *outStream)
@@ -260,6 +260,7 @@ public:
 
         for (auto child = children.begin(); child != children.end(); child++)
         {
+
             if ((*child)->type == "MainClass")
             {
                 symboltable->enterScope();
@@ -279,6 +280,7 @@ public:
                 Node *method_type = grand_children[1];
 
                 Node *return_node = grand_children.back();
+
                 std::string return_dtype;
                 if (return_node->type == "Identifier")
                 {
@@ -292,11 +294,24 @@ public:
                         return_dtype = check_identifier->dtype;
                     }
                 }
-                else if (return_node->type == "Int" && return_node->type == "ArrDecc")
+                else if (return_node->type == "Int")
                 {
                     return_dtype = "Int";
                 }
-                else if (return_node->type == "True" || return_node->type == "False")
+                else if (return_node->type == "ArrDec")
+                {
+                    std::vector<Node *> ArrDec_children(return_node->children.begin(), return_node->children.end());
+                    if (ArrDec_children[1]->type == "FCall")
+                    {
+                        std::string ArrDec_fcall = validate_fcall(symboltable, ArrDec_children[1]);
+                        return_dtype = validate_fcall(symboltable, ArrDec_children[1]);
+                    }
+                    else
+                    {
+                        return_dtype = "Int";
+                    }
+                }
+                else if (return_node->type == "True" || return_node->type == "false" || return_node->type == "Boolean")
                 {
                     return_dtype = "Boolean";
                 }
@@ -310,7 +325,7 @@ public:
                 }
                 else if (return_node->type == "this")
                 {
-                    return_node->print_node();
+
                     Record *this_record = symboltable->lookup("this");
                     Record *this_class = symboltable->lookup(this_record->dtype);
                     Class *check_class_class = dynamic_cast<Class *>(this_class);
@@ -319,6 +334,10 @@ public:
                 else if (return_node->type == "FCall")
                 {
                     return_dtype = validate_fcall(symboltable, return_node);
+                }
+                else
+                {
+                    return_dtype = check_datatype(symboltable, return_node);
                 }
                 if (return_dtype != method_type->dtype)
                 {
@@ -340,6 +359,7 @@ public:
                     else if ((*grand_child)->type == "Identifier")
                     {
                         Record *check_identifier = symboltable->lookup((*grand_child)->value);
+
                         if (check_identifier && check_identifier->dtype != "Int") // We dont need to check if the identifier have been declared here, that have been done in create symbol table. we only need to an error msg if it is not of type Int
                         {
                             if ((!(*grand_child)->children.size() == 1 && check_identifier->dtype == "IntArr")) // This is if the length of an array is used.
@@ -351,11 +371,20 @@ public:
 
                                 symboltable->add_error((*grand_child)->lineno, "This type doesnt have length " + (*grand_child)->type);
                             }
+                            else if (check_identifier->dtype != "Int")
+                            {
+                                symboltable->add_error((*grand_child)->lineno, check_identifier->id + " is of type: " + check_identifier->dtype + " not of type: Int");
+                            }
                         }
                         else if ((*grand_child)->children.size() != 0)
                         {
                             symboltable->add_error((*grand_child)->lineno, check_identifier->dtype + " Identifier: " + (*grand_child)->value + " does not have length");
                         }
+                    }
+                    else if ((*grand_child)->type == "ArrDec")
+                    {
+
+                        std::string arrdec_string = check_datatype(symboltable, (*grand_child));
                     }
                     else if ((*grand_child)->type == "FCall")
                     {
@@ -372,9 +401,14 @@ public:
             {
                 for (auto grand_child = (*child)->children.begin(); grand_child != (*child)->children.end(); grand_child++)
                 { // MAYBE WE HAVE NOT THOUGT ABOUT EVERY CASE FOR NOT :)
-                    if ((*grand_child)->type == "And" || (*grand_child)->type == "Or" || (*grand_child)->type == "Gt" || (*grand_child)->type == "Lt" || (*grand_child)->type == "==" || (*grand_child)->type == "Not")
+                    if ((*grand_child)->type == "And" || (*grand_child)->type == "Or" || (*grand_child)->type == "Gt" || (*grand_child)->type == "Lt" || (*grand_child)->type == "==")
                     {
+
                         (*grand_child)->semantic_analysis(symboltable);
+                    }
+                    else if ((*grand_child)->type == "Not")
+                    {
+                        std::string test_dtype = check_datatype(symboltable, (*grand_child));
                     }
                     else if ((*grand_child)->type == "Identifier")
                     {
@@ -388,7 +422,7 @@ public:
                     }
                 }
             }
-            else if ((*child)->type == "Eq")
+            else if ((*child)->type == "==")
             {
                 auto grand_child1 = std::next((*child)->children.begin(), 0);
                 Record *grand_child_exists = symboltable->lookup((*grand_child1)->value);
@@ -433,6 +467,7 @@ public:
                 auto grand_child2 = std::next((*child)->children.begin(), 1);
                 std::string grand_child_dtype2 = check_dtype_arrmodifier(symboltable, (*grand_child2));
 
+                grand_child_dtype2 = check_datatype(symboltable, (*grand_child2));
                 if (grand_child_dtype2 != "Int")
                 {
                     symboltable->add_error((*child)->lineno, "Not a valid datatype for index: " + (*grand_child2)->value);
@@ -440,12 +475,11 @@ public:
 
                 // Check third child
                 auto grand_child3 = std::next((*child)->children.begin(), 2);
-                if ((*grand_child3)->children.size() == 1) // may hav eto do a look here to make sure it is not a array
-                {
-                    symboltable->add_error((*child)->lineno, "Cannot take length of integer: " + (*grand_child3)->value);
-                }
-                std::string grand_child_dtype3 = check_dtype_arrmodifier(symboltable, (*grand_child3));
-                if (grand_child_dtype3 != "Int")
+                Record *check_for_thing = symboltable->lookup((*grand_child3)->value);
+
+                std::string grand_child_dtype3 = check_datatype(symboltable, (*grand_child3));
+
+                if (!((grand_child_dtype3 == "IntArr" && (*grand_child3)->children.size() == 1)) && ((grand_child_dtype3 == "Int") && (*grand_child3)->children.size() == 1) && (*grand_child3)->type != "ArrDec")
                 {
                     symboltable->add_error((*child)->lineno, "Not a valid datatype for value of arraymodifier: " + (*grand_child3)->value);
                 }
@@ -457,10 +491,17 @@ public:
                 // We should also be able to assume that any AND OR and == also are correctly but this is not implemented yet.
                 auto grand_child1 = std::next((*child)->children.begin(), 0);
                 Record *grand_child_exists = symboltable->lookup((*grand_child1)->value);
-
-                std::string grand_child_dtype1 = grand_child_exists->dtype;
-
+                std::string grand_child_dtype1;
+                if (grand_child_exists)
+                {
+                    grand_child_dtype1 = grand_child_exists->dtype;
+                }
+                else
+                {
+                    grand_child_dtype1 = (*grand_child1)->value + " isnon";
+                }
                 auto grand_child2 = std::next((*child)->children.begin(), 1);
+
                 std::string grand_child_dtype2;
 
                 if ((*grand_child2)->type == "Identifier")
@@ -476,27 +517,34 @@ public:
                         grand_child_dtype2 = "Int";
                     }
                 }
-                else if ((*grand_child2)->type == "Boolean" || (*grand_child2)->type == "And" || (*grand_child2)->type == "Or" || (*grand_child2)->type == "Lt" || (*grand_child2)->type == "Gt" || (*grand_child2)->type == "==" || (*grand_child2)->type == "Not")
+                else if ((*grand_child2)->type == "Boolean" || (*grand_child2)->type == "And" || (*grand_child2)->type == "Or" || (*grand_child2)->type == "Lt" || (*grand_child2)->type == "Gt" || (*grand_child2)->type == "==")
                 {
                     grand_child_dtype2 = "Boolean";
                 }
+                else if ((*grand_child2)->type == "Not")
+                {
+                    grand_child_dtype2 = check_datatype(symboltable, (*grand_child2));
+                }
+
                 else if ((*grand_child2)->type == "Int" || (*grand_child2)->type == "Num" || (*grand_child2)->type == "Plus" || (*grand_child2)->type == "Divide" || (*grand_child2)->type == "Minus" || (*grand_child2)->type == "Mult")
                 {
                     grand_child_dtype2 = "Int";
                 }
                 else if ((*grand_child2)->type == "FCall")
                 {
+
                     // Do something
+
                     grand_child_dtype2 = validate_fcall(symboltable, (*grand_child2));
                     // Kolla arguments here?
                 }
                 else if ((*grand_child2)->type == "IntArrDec")
                 {
-                    grand_child_dtype2 = "IntArr";
+                    grand_child_dtype2 = check_datatype(symboltable, (*grand_child2));
                 }
                 else if ((*grand_child2)->type == "ArrDec")
                 {
-                    grand_child_dtype2 = "Int";
+                    grand_child_dtype2 = check_datatype(symboltable, (*grand_child2));
                 }
                 else if ((*grand_child2)->type == "this")
                 {
@@ -507,7 +555,15 @@ public:
                 {
 
                     Record *newvar_record = symboltable->lookup((*grand_child2)->value);
-                    grand_child_dtype2 = newvar_record->id;
+                    if (!newvar_record)
+                    {
+                        symboltable->add_error((*grand_child2)->lineno, "NewVar class doesnt exists");
+                        grand_child_dtype2 = "grand_child_dtype2 doesnt exist";
+                    }
+                    else
+                    {
+                        grand_child_dtype2 = newvar_record->id;
+                    }
                 }
                 if (grand_child_dtype1 != grand_child_dtype2)
                 {
@@ -591,6 +647,7 @@ public:
 
         if (node->type == "FCall")
         {
+
             fcall_check_arguments(symboltable, node);
 
             auto child1 = std::next(node->children.begin(), 0);
@@ -628,7 +685,7 @@ public:
             }
             else if ((*child1)->type == "NewVar")
             {
-                Record *newvar_record = symboltable->lookup((*child1)->value);
+                Record *newvar_record = symboltable->lookup2((*child1)->value);
                 Class *newvar_class = dynamic_cast<Class *>(newvar_record);
                 if (newvar_class == nullptr)
                 {
@@ -689,6 +746,7 @@ public:
 
     void fcall_check_arguments(SymbolTable *symboltable, Node *node)
     {
+
         auto class_child = std::next(node->children.begin(), 0);
         auto method_child = std::next(node->children.begin(), 1);
         auto args_child = std::next(node->children.begin(), 2);
@@ -701,7 +759,9 @@ public:
         }
         else if ((*class_child)->type == "NewVar")
         {
-            Record *newvar_record = symboltable->lookup((*class_child)->value);
+
+            Record *newvar_record = symboltable->lookup2((*class_child)->value);
+
             check_class_class = dynamic_cast<Class *>(newvar_record);
         }
         else if ((*class_child)->type == "FCall")
@@ -723,8 +783,12 @@ public:
             Record *check_class = symboltable->lookup(check_identifier->dtype);
             check_class_class = dynamic_cast<Class *>(check_class);
         }
-        Method *check_method = check_class_class->lookupMethod((*method_child)->value);
 
+        Method *check_method = check_class_class->lookupMethod((*method_child)->value);
+        if (!check_method)
+        {
+            return;
+        }
         if ((*args_child)->children.size() != check_method->Parameters.size())
         {
             symboltable->add_error((*args_child)->lineno, "Wrong number of arguments in function call");
@@ -778,6 +842,91 @@ public:
 
             index++;
         }
+    }
+
+    std::string check_datatype(SymbolTable *symboltable, Node *node)
+    {
+        std::vector<Node *> children(node->children.begin(), node->children.end());
+        std::string return_dtype;
+        if (node->type == "Not")
+        {
+            return_dtype = check_datatype(symboltable, children[0]);
+
+            if (return_dtype != "Boolean")
+            {
+                symboltable->add_error(node->lineno, "Wrong type for Not");
+            }
+        }
+        else if (node->type == "Identifier")
+        {
+            Record *id_record = symboltable->lookup(node->value);
+            if (!id_record)
+            {
+                return_dtype = "";
+            }
+
+            else
+            {
+
+                return_dtype = id_record->dtype;
+            }
+        }
+        else if ((node->type == "Boolean"))
+        {
+            return_dtype = "Boolean";
+        }
+        else if ((node->type == "FCall"))
+        {
+            return_dtype = validate_fcall(symboltable, node);
+        }
+        else if (node->type == "Num")
+        {
+            return_dtype = "Int";
+        }
+        else if (node->type == "ArrDec")
+        {
+            std::string check_for_intarr = check_datatype(symboltable, children[0]);
+            if (check_for_intarr != "IntArr")
+            {
+                symboltable->add_error(node->lineno, "Not an array");
+            }
+            std::string check_index = check_datatype(symboltable, children[1]);
+
+            if (check_index != "Int")
+            {
+                symboltable->add_error(node->lineno, "Not valid index for array");
+            }
+
+            if (children.size() == 3)
+            {
+                symboltable->add_error(node->lineno, "Wrong use of length");
+            }
+            return_dtype = "Int";
+        }
+        else if (node->type == "IntArrDec")
+        {
+
+            std::string check_index_type = check_datatype(symboltable, children[2]);
+            if (check_index_type != "Int" && check_index_type != "Num")
+            {
+                symboltable->add_error(node->lineno, " wrong index type");
+            }
+
+            if (children[0]->type == "New")
+            {
+                return_dtype = "IntArr";
+            }
+            else
+            {
+                return_dtype = "Int";
+            }
+        }
+        else if (node->type == "Plus" || node->type == "Divide" || node->type == "Minus" || node->type == "Mult")
+        {
+            return_dtype = "Int";
+        }
+
+        return return_dtype;
     }
 };
 

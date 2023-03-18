@@ -27,7 +27,7 @@ class OP {
         b = 12;
         d = false;
         c = true;
-        booleat ret;
+        boolean ret;
         // the following statements should generate the same tree
         ret = a < b && !d || d == !c;
         ret = ((a<b) && (!d)) || (d == (!c));

@@ -16,7 +16,6 @@ class Thing {
         x = new element();// @fail element_ is not a valid Class //fail x_ and expression element_ new are
                           // of different types //fail arooba
         c = new Element();// @fail c_ and expression Element_ new are of different types
-        bajs = 5;
         a = 2 * e[3 * 5];
 
         fung[3] = 0;// succ

@@ -444,6 +444,8 @@ namespace yy {
       // MAIN
       // STRING
       // CLASS
+      // TOKEN_DOLLAR
+      // TOKEN_CARET
       char dummy2[sizeof (std::string)];
     };
 
@@ -527,7 +529,9 @@ namespace yy {
     VOID = 294,                    // VOID
     MAIN = 295,                    // MAIN
     STRING = 296,                  // STRING
-    CLASS = 297                    // CLASS
+    CLASS = 297,                   // CLASS
+    TOKEN_DOLLAR = 298,            // TOKEN_DOLLAR
+    TOKEN_CARET = 299              // TOKEN_CARET
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -544,7 +548,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 43, ///< Number of tokens.
+        YYNTOKENS = 45, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
@@ -589,26 +593,28 @@ namespace yy {
         S_MAIN = 40,                             // MAIN
         S_STRING = 41,                           // STRING
         S_CLASS = 42,                            // CLASS
-        S_YYACCEPT = 43,                         // $accept
-        S_root = 44,                             // root
-        S_Program = 45,                          // Program
-        S_Type = 46,                             // Type
-        S_VarDeclaration = 47,                   // VarDeclaration
-        S_Expression = 48,                       // Expression
-        S_Term = 49,                             // Term
-        S_Statement = 50,                        // Statement
-        S_MethodDeclaration = 51,                // MethodDeclaration
-        S_ClassDeclaration = 52,                 // ClassDeclaration
-        S_MainClass = 53,                        // MainClass
-        S_Goal = 54,                             // Goal
-        S_LRStatement = 55,                      // LRStatement
-        S_LRVarDec = 56,                         // LRVarDec
-        S_LRParamater = 57,                      // LRParamater
-        S_LRArguments = 58,                      // LRArguments
-        S_LRVarOrStatementDec = 59,              // LRVarOrStatementDec
-        S_LRMethodDec = 60,                      // LRMethodDec
-        S_StateEpsilon = 61,                     // StateEpsilon
-        S_LRClassDec = 62                        // LRClassDec
+        S_TOKEN_DOLLAR = 43,                     // TOKEN_DOLLAR
+        S_TOKEN_CARET = 44,                      // TOKEN_CARET
+        S_YYACCEPT = 45,                         // $accept
+        S_root = 46,                             // root
+        S_Program = 47,                          // Program
+        S_Type = 48,                             // Type
+        S_VarDeclaration = 49,                   // VarDeclaration
+        S_Expression = 50,                       // Expression
+        S_Term = 51,                             // Term
+        S_Statement = 52,                        // Statement
+        S_MethodDeclaration = 53,                // MethodDeclaration
+        S_ClassDeclaration = 54,                 // ClassDeclaration
+        S_MainClass = 55,                        // MainClass
+        S_Goal = 56,                             // Goal
+        S_LRStatement = 57,                      // LRStatement
+        S_LRVarDec = 58,                         // LRVarDec
+        S_LRParamater = 59,                      // LRParamater
+        S_LRArguments = 60,                      // LRArguments
+        S_LRVarOrStatementDec = 61,              // LRVarOrStatementDec
+        S_LRMethodDec = 62,                      // LRMethodDec
+        S_StateEpsilon = 63,                     // StateEpsilon
+        S_LRClassDec = 64                        // LRClassDec
       };
     };
 
@@ -704,6 +710,8 @@ namespace yy {
       case symbol_kind::S_MAIN: // MAIN
       case symbol_kind::S_STRING: // STRING
       case symbol_kind::S_CLASS: // CLASS
+      case symbol_kind::S_TOKEN_DOLLAR: // TOKEN_DOLLAR
+      case symbol_kind::S_TOKEN_CARET: // TOKEN_CARET
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -837,6 +845,8 @@ switch (yykind)
       case symbol_kind::S_MAIN: // MAIN
       case symbol_kind::S_STRING: // STRING
       case symbol_kind::S_CLASS: // CLASS
+      case symbol_kind::S_TOKEN_DOLLAR: // TOKEN_DOLLAR
+      case symbol_kind::S_TOKEN_CARET: // TOKEN_CARET
         value.template destroy< std::string > ();
         break;
 
@@ -1633,6 +1643,36 @@ switch (yykind)
         return symbol_type (token::CLASS, v);
       }
 #endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_TOKEN_DOLLAR (std::string v)
+      {
+        return symbol_type (token::TOKEN_DOLLAR, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_TOKEN_DOLLAR (const std::string& v)
+      {
+        return symbol_type (token::TOKEN_DOLLAR, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_TOKEN_CARET (std::string v)
+      {
+        return symbol_type (token::TOKEN_CARET, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_TOKEN_CARET (const std::string& v)
+      {
+        return symbol_type (token::TOKEN_CARET, v);
+      }
+#endif
 
 
     class context
@@ -2009,10 +2049,10 @@ switch (yykind)
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40,    41,    42
+      35,    36,    37,    38,    39,    40,    41,    42,    43,    44
     };
     // Last valid token kind.
-    const int code_max = 297;
+    const int code_max = 299;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2091,6 +2131,8 @@ switch (yykind)
       case symbol_kind::S_MAIN: // MAIN
       case symbol_kind::S_STRING: // STRING
       case symbol_kind::S_CLASS: // CLASS
+      case symbol_kind::S_TOKEN_DOLLAR: // TOKEN_DOLLAR
+      case symbol_kind::S_TOKEN_CARET: // TOKEN_CARET
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -2186,6 +2228,8 @@ switch (yykind)
       case symbol_kind::S_MAIN: // MAIN
       case symbol_kind::S_STRING: // STRING
       case symbol_kind::S_CLASS: // CLASS
+      case symbol_kind::S_TOKEN_DOLLAR: // TOKEN_DOLLAR
+      case symbol_kind::S_TOKEN_CARET: // TOKEN_CARET
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -2254,7 +2298,7 @@ switch (yykind)
 
 
 } // yy
-#line 2258 "parser.tab.hh"
+#line 2302 "parser.tab.hh"
 
 
 
