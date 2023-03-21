@@ -1,0 +1,12 @@
+
+ENDAST MED NUMERISKA ASSIGNMENTS!
+Vi hittar en assignment node. Då måste vi bryta ner den.
+    Vänstra barnet (index 0) är alltid en identifier
+
+    Högra barnet
+        - är det ett plus/minus/gånger/delat
+            Kalla på funktionen igen för barn noderna
+            gör någonting
+        - är det en identifier
+            gör någonting
+        - annars kommer vara en NUM

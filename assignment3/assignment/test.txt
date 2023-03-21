@@ -1,0 +1,36 @@
+public class Factorial{
+    public static void main(String[] a){
+	System.out.println(new Fac().ComputeFac(10));
+    }
+}
+
+class Fac {
+	int x;
+	int y;
+    public int ComputeFac(int num)
+	{
+		x = 5;
+		if (x < 6)
+		{
+			x = 10;
+		}
+		else
+		{
+			if (true)
+			{
+				x = 25;
+			}
+			x = 15;
+		}
+		
+
+		return x;
+	}
+
+
+
+
+}
+
+
+

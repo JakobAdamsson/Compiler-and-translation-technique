@@ -1,0 +1,21 @@
+digraph {
+n0 [label="Scope:root
+ Fac
+ Factorial
+"];
+n1 [label="Scope:
+Factorial this
+"];
+n0 -> n1
+n2 [label="Scope:
+Int ComputeFac()
+Fac this
+Int x
+Int y
+"];
+n3 [label="Scope:
+Int num
+"];
+n2 -> n3
+n0 -> n2
+}
