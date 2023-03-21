@@ -116,48 +116,10 @@ public:
         dotFile.close();
     }
 
-    BBlock *handle_true_block(SymbolTable *symboltable, Node *node, BBlock *&current_block)
-    {
-        BBlock *true_block = new BBlock();
-        true_block->name = "TrueBlock" + std::to_string(symboltable->num_blocks++);
-        symboltable->Blocks.insert(std::make_pair(true_block->name, true_block));
-        // current_block -> trueExit = true_block;
-        current_block = true_block;
-        ir_loop(symboltable, node, current_block);
-        // hantera true blocket
-        return true_block;
-    }
-    void handle_condition(SymbolTable *symboltable, Node *node, BBlock *&current_block)
-    {
-    }
-    BBlock *handle_else(SymbolTable *symboltable, Node *node, BBlock *&current_block)
-    {
-        if (node == nullptr)
-        {
-            return nullptr;
-        }
-        BBlock *false_block = new BBlock();
-        false_block->name = "FalseBlock" + std::to_string(symboltable->num_blocks++);
-        symboltable->Blocks.insert(std::make_pair(false_block->name, false_block));
-        current_block->falseExit = false_block;
-
-        return false_block;
-    }
-
     // for while block i need a header, boolean expression should be inside their ownblock, so that we can visit it over again and again
 
-    BBlock *gen_ir(SymbolTable *symboltable, Node *node, BBlock *block)
+    void ir_loop(SymbolTable *symboltable, Node *node)
     {
-        BBlock *true_block = new BBlock();
-        true_block->name = "TrueBlock" + std::to_string(symboltable->num_blocks++);
-        symboltable->Blocks.insert(std::make_pair(true_block->name, true_block));
-        // current_block -> trueExit = true_block;
-        return true_block;
-    }
-
-    void ir_loop(SymbolTable *symboltable, Node *node, BBlock *current_block)
-    {
-        // std::cout << "block: " + current_block->name << " Node: " + node->type << std ::endl;
         for (Node *child : node->children)
         {
             if (child->type == "If statement")
@@ -174,37 +136,164 @@ public:
                 BBlock *join_block = new BBlock();
                 join_block->name = "JoinBlock" + std::to_string(symboltable->num_blocks++);
                 symboltable->Blocks.insert(std::make_pair(join_block->name, join_block));
+                symboltable->block_stack.push_back(join_block);
 
-                current_block->trueExit = true_block;
-                current_block->falseExit = false_block;
-
-                child->children[1]->ir_loop(symboltable, child->children[1], true_block);
-                std::cout << child->children[1]->type << std::endl;
-
-                true_block = current_block;
                 true_block->trueExit = join_block;
-
-                // std::cout << t2->name << "." + join_block->name << std::endl;
-
-                if (child->children[2]->type == "ELSE")
-                {
-
-                    // current_block->falseExit = false_block;
-                    std::cout << current_block->name << " Falseblock: " + false_block->name << std::endl;
-                    child->children[2]->ir_loop(symboltable, child->children[2], false_block);
-                    std::cout << current_block->name << " Falseblock: " + false_block->name << std::endl;
-                }
-                false_block = current_block;
                 false_block->trueExit = join_block;
 
-                current_block = join_block;
+                symboltable->current_block->trueExit = true_block;
+                symboltable->current_block->falseExit = false_block;
+
+                symboltable->current_block = true_block;
+                child->children[1]->ir_loop(symboltable, child->children[1]);
+
+                std::cout << symboltable->current_block->name << " Falseblock: " + false_block->name << std::endl;
+                symboltable->current_block = false_block;
+                child->children[1]->ir_loop(symboltable, child->children[2]);
+
+                symboltable->current_block = join_block;
+
+                if (symboltable->block_stack.size() > 1)
+                {
+                    BBlock *old_block = symboltable->block_stack.front();
+                    symboltable->block_stack.pop_back();
+                    symboltable->current_block->trueExit = old_block;
+                }
+            }
+            else if (child->type == "While")
+            {
+                BBlock *header_block = new BBlock();
+                header_block->name = "HeaderWhileBlock" + std::to_string(symboltable->num_blocks++);
+                symboltable->Blocks.insert(std::make_pair(header_block->name, header_block));
+                symboltable->current_block->trueExit = header_block;
+                symboltable->block_stack.push_back(header_block);
+                child->children[0]->ir_loop(symboltable, child->children[0]);
+
+                BBlock *bool_block = new BBlock();
+                bool_block->name = "BoolBlock" + std::to_string(symboltable->num_blocks++);
+                symboltable->Blocks.insert(std::make_pair(bool_block->name, bool_block));
+                symboltable->current_block = bool_block;
+                bool_block->trueExit = header_block;
+                child->children[1]->ir_loop(symboltable, child->children[1]);
+
+                BBlock *join_block = new BBlock();
+                join_block->name = "WhileJoinBlock" + std::to_string(symboltable->num_blocks++);
+                symboltable->Blocks.insert(std::make_pair(join_block->name, join_block));
+                // symboltable->block_stack.push_back(join_block);
+
+                header_block->trueExit = bool_block;
+                header_block->falseExit = join_block;
+
+                if (symboltable->block_stack.size() > 0)
+                {
+                    BBlock *old_block = symboltable->block_stack.back();
+                    symboltable->block_stack.pop_back();
+                    symboltable->current_block->trueExit = old_block;
+                }
+                symboltable->current_block = join_block;
+            }
+            else if (child->type == "Assignment")
+            {
+
+                ir_expression(symboltable, child);
             }
 
             else
             {
-                ir_loop(symboltable, child, current_block);
+                ir_loop(symboltable, child);
             }
         }
+    }
+
+    std::string ir_expression(SymbolTable *symboltable, Node *node)
+    {
+
+        if (node->type == "Assignment")
+        {
+            std::string temp = "_t" + std::to_string(symboltable->num_counts++);
+            std::string swag = ir_expression(symboltable, node->children[0]);
+
+            Tac *new_assignment = new Expression("", temp, "", node->children[0]->value);
+
+            symboltable->current_block->tacInstructions.push_back(new_assignment);
+        }
+
+        std::string op;
+        std::string name_x;
+        std::string name_y;
+        std::string name_z;
+        if (node->type == "Num")
+        {
+            return node->value;
+        }
+
+        else if (node->type == "Identifier")
+        {
+            name_x = node->value;
+        }
+        // calculate y op z store the result in x;
+
+        else if (node->type == "Plus")
+        {
+
+            std::string temp = "_t" + std::to_string(symboltable->num_counts++);
+            name_x = temp;
+            op = "+";
+
+            name_y = ir_expression(symboltable, node->children[0]);
+            name_z = ir_expression(symboltable, node->children[1]);
+            name_x = temp;
+            Tac *new_expression = new Expression(op, name_y, name_z, temp);
+
+            symboltable->current_block->tacInstructions.push_back(new_expression);
+        }
+
+        else if (node->type == "Minus")
+        {
+
+            std::string temp = "_t" + std::to_string(symboltable->num_counts++);
+            name_x = temp;
+            op = "-";
+
+            name_y = ir_expression(symboltable, node->children[0]);
+            name_z = ir_expression(symboltable, node->children[1]);
+            Tac *new_expression = new Expression(op, name_y, name_z, temp);
+
+            symboltable->current_block->tacInstructions.push_back(new_expression);
+        }
+        else if (node->type == "Mult")
+        {
+
+            std::string temp = "_t" + std::to_string(symboltable->num_counts++);
+            name_x = temp;
+            op = "*";
+
+            name_y = ir_expression(symboltable, node->children[0]);
+            name_z = ir_expression(symboltable, node->children[1]);
+            Tac *new_expression = new Expression(op, name_y, name_z, temp);
+
+            symboltable->current_block->tacInstructions.push_back(new_expression);
+        }
+        else if (node->type == "Divide")
+        {
+
+            std::string temp = "_t" + std::to_string(symboltable->num_counts++);
+            name_x = temp;
+            op = "/";
+
+            name_y = ir_expression(symboltable, node->children[0]);
+            name_z = ir_expression(symboltable, node->children[1]);
+            Tac *new_expression = new Expression(op, name_y, name_z, temp);
+
+            symboltable->current_block->tacInstructions.push_back(new_expression);
+        }
+
+        else
+        {
+            op = "%";
+        }
+
+        return name_x;
     }
 
     /* create_symboltable() when leaving this function you can expect that:

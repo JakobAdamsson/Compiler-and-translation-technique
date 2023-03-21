@@ -285,6 +285,7 @@ public:
     BBlock *current_block = new BBlock();
 
     std::vector<BBlock *> block_stack;
+    std::vector<BBlock *> block_stack_while;
     BBlock *False_block;
     int num_blocks = 1;
 

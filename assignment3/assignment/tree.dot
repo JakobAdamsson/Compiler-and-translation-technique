@@ -44,55 +44,35 @@ n23 [label="Identifier:num"];
 n22 -> n23
 n18 -> n22
 n24 [label="Statement:"];
-n25 [label="Assignment:"];
-n26 [label="Identifier:x"];
+n25 [label="If statement:"];
+n26 [label="Boolean:True"];
 n25 -> n26
-n27 [label="Num:5"];
-n25 -> n27
-n24 -> n25
-n28 [label="If statement:"];
-n29 [label="Lt:"];
-n30 [label="Identifier:x"];
-n29 -> n30
-n31 [label="Num:6"];
-n29 -> n31
+n27 [label="Statement:"];
+n28 [label="Assignment:"];
+n29 [label="Identifier:x"];
 n28 -> n29
-n32 [label="Statement:"];
-n33 [label="Assignment:"];
-n34 [label="Identifier:x"];
+n30 [label="Plus:"];
+n31 [label="Num:1"];
+n30 -> n31
+n32 [label="Num:2"];
+n30 -> n32
+n28 -> n30
+n27 -> n28
+n25 -> n27
+n33 [label="ELSE:"];
+n34 [label="Statement:"];
+n35 [label="Assignment:"];
+n36 [label="Identifier:x"];
+n35 -> n36
+n37 [label="Num:10"];
+n35 -> n37
+n34 -> n35
 n33 -> n34
-n35 [label="Num:10"];
-n33 -> n35
-n32 -> n33
-n28 -> n32
-n36 [label="ELSE:"];
-n37 [label="Statement:"];
-n38 [label="If statement:"];
-n39 [label="Boolean:True"];
-n38 -> n39
-n40 [label="Statement:"];
-n41 [label="Assignment:"];
-n42 [label="Identifier:x"];
-n41 -> n42
-n43 [label="Num:25"];
-n41 -> n43
-n40 -> n41
-n38 -> n40
-n44 [label="EMPTY:"];
-n38 -> n44
-n37 -> n38
-n45 [label="Assignment:"];
-n46 [label="Identifier:x"];
-n45 -> n46
-n47 [label="Num:15"];
-n45 -> n47
-n37 -> n45
-n36 -> n37
-n28 -> n36
-n24 -> n28
+n25 -> n33
+n24 -> n25
 n18 -> n24
-n48 [label="Identifier:x"];
-n18 -> n48
+n38 [label="Identifier:x"];
+n18 -> n38
 n17 -> n18
 n10 -> n17
 n0 -> n10

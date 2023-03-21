@@ -92,7 +92,7 @@ int main(int argc, char **argv)
       try
       {
 
-        root->ir_loop(&symboltable,root,symboltable.current_block);
+        root->ir_loop(&symboltable, root);
       }
       catch (...)
       {

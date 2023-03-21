@@ -9,20 +9,15 @@ class Fac {
 	int y;
     public int ComputeFac(int num)
 	{
-		x = 5;
-		if (x < 6)
+		if (true)
 		{
-			x = 10;
+			x = 1 + 2 ;
+
 		}
 		else
 		{
-			if (true)
-			{
-				x = 25;
-			}
-			x = 15;
+			x = 10 ;
 		}
-		
 
 		return x;
 	}
