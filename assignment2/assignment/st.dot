@@ -1,58 +1,48 @@
 digraph {
 n0 [label="Scope:root
- Element
- Factorial
- Thing
+ LS
+ LinearSearch
 "];
 n1 [label="Scope:
-Factorial this
+LinearSearch this
 "];
 n0 -> n1
 n2 [label="Scope:
-Int a
-Boolean c
-Boolean d
-IntArr e
-Int func()
-Int func2()
-Thing this
-Element x
+Int Init()
+Int Print()
+Int Search()
+Int Start()
+IntArr number
+Int size
+LS this
 "];
 n3 [label="Scope:
-IntArr fung
+Int aux01
+Int aux02
+Int sz
 "];
 n2 -> n3
 n4 [label="Scope:
+Int j
 "];
 n2 -> n4
-n0 -> n2
 n5 [label="Scope:
-Boolean InBool()
-Boolean InBool2()
-Element InClass()
-Int InInt()
-Int InInt2()
-Int a
-Boolean b
-Element c
-Element this
+Int aux01
+Int aux02
+Int ifound
+Int j
+Boolean ls01
+Int nt
+Int num
 "];
+n2 -> n5
 n6 [label="Scope:
-Int x
+Int aux01
+Int aux02
+Int j
+Int k
+Int sz
 "];
-n5 -> n6
-n7 [label="Scope:
-Int x
-"];
-n5 -> n7
-n8 [label="Scope:
-"];
-n5 -> n8
-n9 [label="Scope:
-"];
-n5 -> n9
-n10 [label="Scope:
-"];
-n5 -> n10
-n0 -> n5
+n2 -> n6
+n0 -> n2
 }
